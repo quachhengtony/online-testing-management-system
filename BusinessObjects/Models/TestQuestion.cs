@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace BusinessObjects.Models
 {
-    public partial class TestQuestionGroup
+    public partial class TestQuestion
     {
-        public string QuestionGroupId { get; set; }
+        public string QuestionId { get; set; }
         public string TestId { get; set; }
 
-        public virtual QuestionGroup QuestionGroup { get; set; }
+        public virtual Question Question { get; set; }
         public virtual Test Test { get; set; }
     }
 }

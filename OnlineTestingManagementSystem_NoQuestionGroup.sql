@@ -84,12 +84,12 @@ CREATE TABLE Submission(
 );
 GO
 
-CREATE TABLE QuestionGroup(
-    Id NVARCHAR(25) NOT NULL PRIMARY KEY,
-    Name NVARCHAR(50),
-	QuestionGroupCreatorId NVARCHAR(25) NOT NULL
-);
-GO
+-- CREATE TABLE QuestionGroup(
+--     Id NVARCHAR(25) NOT NULL PRIMARY KEY,
+--     Name NVARCHAR(50),
+-- 	QuestionGroupCreatorId NVARCHAR(25) NOT NULL
+-- );
+-- GO
 
 -- Question many-to-one QuestionCategory
 ALTER TABLE Question WITH NOCHECK
@@ -107,9 +107,9 @@ ADD FOREIGN KEY (TestCreatorId) REFERENCES TestCreator(Id) ON UPDATE CASCADE ON 
 GO
 
 -- TestCreator one-to-many QuestionGroup
-ALTER TABLE QuestionGroup WITH NOCHECK
-ADD FOREIGN KEY (QuestionGroupCreatorId) REFERENCES TestCreator(Id) ON UPDATE CASCADE ON DELETE CASCADE;
-GO
+-- ALTER TABLE QuestionGroup WITH NOCHECK
+-- ADD FOREIGN KEY (QuestionGroupCreatorId) REFERENCES TestCreator(Id) ON UPDATE CASCADE ON DELETE CASCADE;
+-- GO
 
 -- TestCreator one-to-many Question
 ALTER TABLE Question WITH NOCHECK
@@ -132,22 +132,31 @@ ADD FOREIGN KEY (TestCategoryId) REFERENCES TestCategory(Id) ON UPDATE CASCADE O
 GO
 
 -- QuestionGroup many-to-many Question
-CREATE TABLE QuestionGroupQuestion (
-    QuestionGroupId NVARCHAR(25) NOT NULL,
-    QuestionId NVARCHAR(25) NOT NULL,
-    PRIMARY KEY (QuestionGroupId, QuestionId),
-    CONSTRAINT FK_QuestionGroupQuestion_QuestionGroup FOREIGN KEY (QuestionGroupId) REFERENCES QuestionGroup(Id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT FK_QuestionGroupQuestion_Question FOREIGN KEY (QuestionId) REFERENCES Question(Id) ON UPDATE NO ACTION ON DELETE NO ACTION
-);
-GO
+-- CREATE TABLE QuestionGroupQuestion (
+--     QuestionGroupId NVARCHAR(25) NOT NULL,
+--     QuestionId NVARCHAR(25) NOT NULL,
+--     PRIMARY KEY (QuestionGroupId, QuestionId),
+--     CONSTRAINT FK_QuestionGroupQuestion_QuestionGroup FOREIGN KEY (QuestionGroupId) REFERENCES QuestionGroup(Id) ON UPDATE CASCADE ON DELETE CASCADE,
+--     CONSTRAINT FK_QuestionGroupQuestion_Question FOREIGN KEY (QuestionId) REFERENCES Question(Id) ON UPDATE NO ACTION ON DELETE NO ACTION
+-- );
+-- GO
 
 -- Test many-to-many QuestionGroup
-CREATE TABLE TestQuestionGroup (
-    QuestionGroupId NVARCHAR(25) NOT NULL,
+-- CREATE TABLE TestQuestionGroup (
+--     QuestionGroupId NVARCHAR(25) NOT NULL,
+--     TestId NVARCHAR(25) NOT NULL,
+--     PRIMARY KEY (QuestionGroupId, TestId),
+--     CONSTRAINT FK_TestQuestionGroup_QuestionGroup FOREIGN KEY (QuestionGroupId) REFERENCES QuestionGroup(Id) ON UPDATE CASCADE ON DELETE CASCADE,
+--     CONSTRAINT FK_TestQuestionGroup_Test FOREIGN KEY (TestId) REFERENCES Test(Id) ON UPDATE NO ACTION ON DELETE NO ACTION
+-- );
+-- GO
+
+CREATE TABLE TestQuestion (
+    QuestionId NVARCHAR(25) NOT NULL,
     TestId NVARCHAR(25) NOT NULL,
-    PRIMARY KEY (QuestionGroupId, TestId),
-    CONSTRAINT FK_TestQuestionGroup_QuestionGroup FOREIGN KEY (QuestionGroupId) REFERENCES QuestionGroup(Id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT FK_TestQuestionGroup_Test FOREIGN KEY (TestId) REFERENCES Test(Id) ON UPDATE NO ACTION ON DELETE NO ACTION
+    PRIMARY KEY (QuestionId, TestId),
+    CONSTRAINT FK_TestQuestion_Question FOREIGN KEY (QuestionId) REFERENCES Question(Id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT FK_TestQuestion_Test FOREIGN KEY (TestId) REFERENCES Test(Id) ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 GO
 

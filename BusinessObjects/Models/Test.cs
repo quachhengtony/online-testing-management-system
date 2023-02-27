@@ -10,7 +10,7 @@ namespace BusinessObjects.Models
         public Test()
         {
             Submissions = new HashSet<Submission>();
-            TestQuestionGroups = new HashSet<TestQuestionGroup>();
+            TestQuestions = new HashSet<TestQuestion>();
         }
 
         public string Id { get; set; }
@@ -27,6 +27,6 @@ namespace BusinessObjects.Models
         public virtual TestCategory TestCategory { get; set; }
         public virtual TestCreator TestCreator { get; set; }
         public virtual ICollection<Submission> Submissions { get; set; }
-        public virtual ICollection<TestQuestionGroup> TestQuestionGroups { get; set; }
+        public virtual ICollection<TestQuestion> TestQuestions { get; set; }
     }
 }

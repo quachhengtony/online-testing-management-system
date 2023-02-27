@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAO
 {
-    internal interface IDAO<T>
+    interface IDAO<T>
     {
         public void Create(T t);
         public List<T> GetAll();

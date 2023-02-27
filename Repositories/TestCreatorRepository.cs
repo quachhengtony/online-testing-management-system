@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    internal class TestCreatorRepository : ITestCreatorRepository
+    public class TestCreatorRepository : ITestCreatorRepository
     {
         public void Create(TestCreator t)
         {

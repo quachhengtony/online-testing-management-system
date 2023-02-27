@@ -9,7 +9,6 @@ namespace BusinessObjects.Models
     {
         public TestCreator()
         {
-            QuestionGroups = new HashSet<QuestionGroup>();
             Questions = new HashSet<Question>();
             Tests = new HashSet<Test>();
         }
@@ -21,7 +20,6 @@ namespace BusinessObjects.Models
         public string LastName { get; set; }
         public string Password { get; set; }
 
-        public virtual ICollection<QuestionGroup> QuestionGroups { get; set; }
         public virtual ICollection<Question> Questions { get; set; }
         public virtual ICollection<Test> Tests { get; set; }
     }

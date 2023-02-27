@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using BusinessObjects.Models;
-using Microsoft.Extensions.Configuration;
-using System.IO;
 
 #nullable disable
 
@@ -13,11 +11,6 @@ namespace BusinessObjects.DbContexts
     {
         public OnlineTestingManagementSystemDbContext()
         {
-            IConfiguration config = new ConfigurationBuilder()
-              .SetBasePath(Directory.GetCurrentDirectory())
-              .AddJsonFile("appsettings.json", true, true)
-              .Build();
-            this.Database.SetConnectionString(config["ConnectionStrings:OnlineTestingManagementSystemDb"]);
         }
 
         public OnlineTestingManagementSystemDbContext(DbContextOptions<OnlineTestingManagementSystemDbContext> options)
@@ -28,13 +21,11 @@ namespace BusinessObjects.DbContexts
         public virtual DbSet<Answer> Answers { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<QuestionCategory> QuestionCategories { get; set; }
-        public virtual DbSet<QuestionGroup> QuestionGroups { get; set; }
-        public virtual DbSet<QuestionGroupQuestion> QuestionGroupQuestions { get; set; }
         public virtual DbSet<Submission> Submissions { get; set; }
         public virtual DbSet<Test> Tests { get; set; }
         public virtual DbSet<TestCategory> TestCategories { get; set; }
         public virtual DbSet<TestCreator> TestCreators { get; set; }
-        public virtual DbSet<TestQuestionGroup> TestQuestionGroups { get; set; }
+        public virtual DbSet<TestQuestion> TestQuestions { get; set; }
         public virtual DbSet<TestTaker> TestTakers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -63,7 +54,7 @@ namespace BusinessObjects.DbContexts
                 entity.HasOne(d => d.Question)
                     .WithMany(p => p.Answers)
                     .HasForeignKey(d => d.QuestionId)
-                    .HasConstraintName("FK__Answer__Question__46E78A0C");
+                    .HasConstraintName("FK__Answer__Question__44FF419A");
             });
 
             modelBuilder.Entity<Question>(entity =>
@@ -84,12 +75,12 @@ namespace BusinessObjects.DbContexts
                     .WithMany(p => p.Questions)
                     .HasForeignKey(d => d.QuestionCategoryId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Question__Questi__45F365D3");
+                    .HasConstraintName("FK__Question__Questi__440B1D61");
 
                 entity.HasOne(d => d.QuestionCreator)
                     .WithMany(p => p.Questions)
                     .HasForeignKey(d => d.QuestionCreatorId)
-                    .HasConstraintName("FK__Question__Questi__49C3F6B7");
+                    .HasConstraintName("FK__Question__Questi__46E78A0C");
             });
 
             modelBuilder.Entity<QuestionCategory>(entity =>
@@ -100,47 +91,6 @@ namespace BusinessObjects.DbContexts
                     .IsRequired()
                     .HasMaxLength(25)
                     .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<QuestionGroup>(entity =>
-            {
-                entity.ToTable("QuestionGroup");
-
-                entity.Property(e => e.Id).HasMaxLength(25);
-
-                entity.Property(e => e.Name).HasMaxLength(50);
-
-                entity.Property(e => e.QuestionGroupCreatorId)
-                    .IsRequired()
-                    .HasMaxLength(25);
-
-                entity.HasOne(d => d.QuestionGroupCreator)
-                    .WithMany(p => p.QuestionGroups)
-                    .HasForeignKey(d => d.QuestionGroupCreatorId)
-                    .HasConstraintName("FK__QuestionG__Quest__48CFD27E");
-            });
-
-            modelBuilder.Entity<QuestionGroupQuestion>(entity =>
-            {
-                entity.HasKey(e => new { e.QuestionGroupId, e.QuestionId })
-                    .HasName("PK__Question__C718677389274084");
-
-                entity.ToTable("QuestionGroupQuestion");
-
-                entity.Property(e => e.QuestionGroupId).HasMaxLength(25);
-
-                entity.Property(e => e.QuestionId).HasMaxLength(25);
-
-                entity.HasOne(d => d.QuestionGroup)
-                    .WithMany(p => p.QuestionGroupQuestions)
-                    .HasForeignKey(d => d.QuestionGroupId)
-                    .HasConstraintName("FK_QuestionGroupQuestion_QuestionGroup");
-
-                entity.HasOne(d => d.Question)
-                    .WithMany(p => p.QuestionGroupQuestions)
-                    .HasForeignKey(d => d.QuestionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_QuestionGroupQuestion_Question");
             });
 
             modelBuilder.Entity<Submission>(entity =>
@@ -170,12 +120,12 @@ namespace BusinessObjects.DbContexts
                 entity.HasOne(d => d.Test)
                     .WithMany(p => p.Submissions)
                     .HasForeignKey(d => d.TestId)
-                    .HasConstraintName("FK__Submissio__TestI__4AB81AF0");
+                    .HasConstraintName("FK__Submissio__TestI__47DBAE45");
 
                 entity.HasOne(d => d.TestTaker)
                     .WithMany(p => p.Submissions)
                     .HasForeignKey(d => d.TestTakerId)
-                    .HasConstraintName("FK__Submissio__TestT__4BAC3F29");
+                    .HasConstraintName("FK__Submissio__TestT__48CFD27E");
             });
 
             modelBuilder.Entity<Test>(entity =>
@@ -208,12 +158,12 @@ namespace BusinessObjects.DbContexts
                     .WithMany(p => p.Tests)
                     .HasForeignKey(d => d.TestCategoryId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Test__TestCatego__4CA06362");
+                    .HasConstraintName("FK__Test__TestCatego__49C3F6B7");
 
                 entity.HasOne(d => d.TestCreator)
                     .WithMany(p => p.Tests)
                     .HasForeignKey(d => d.TestCreatorId)
-                    .HasConstraintName("FK__Test__TestCreato__47DBAE45");
+                    .HasConstraintName("FK__Test__TestCreato__45F365D3");
             });
 
             modelBuilder.Entity<TestCategory>(entity =>
@@ -253,27 +203,27 @@ namespace BusinessObjects.DbContexts
                     .HasMaxLength(25);
             });
 
-            modelBuilder.Entity<TestQuestionGroup>(entity =>
+            modelBuilder.Entity<TestQuestion>(entity =>
             {
-                entity.HasKey(e => new { e.QuestionGroupId, e.TestId })
-                    .HasName("PK__TestQues__0F08529F6A70EBEC");
+                entity.HasKey(e => new { e.QuestionId, e.TestId })
+                    .HasName("PK__TestQues__150C5CBADF5E35F9");
 
-                entity.ToTable("TestQuestionGroup");
+                entity.ToTable("TestQuestion");
 
-                entity.Property(e => e.QuestionGroupId).HasMaxLength(25);
+                entity.Property(e => e.QuestionId).HasMaxLength(25);
 
                 entity.Property(e => e.TestId).HasMaxLength(25);
 
-                entity.HasOne(d => d.QuestionGroup)
-                    .WithMany(p => p.TestQuestionGroups)
-                    .HasForeignKey(d => d.QuestionGroupId)
-                    .HasConstraintName("FK_TestQuestionGroup_QuestionGroup");
+                entity.HasOne(d => d.Question)
+                    .WithMany(p => p.TestQuestions)
+                    .HasForeignKey(d => d.QuestionId)
+                    .HasConstraintName("FK_TestQuestion_Question");
 
                 entity.HasOne(d => d.Test)
-                    .WithMany(p => p.TestQuestionGroups)
+                    .WithMany(p => p.TestQuestions)
                     .HasForeignKey(d => d.TestId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TestQuestionGroup_Test");
+                    .HasConstraintName("FK_TestQuestion_Test");
             });
 
             modelBuilder.Entity<TestTaker>(entity =>
