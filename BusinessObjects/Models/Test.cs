@@ -21,6 +21,7 @@ namespace BusinessObjects.Models
         public DateTime GradeReleaseDate { get; set; }
         public DateTime GradeFinalizationDate { get; set; }
         public byte Duration { get; set; }
+        public string Batch { get; set; }
         public byte? TestCategoryId { get; set; }
         public string TestCreatorId { get; set; }
 

@@ -65,6 +65,7 @@ CREATE TABLE Test(
     GradeReleaseDate DATETIME NOT NULL,
     GradeFinalizationDate DATETIME NOT NULL,
     Duration TINYINT NOT NULL,
+    Batch VARCHAR(50) NOT NULL,
     TestCategoryId TINYINT,
     TestCreatorId NVARCHAR(25) NOT NULL
 );
