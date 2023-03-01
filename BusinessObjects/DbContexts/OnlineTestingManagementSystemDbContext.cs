@@ -5,6 +5,7 @@ using BusinessObjects.Models;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
+
 #nullable disable
 
 namespace BusinessObjects.DbContexts
@@ -13,12 +14,12 @@ namespace BusinessObjects.DbContexts
     {
         public OnlineTestingManagementSystemDbContext()
         {
-            IConfiguration config = new ConfigurationBuilder()
-              .SetBasePath(Directory.GetCurrentDirectory())
-              .AddJsonFile("appsettings.json", true, true)
-              .Build();
-            this.Database.SetConnectionString(config["ConnectionStrings:OnlineTestingManagementSystemDb"]);
-        }
+			IConfiguration config = new ConfigurationBuilder()
+			  .SetBasePath(Directory.GetCurrentDirectory())
+			  .AddJsonFile("appsettings.json", true, true)
+			  .Build();
+			this.Database.SetConnectionString(config["ConnectionStrings:OnlineTestingManagementSystemDb"]);
+		}
 
         public OnlineTestingManagementSystemDbContext(DbContextOptions<OnlineTestingManagementSystemDbContext> options)
             : base(options)
@@ -52,6 +53,8 @@ namespace BusinessObjects.DbContexts
             {
                 entity.ToTable("Answer");
 
+                entity.Property(e => e.Id).HasMaxLength(25);
+
                 entity.Property(e => e.Content).HasMaxLength(1000);
 
                 entity.Property(e => e.QuestionId)
@@ -61,7 +64,7 @@ namespace BusinessObjects.DbContexts
                 entity.HasOne(d => d.Question)
                     .WithMany(p => p.Answers)
                     .HasForeignKey(d => d.QuestionId)
-                    .HasConstraintName("FK__Answer__Question__45F365D3");
+                    .HasConstraintName("FK__Answer__Question__44FF419A");
             });
 
             modelBuilder.Entity<Question>(entity =>
@@ -78,16 +81,18 @@ namespace BusinessObjects.DbContexts
                     .IsRequired()
                     .HasMaxLength(25);
 
+                entity.Property(e => e.Weight).HasColumnType("decimal(18, 0)");
+
                 entity.HasOne(d => d.QuestionCategory)
                     .WithMany(p => p.Questions)
                     .HasForeignKey(d => d.QuestionCategoryId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Question__Questi__44FF419A");
+                    .HasConstraintName("FK__Question__Questi__440B1D61");
 
                 entity.HasOne(d => d.QuestionCreator)
                     .WithMany(p => p.Questions)
                     .HasForeignKey(d => d.QuestionCreatorId)
-                    .HasConstraintName("FK__Question__Questi__47DBAE45");
+                    .HasConstraintName("FK__Question__Questi__46E78A0C");
             });
 
             modelBuilder.Entity<QuestionCategory>(entity =>
@@ -127,12 +132,12 @@ namespace BusinessObjects.DbContexts
                 entity.HasOne(d => d.Test)
                     .WithMany(p => p.Submissions)
                     .HasForeignKey(d => d.TestId)
-                    .HasConstraintName("FK__Submissio__TestI__48CFD27E");
+                    .HasConstraintName("FK__Submissio__TestI__47DBAE45");
 
                 entity.HasOne(d => d.TestTaker)
                     .WithMany(p => p.Submissions)
                     .HasForeignKey(d => d.TestTakerId)
-                    .HasConstraintName("FK__Submissio__TestT__49C3F6B7");
+                    .HasConstraintName("FK__Submissio__TestT__48CFD27E");
             });
 
             modelBuilder.Entity<Test>(entity =>
@@ -170,12 +175,12 @@ namespace BusinessObjects.DbContexts
                     .WithMany(p => p.Tests)
                     .HasForeignKey(d => d.TestCategoryId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Test__TestCatego__4AB81AF0");
+                    .HasConstraintName("FK__Test__TestCatego__49C3F6B7");
 
                 entity.HasOne(d => d.TestCreator)
                     .WithMany(p => p.Tests)
                     .HasForeignKey(d => d.TestCreatorId)
-                    .HasConstraintName("FK__Test__TestCreato__46E78A0C");
+                    .HasConstraintName("FK__Test__TestCreato__45F365D3");
             });
 
             modelBuilder.Entity<TestCategory>(entity =>
@@ -218,7 +223,7 @@ namespace BusinessObjects.DbContexts
             modelBuilder.Entity<TestQuestion>(entity =>
             {
                 entity.HasKey(e => new { e.QuestionId, e.TestId })
-                    .HasName("PK__TestQues__150C5CBAF0471F96");
+                    .HasName("PK__TestQues__150C5CBA0B29B732");
 
                 entity.ToTable("TestQuestion");
 

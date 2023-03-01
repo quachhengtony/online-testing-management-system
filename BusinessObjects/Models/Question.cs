@@ -15,7 +15,7 @@ namespace BusinessObjects.Models
 
         public string Id { get; set; }
         public string Content { get; set; }
-        public byte Weight { get; set; }
+        public decimal Weight { get; set; }
         public byte? QuestionCategoryId { get; set; }
         public string QuestionCreatorId { get; set; }
 

@@ -7,7 +7,7 @@ namespace BusinessObjects.Models
 {
     public partial class Answer
     {
-        public byte Id { get; set; }
+        public string Id { get; set; }
         public string Content { get; set; }
         public bool IsCorrect { get; set; }
         public string QuestionId { get; set; }
