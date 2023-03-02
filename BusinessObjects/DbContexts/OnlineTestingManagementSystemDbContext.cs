@@ -53,13 +53,9 @@ namespace BusinessObjects.DbContexts
             {
                 entity.ToTable("Answer");
 
-                entity.Property(e => e.Id).HasMaxLength(25);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Content).HasMaxLength(1000);
-
-                entity.Property(e => e.QuestionId)
-                    .IsRequired()
-                    .HasMaxLength(25);
 
                 entity.HasOne(d => d.Question)
                     .WithMany(p => p.Answers)
@@ -71,15 +67,11 @@ namespace BusinessObjects.DbContexts
             {
                 entity.ToTable("Question");
 
-                entity.Property(e => e.Id).HasMaxLength(25);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Content)
                     .IsRequired()
                     .HasMaxLength(1000);
-
-                entity.Property(e => e.QuestionCreatorId)
-                    .IsRequired()
-                    .HasMaxLength(25);
 
                 entity.Property(e => e.Weight).HasColumnType("decimal(18, 0)");
 
@@ -109,7 +101,7 @@ namespace BusinessObjects.DbContexts
             {
                 entity.ToTable("Submission");
 
-                entity.Property(e => e.Id).HasMaxLength(25);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Content).IsRequired();
 
@@ -120,14 +112,6 @@ namespace BusinessObjects.DbContexts
                 entity.Property(e => e.Score).HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.SubmittedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.TestId)
-                    .IsRequired()
-                    .HasMaxLength(25);
-
-                entity.Property(e => e.TestTakerId)
-                    .IsRequired()
-                    .HasMaxLength(25);
 
                 entity.HasOne(d => d.Test)
                     .WithMany(p => p.Submissions)
@@ -144,7 +128,7 @@ namespace BusinessObjects.DbContexts
             {
                 entity.ToTable("Test");
 
-                entity.Property(e => e.Id).HasMaxLength(25);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Batch)
                     .IsRequired()
@@ -166,10 +150,6 @@ namespace BusinessObjects.DbContexts
                     .HasMaxLength(100);
 
                 entity.Property(e => e.StartTime).HasColumnType("datetime");
-
-                entity.Property(e => e.TestCreatorId)
-                    .IsRequired()
-                    .HasMaxLength(25);
 
                 entity.HasOne(d => d.TestCategory)
                     .WithMany(p => p.Tests)
@@ -197,7 +177,7 @@ namespace BusinessObjects.DbContexts
             {
                 entity.ToTable("TestCreator");
 
-                entity.Property(e => e.Id).HasMaxLength(25);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -223,13 +203,9 @@ namespace BusinessObjects.DbContexts
             modelBuilder.Entity<TestQuestion>(entity =>
             {
                 entity.HasKey(e => new { e.QuestionId, e.TestId })
-                    .HasName("PK__TestQues__150C5CBA0B29B732");
+                    .HasName("PK__TestQues__150C5CBA3360C59A");
 
                 entity.ToTable("TestQuestion");
-
-                entity.Property(e => e.QuestionId).HasMaxLength(25);
-
-                entity.Property(e => e.TestId).HasMaxLength(25);
 
                 entity.HasOne(d => d.Question)
                     .WithMany(p => p.TestQuestions)
@@ -247,7 +223,7 @@ namespace BusinessObjects.DbContexts
             {
                 entity.ToTable("TestTaker");
 
-                entity.Property(e => e.Id).HasMaxLength(25);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Email)
                     .IsRequired()
