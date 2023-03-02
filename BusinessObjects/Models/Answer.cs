@@ -7,10 +7,10 @@ namespace BusinessObjects.Models
 {
     public partial class Answer
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Content { get; set; }
         public bool IsCorrect { get; set; }
-        public string QuestionId { get; set; }
+        public Guid QuestionId { get; set; }
 
         public virtual Question Question { get; set; }
     }

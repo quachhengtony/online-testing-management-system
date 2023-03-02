@@ -7,9 +7,9 @@ namespace BusinessObjects.Models
 {
     public partial class Submission
     {
-        public string Id { get; set; }
-        public string TestTakerId { get; set; }
-        public string TestId { get; set; }
+        public Guid Id { get; set; }
+        public Guid TestTakerId { get; set; }
+        public Guid TestId { get; set; }
         public DateTime SubmittedDate { get; set; }
         public DateTime GradedDate { get; set; }
         public byte TimeTaken { get; set; }
