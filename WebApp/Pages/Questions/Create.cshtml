@@ -1,0 +1,147 @@
+﻿@page
+@model WebApp.Pages.Questions.CreateModel
+@{
+	ViewData["Title"] = "Create";
+}
+<h1>Create</h1>
+<h4>Question</h4>
+@{
+	if (TempData["StatusMessage"] != null)
+	{
+		<span class="text-danger">@TempData["StatusMessage"]</span>
+	}
+}
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form method="post">
+
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label class="control-label">Question</label>
+				<input asp-for="CreateQuestionDTO.Content" class="form-control" />
+				<span asp-validation-for="CreateQuestionDTO.Content" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="CreateQuestionDTO.Weight" class="control-label"></label>
+				<input asp-for="CreateQuestionDTO.Weight" class="form-control" />
+				<span asp-validation-for="CreateQuestionDTO.Weight" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="CreateQuestionDTO.QuestionCategoryId" class="control-label"></label>
+				<select id="slQuestionCategory" onchange="hideShowAnswerForm()" asp-for="CreateQuestionDTO.QuestionCategoryId" class="form-control" asp-items="ViewBag.QuestionCategory"></select>
+			</div>
+			<div class="form-group">
+				<input type="submit" id="btnSubmit" value="Create" class="btn btn-primary" hidden />
+			</div>
+		</form>
+	</div>
+	<div class="col-md-4" id="answer-form">
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		<div id="formMutlipleChoices">
+			<div class="form-group">
+				<label class="control-label">Answer</label>
+				<input asp-for="CreateAnswerDTO.Content" id="tbAnswerContent" class="form-control" />
+				<span asp-validation-for="CreateAnswerDTO.Content" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="checkbox" id="cbIsCorrect" name="cbIsCorrect" value="true">
+				<label for="cbIsCorrect"><label asp-for="CreateAnswerDTO.IsCorrect"></label></label><br>
+			</div>
+		</div>
+		<div id="formTrueOrFalse" style="display:none">
+			<div class="form-group">
+				<br />
+				<input type="radio" id="rdIsCorrect" name="rdIsCorrect" value="true">
+				<label for="rdIsCorrect">True</label><br>
+				<input type="radio" id="rdIsCorrect" name="rdIsCorrect" value="false">
+				<label for="rdIsCorrect">False</label><br>
+			</div>
+		</div>
+	</div>
+</div>
+<table class="table" id="tblAnswers">
+	<thead>
+		<tr>
+			<th>
+				<label asp-for="CreateAnswerDTO.IsCorrect"></label>
+			</th>
+			<th>
+				<label asp-for="CreateAnswerDTO.Content"></label>
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+<div class="form-group">
+	<input type="button" onclick="addAnswer()" id="btnAddAnswer" value="Add Answer" class="btn btn-secondary" />
+	<input type="button" onclick="handleSubmit()" value="Finish & Save to Question Bank" class="btn btn-primary" />
+</div>
+<div>
+	<a asp-page="Index">Back to List</a>
+</div>
+@section Scripts {
+	<script type="text/javascript">
+		function hideShowAnswerForm() {
+			if ($("#slQuestionCategory :selected").val() == "1") {
+				$("#formMutlipleChoices").show();
+				$("#tblAnswers").show();
+				$("#formTrueOrFalse").hide();
+			}
+			if($("#slQuestionCategory :selected").val() == "2") {
+				$("#formMutlipleChoices").hide();
+				$("#tblAnswers").hide();
+				$("#formTrueOrFalse").show();
+				$("#btnAddAnswer").hide();
+			}
+			if ($("#slQuestionCategory :selected").val() == "3") {
+				$("#formTrueOrFalse").hide();
+				$("#formMutlipleChoices").hide();
+				$("#tblAnswers").hide();
+				$("#btnAddAnswer").hide();
+			}
+		}
+		function addAnswer() {
+			$("#tblAnswers tbody").empty();
+			$("#slQuestionCategory").prop("disabled", true);
+			if ($("#slQuestionCategory :selected").val() == "1") {
+				let content = $('#tbAnswerContent').val();
+				let isCorrect = $("input[name='cbIsCorrect']:checked").val() !== undefined ? true : false;
+				$.ajax({
+					url: '?handler=AddAnswer&type=1&content=' + content + '&isCorrect=' + isCorrect,
+					success: (data) => {
+						$.each(JSON.parse(data), (index, value) => {
+							var row = `<tr><td>${value.isCorrect}</td><td>${value.content}</td><td>Delete</td></tr>`;
+							$("#tblAnswers tbody").append(row);
+						});
+						$("#cbIsCorrect").prop("checked", false);
+						alert("Success.");
+					},
+					error: (error) => {
+						alert("Error: " + error);
+					}
+				})
+			}
+		}
+		function handleSubmit() {
+			if ($("#slQuestionCategory :selected").val() == "2") {
+				let isCorrect = $("input[name='rdIsCorrect']:checked").val();
+				$.ajax({
+					url: '?handler=AddAnswer&type=2&isCorrect=' + isCorrect,
+					success: (data) => {
+						alert("Success.");
+					},
+					error: (error) => {
+						alert("Error: " + error);
+					}
+				})
+			}
+			$("#btnSubmit").click();
+		}
+	</script>
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

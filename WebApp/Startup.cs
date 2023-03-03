@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Repositories;
+using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,13 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+            services.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(15));
+            services.AddHttpContextAccessor();
             services.AddRazorPages();
+            services.AddSingleton<IQuestionRepository, QuestionRepository>();
+            services.AddSingleton<IAnswerRepository, AnswerRepository>();
+            services.AddSingleton<IQuestionCategoryRepository, QuestionCategoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +55,7 @@ namespace WebApp
 
             app.UseAuthorization();
 
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

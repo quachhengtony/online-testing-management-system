@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interfaces
 {
-    interface IAnswerRepository : IRepository<Answer>
+    public interface IAnswerRepository : IRepository<Answer>
     {
+        public Task<List<Answer>> GetAllByQuestionId(Guid questionId);
     }
 }

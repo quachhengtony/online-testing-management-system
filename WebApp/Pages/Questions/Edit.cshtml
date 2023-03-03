@@ -1,0 +1,51 @@
+﻿@*@page
+@model WebApp.Pages.Questions.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Question</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Question.Id" />
+            <div class="form-group">
+                <label asp-for="Question.Content" class="control-label"></label>
+                <input asp-for="Question.Content" class="form-control" />
+                <span asp-validation-for="Question.Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Question.Weight" class="control-label"></label>
+                <input asp-for="Question.Weight" class="form-control" />
+                <span asp-validation-for="Question.Weight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Question.QuestionCategoryId" class="control-label"></label>
+                <select asp-for="Question.QuestionCategoryId" class="form-control" asp-items="ViewBag.QuestionCategoryId"></select>
+                <span asp-validation-for="Question.QuestionCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Question.QuestionCreatorId" class="control-label"></label>
+                <select asp-for="Question.QuestionCreatorId" class="form-control" asp-items="ViewBag.QuestionCreatorId"></select>
+                <span asp-validation-for="Question.QuestionCreatorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+*@

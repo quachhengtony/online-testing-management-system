@@ -25,7 +25,22 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public TestCreator GetById(string id)
+        public Task<List<TestCreator>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public TestCreator GetById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TestCreator> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TestCreator> GetByIdAsync(byte id)
         {
             throw new NotImplementedException();
         }

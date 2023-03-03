@@ -9,5 +9,6 @@ namespace Repositories.Interfaces
 {
     interface ITestRepository : IRepository<Test>
     {
+
     }
 }
