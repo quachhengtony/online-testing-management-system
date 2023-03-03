@@ -9,6 +9,8 @@ using BusinessObjects.DbContexts;
 using BusinessObjects.Models;
 using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
+using WebApp.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace WebApp.Pages.Questions
 {
@@ -16,27 +18,42 @@ namespace WebApp.Pages.Questions
     {
         private readonly ILogger<IndexModel> logger;
         private readonly IQuestionRepository questionRepository;
-		public List<Question> Question { get; set; } = new();
+        private readonly IConfiguration configuration;
+        public string NameSort { get; set; }
+        public string DateSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+        public PaginatedList<Question> QuestionList { get; set; }
 
-		[FromQuery(Name = "search")]
-        public string ContentSearch { get; set; }
-
-        public IndexModel(ILogger<IndexModel> logger, IQuestionRepository questionRepository)
+        public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration, IQuestionRepository questionRepository)
         {
             this.logger = logger;
             this.questionRepository = questionRepository;
+            this.configuration = configuration;
         }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
         {
-            if (!string.IsNullOrEmpty(ContentSearch))
+            List<Question> questionList;
+            int pageSize = configuration.GetValue("PageSize", 10);
+            if (searchString != null)
             {
-                Question = await questionRepository.GetAllByContent(ContentSearch);
+                pageIndex = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            CurrentFilter = searchString;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                questionList = await questionRepository.GetAllByContent(searchString);
             } 
             else
             {
-                Question = await questionRepository.GetAllAsync();
+                questionList = await questionRepository.GetAllAsync();
             }
+            QuestionList = PaginatedList<Question>.CreateAsync(questionList, pageIndex ?? 1, pageSize);
         }
     }
 }
