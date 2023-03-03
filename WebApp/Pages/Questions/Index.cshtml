@@ -10,6 +10,17 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+<div class="row">
+	<div class="col-md-4">
+		<form method="get">
+			<div class="form-group">
+				<label class="control-label">Search</label>
+				<input name="search" class="form-control" />
+                <button class="btn btn-secondary" type="submit">Search</button>
+			</div>
+        </form>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -22,9 +33,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Question[0].QuestionCategory)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Question[0].QuestionCreator)
-            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -40,9 +48,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.QuestionCategory.Category)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.QuestionCreator.Id)
-            </td>*@
             <td>
                 @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |*@
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |

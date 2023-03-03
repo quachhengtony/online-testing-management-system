@@ -16,6 +16,10 @@ namespace WebApp.Pages.Questions
     {
         private readonly ILogger<IndexModel> logger;
         private readonly IQuestionRepository questionRepository;
+		public List<Question> Question { get; set; } = new();
+
+		[FromQuery(Name = "search")]
+        public string ContentSearch { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, IQuestionRepository questionRepository)
         {
@@ -23,12 +27,16 @@ namespace WebApp.Pages.Questions
             this.questionRepository = questionRepository;
         }
 
-        public List<Question> Question { get; set; } = new();
-
         public async Task OnGetAsync()
         {
-            Question = await questionRepository.GetAllAsync();
+            if (!string.IsNullOrEmpty(ContentSearch))
+            {
+                Question = await questionRepository.GetAllByContent(ContentSearch);
+            } 
+            else
+            {
+                Question = await questionRepository.GetAllAsync();
+            }
         }
-
     }
 }

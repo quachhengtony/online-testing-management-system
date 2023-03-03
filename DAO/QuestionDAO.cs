@@ -60,6 +60,11 @@ namespace DAO
             return dbContext.Questions.Where(q => q.Id == id).Include(q => q.Answers).Include(q => q.QuestionCategory).FirstOrDefault();
         }
 
+        public Task<List<Question>> GetAllByContent(string content)
+        {
+            return dbContext.Questions.Where(q => q.Content.Contains(content)).ToListAsync();
+        }
+
         public Task<Question> GetByIdAsync(Guid id)
         {
             return dbContext.Questions.Where(q => q.Id == id).Include(q => q.Answers).Include(q => q.QuestionCategory).FirstOrDefaultAsync();

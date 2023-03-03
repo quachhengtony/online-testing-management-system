@@ -1,4 +1,5 @@
 ﻿using BusinessObjects.Models;
+using DAO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace Repositories.Interfaces
 {
     public interface IQuestionRepository : IRepository<Question>
     {
+        public Task<List<Question>> GetAllByContent(string content);
     }
 }
