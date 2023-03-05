@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interfaces
 {
-    interface IRepository<T>
+    public interface IRepository<T>
     {
         public void Create(T t);
         public List<T> GetAll();
