@@ -9,5 +9,6 @@ namespace Repositories.Interfaces
 {
     interface ITestTakerRepository : IRepository<TestTaker>
     {
+        public TestTaker Login(string email, string password);
     }
 }

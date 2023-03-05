@@ -40,6 +40,8 @@ CREATE TABLE TestCreator(
 );
 GO
 
+INSERT INTO TestCreator VALUES ('6de18610-b717-419b-9b64-f809e0ecf539', 'minhkhoi', 'minhkhoi@gmail.com', 'Nguyen', 'Khoi', '123')
+
 CREATE TABLE TestTaker(
     Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
     Username NVARCHAR(25) NOT NULL,
@@ -49,6 +51,8 @@ CREATE TABLE TestTaker(
     Password NVARCHAR(100) NOT NULL
 );
 GO
+
+INSERT INTO TestTaker VALUES ('62e4edc5-7568-48b7-9ad1-971418cdd09c', 'thanhpham', 'thanhpham@gmail.com', 'Pham', 'Thanh', '123')
 
 CREATE TABLE TestCategory(
     Id TINYINT NOT NULL PRIMARY KEY,
