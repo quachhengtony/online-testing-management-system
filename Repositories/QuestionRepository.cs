@@ -51,7 +51,12 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(Question t)
+		public void SaveChanges()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Update(Question t)
         {
             QuestionDAO.Instance.Update(t);
         }

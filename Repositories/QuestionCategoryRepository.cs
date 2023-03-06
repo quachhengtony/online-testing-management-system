@@ -46,7 +46,12 @@ namespace Repositories
             return QuestionCategoryDAO.Instance.GetByIdAsync(id);
         }
 
-        public void Update(QuestionCategory t)
+		public void SaveChanges()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Update(QuestionCategory t)
         {
             QuestionCategoryDAO.Instance.Update(t);
         }

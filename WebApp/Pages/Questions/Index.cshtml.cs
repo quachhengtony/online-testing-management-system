@@ -19,6 +19,7 @@ namespace WebApp.Pages.Questions
         private readonly ILogger<IndexModel> logger;
         private readonly IQuestionRepository questionRepository;
         private readonly IConfiguration configuration;
+
         public string NameSort { get; set; }
         public string DateSort { get; set; }
         public string CurrentFilter { get; set; }

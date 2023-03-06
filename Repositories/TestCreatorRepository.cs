@@ -50,7 +50,12 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(TestCreator t)
+		public void SaveChanges()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Update(TestCreator t)
         {
             throw new NotImplementedException();
         }

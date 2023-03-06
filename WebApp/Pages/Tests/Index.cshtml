@@ -1,0 +1,81 @@
+﻿@page
+@model WebApp.Pages.Tests.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>Index</h1>
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TestList[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TestList[0].KeyCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TestList[0].StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TestList[0].EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TestList[0].GradeReleaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TestList[0].GradeFinalizationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TestList[0].Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TestList[0].Batch)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TestList[0].TestCategory)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.TestList) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KeyCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GradeReleaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GradeFinalizationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Batch)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TestCategory.Category)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

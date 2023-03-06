@@ -36,13 +36,11 @@ namespace DAO
         public void Create(Test t)
         {
             dbContext.Tests.Add(t);
-            SaveChanges();
         }
 
         public void Delete(Test t)
         {
             dbContext.Tests.Remove(t);
-            SaveChanges();
         }
 
         public List<Test> GetAll()
@@ -67,17 +65,12 @@ namespace DAO
 
         public Task<List<Test>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return dbContext.Tests.Include(t => t.TestCategory).ToListAsync();
         }
 
         public Task<Test> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<Test> GetByIdAsync(byte id)
-        {
-            throw new NotImplementedException();
+            return dbContext.Tests.Where(t => t.Id == id).Include(t => t.TestCategory).FirstOrDefaultAsync();
         }
     }
 }

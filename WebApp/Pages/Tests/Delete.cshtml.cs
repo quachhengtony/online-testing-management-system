@@ -1,26 +1,29 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using BusinessObjects.DbContexts;
 using BusinessObjects.Models;
 using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
-using System;
 
-namespace WebApp.Pages.Questions
+namespace WebApp.Pages.Tests
 {
     public class DeleteModel : PageModel
     {
-        private readonly ILogger<DeleteModel> logger;
-        private readonly IQuestionRepository questionRepository;
+		private readonly ILogger<IndexModel> logger;
+		private readonly ITestRepository testRepository;
 
-        [BindProperty]
-        public Question Question { get; set; }
+		[BindProperty]
+		public Test Test { get; set; }
 
-        public DeleteModel(ILogger<DeleteModel> logger, IQuestionRepository questionRepository)
+		public DeleteModel(ILogger<IndexModel> logger, ITestRepository testRepository)
         {
             this.logger = logger;
-            this.questionRepository = questionRepository;
+            this.testRepository = testRepository;
         }
 
         public async Task<IActionResult> OnGetAsync(string id)
@@ -29,8 +32,8 @@ namespace WebApp.Pages.Questions
             {
                 return NotFound();
             }
-            Question = await questionRepository.GetByIdAsync(Guid.Parse(id));
-            if (Question == null)
+            Test = await testRepository.GetByIdAsync(Guid.Parse(id));
+            if (Test == null)
             {
                 return NotFound();
             }
@@ -45,10 +48,11 @@ namespace WebApp.Pages.Questions
             }
             try
             {
-                Question = await questionRepository.GetByIdAsync(Guid.Parse(id));
-                if (Question != null)
+                Test = await testRepository.GetByIdAsync(Guid.Parse(id));
+                if (Test != null)
                 {
-                    questionRepository.Delete(Question);
+                    testRepository.Delete(Test);
+                    testRepository.SaveChanges();
                 }
                 return RedirectToPage("./Index");
             }

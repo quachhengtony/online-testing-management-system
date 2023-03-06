@@ -60,5 +60,10 @@ namespace Repositories
         {
             AnswerDAO.Instance.Update(t);
         }
-    }
+
+		public void SaveChanges()
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

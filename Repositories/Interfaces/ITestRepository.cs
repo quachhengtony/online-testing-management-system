@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interfaces
 {
-    interface ITestRepository : IRepository<Test>
+    public interface ITestRepository : IRepository<Test>
     {
-
     }
 }

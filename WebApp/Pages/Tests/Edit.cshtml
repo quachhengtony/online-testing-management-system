@@ -1,0 +1,99 @@
+﻿@page
+@model WebApp.Pages.Tests.EditModel
+@using WebApp.Helpers;
+@{
+    ViewData["Title"] = "Edit";
+}
+<h1>Edit</h1>
+<h4>Test</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UpdateTestDTO.Id" />
+            <div class="form-group">
+                <label asp-for="UpdateTestDTO.Name" class="control-label"></label>
+                <input asp-for="UpdateTestDTO.Name" value="@Model.Test.Name" class="form-control" />
+                <span asp-validation-for="UpdateTestDTO.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateTestDTO.KeyCode" class="control-label"></label>
+                <input asp-for="UpdateTestDTO.KeyCode" value="@Model.Test.KeyCode" class="form-control" />
+                <span asp-validation-for="UpdateTestDTO.KeyCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateTestDTO.StartTime" class="control-label"></label>
+                @*<label class="control-label">(current: @Model.Test.StartTime)</label>*@
+                @*<input asp-for="UpdateTestDTO.StartTime" value="@Model.Test.StartTime.ToUniversalIso8601()" class="form-control" />*@
+                @Html.TextBoxFor(x => x.UpdateTestDTO.StartTime, "{0:yyyy-MM-ddTHH:mm:ss}", new
+                {
+                    @class = "form-control",
+                    required = "required",
+                    @type = "datetime-local",
+                })
+                <span asp-validation-for="UpdateTestDTO.StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateTestDTO.EndTime" class="control-label"></label>
+                @*<label class="control-label">(current: @Model.Test.EndTime)</label>*@
+                @*<input asp-for="UpdateTestDTO.EndTime" value="@Model.Test.EndTime.ToUniversalIso8601()" class="form-control" />*@
+                @Html.TextBoxFor(x => x.UpdateTestDTO.EndTime, "{0:yyyy-MM-ddTHH:mm:ss}", new
+                {
+                    @class = "form-control",
+                    required = "required",
+                    @type = "datetime-local",
+                })
+                <span asp-validation-for="UpdateTestDTO.EndTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateTestDTO.GradeReleaseDate" class="control-label"></label>
+                @*<label class="control-label">(current: @Model.Test.GradeReleaseDate)</label>*@
+                @*<input asp-for="UpdateTestDTO.GradeReleaseDate" value="@Model.Test.GradeReleaseDate.ToUniversalIso8601()" class="form-control" />*@
+                @Html.TextBoxFor(x => x.UpdateTestDTO.GradeReleaseDate, "{0:yyyy-MM-ddTHH:mm:ss}", new
+                {
+                    @class = "form-control",
+                    required = "required",
+                    @type = "datetime-local",
+                })
+                <span asp-validation-for="UpdateTestDTO.GradeReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateTestDTO.GradeFinalizationDate" class="control-label"></label>
+                @*<label class="control-label">(current: @Model.Test.GradeFinalizationDate)</label>*@
+                @*<input asp-for="UpdateTestDTO.GradeFinalizationDate" value="@Model.Test.GradeFinalizationDate.ToUniversalIso8601()" class="form-control" />*@
+                @Html.TextBoxFor(x => x.UpdateTestDTO.GradeFinalizationDate, "{0:yyyy-MM-ddTHH:mm:ss}", new
+                {
+                    @class = "form-control",
+                    required = "required",
+                    @type = "datetime-local",
+                })
+                <span asp-validation-for="UpdateTestDTO.GradeFinalizationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateTestDTO.Duration" class="control-label"></label>
+                <input asp-for="UpdateTestDTO.Duration" value="@Model.Test.Duration" class="form-control" />
+                <span asp-validation-for="UpdateTestDTO.Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateTestDTO.Batch" class="control-label"></label>
+                <input asp-for="UpdateTestDTO.Batch" value="@Model.Test.Batch" class="form-control" />
+                <span asp-validation-for="UpdateTestDTO.Batch" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateTestDTO.TestCategoryId" class="control-label"></label>
+                <select asp-for="UpdateTestDTO.TestCategoryId" class="form-control" value="@Model.Test.TestCategoryId" asp-items="ViewBag.TestCategory"></select>
+                <span asp-validation-for="UpdateTestDTO.TestCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

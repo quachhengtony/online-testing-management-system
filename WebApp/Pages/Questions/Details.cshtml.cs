@@ -17,6 +17,7 @@ namespace WebApp.Pages.Questions
         private readonly ILogger<DetailsModel> logger;
         private readonly IQuestionRepository questionRepository;
         private readonly IAnswerRepository answerRepository;
+
         public Question Question { get; set; }
         public List<Answer> AnswerList { get; set; }
 
