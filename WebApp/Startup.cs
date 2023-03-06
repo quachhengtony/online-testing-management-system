@@ -33,12 +33,9 @@ namespace WebApp
             services.AddRazorPages();
 
             services.AddSession();
-<<<<<<< HEAD
 
             services.AddSingleton<ITestCreatorRepository, TestCreatorRepository>();
             services.AddSingleton<ITestTakerRepository, TestTakerRepository>();
-=======
->>>>>>> 9300bccaf4ce06ae57cbb429f7256c964eae619b
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
