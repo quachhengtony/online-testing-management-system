@@ -11,7 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Repositories;
+<<<<<<< HEAD
 using Repositories.Interfaces;
+=======
+>>>>>>> 9300bccaf4ce06ae57cbb429f7256c964eae619b
 
 namespace WebApp.Pages.Login
 {
@@ -27,6 +30,7 @@ namespace WebApp.Pages.Login
         [Required]
         public string Password { get; set; }
 
+<<<<<<< HEAD
         private ITestCreatorRepository testCreatorRepository;
         private ITestTakerRepository testTakerRepository;
 
@@ -36,6 +40,8 @@ namespace WebApp.Pages.Login
             this.testTakerRepository = testTakerRepository;
         }
 
+=======
+>>>>>>> 9300bccaf4ce06ae57cbb429f7256c964eae619b
         private bool LoginByAdminAccount(String email, String password)
         {
             String _email, _password;
@@ -68,6 +74,12 @@ namespace WebApp.Pages.Login
 
         public IActionResult OnPost()
         {
+<<<<<<< HEAD
+=======
+            var testCreatorRepository = new TestCreatorRepository();
+            var testTakerRepository = new TestTakerRepository();
+
+>>>>>>> 9300bccaf4ce06ae57cbb429f7256c964eae619b
             if (!ModelState.IsValid)
             {
                 return Page();

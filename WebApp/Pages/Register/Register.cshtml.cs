@@ -7,7 +7,10 @@ using BusinessObjects.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Repositories;
+<<<<<<< HEAD
 using Repositories.Interfaces;
+=======
+>>>>>>> 9300bccaf4ce06ae57cbb429f7256c964eae619b
 
 namespace WebApp.Pages.Register
 {
@@ -38,6 +41,7 @@ namespace WebApp.Pages.Register
         [Required]
         public string Role { get; set; }
 
+<<<<<<< HEAD
         private ITestCreatorRepository testCreatorRepository;
         private ITestTakerRepository testTakerRepository;
 
@@ -47,12 +51,19 @@ namespace WebApp.Pages.Register
             this.testTakerRepository = testTakerRepository;
         }
 
+=======
+>>>>>>> 9300bccaf4ce06ae57cbb429f7256c964eae619b
         public void OnGet()
         {
         }
 
         public IActionResult OnPost()
         {
+<<<<<<< HEAD
+=======
+            var testCreatorRepository = new TestCreatorRepository();
+            var testTakerRepository = new TestTakerRepository();
+>>>>>>> 9300bccaf4ce06ae57cbb429f7256c964eae619b
             var utils = new Utils.Utils();
 
             if (!ModelState.IsValid)
