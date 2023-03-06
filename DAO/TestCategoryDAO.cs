@@ -36,13 +36,11 @@ namespace DAO
         public void Create(TestCategory t)
         {
             dbContext.TestCategories.Add(t);
-            SaveChanges();
         }
 
         public void Delete(TestCategory t)
         {
             dbContext.TestCategories.Remove(t);
-            SaveChanges();
         }
 
         public List<TestCategory> GetAll()
@@ -73,7 +71,6 @@ namespace DAO
         public void Update(TestCategory t)
         {
             dbContext.TestCategories.Update(t);
-            SaveChanges();
         }
 
         public Task<TestCategory> GetByIdAsync(byte id)

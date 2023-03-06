@@ -9,6 +9,7 @@ using BusinessObjects.DbContexts;
 using BusinessObjects.Models;
 using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
+using Repositories;
 
 namespace WebApp.Pages.Tests
 {
@@ -16,13 +17,16 @@ namespace WebApp.Pages.Tests
     {
 		private readonly ILogger<IndexModel> logger;
 		private readonly ITestRepository testRepository;
-		
+        private readonly IQuestionRepository questionRepository;
+
+        public List<Question> QuestionList { get; set; } = new();
         public Test Test { get; set; }
 
-		public DetailsModel(ILogger<IndexModel> logger, ITestRepository testRepository)
+        public DetailsModel(ILogger<IndexModel> logger, ITestRepository testRepository, IQuestionRepository questionRepository)
         {
             this.logger = logger;
             this.testRepository = testRepository;
+            this.questionRepository = questionRepository;
         }
 
         public async Task<IActionResult> OnGetAsync(string id)

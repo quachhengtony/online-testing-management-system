@@ -53,7 +53,7 @@ namespace Repositories
 
 		public void SaveChanges()
 		{
-			throw new NotImplementedException();
+            TestQuestionDAO.Instance.SaveChanges();
 		}
 
 		public void Update(TestQuestion t)

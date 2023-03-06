@@ -36,13 +36,11 @@ namespace DAO
         public void Create(TestQuestion t)
         {
             dbContext.TestQuestions.Add(t);
-            SaveChanges();
         }
 
         public void Delete(TestQuestion t)
         {
             dbContext.TestQuestions.Remove(t);
-            SaveChanges();
         }
 
         public List<TestQuestion> GetAll()

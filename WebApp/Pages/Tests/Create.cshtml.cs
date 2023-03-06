@@ -48,7 +48,7 @@ namespace WebApp.Pages.Tests
             {
 				if (!ModelState.IsValid)
 				{
-					return Page();
+                    return Page();
 				}
 				var test = new Test()
 				{
@@ -82,7 +82,7 @@ namespace WebApp.Pages.Tests
             catch (Exception ex)
             {
                 logger.LogInformation($"\nException: {ex.Message}\n\t{ex.InnerException}");
-				return RedirectToPage("./Create");
+                return Page();
 			}
 		}
 

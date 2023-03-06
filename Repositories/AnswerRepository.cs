@@ -1,5 +1,6 @@
 ﻿using BusinessObjects.Models;
 using DAO;
+using Microsoft.EntityFrameworkCore.Storage;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -63,7 +64,7 @@ namespace Repositories
 
 		public void SaveChanges()
 		{
-			throw new NotImplementedException();
+            AnswerDAO.Instance.SaveChanges();
 		}
 	}
 }

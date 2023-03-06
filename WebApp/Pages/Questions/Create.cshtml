@@ -116,7 +116,6 @@
 							$("#tblAnswers tbody").append(row);
 						});
 						$("#cbIsCorrect").prop("checked", false);
-						alert("Success.");
 					},
 					error: (error) => {
 						alert("Error: " + error);
@@ -125,13 +124,11 @@
 			}
 		}
 		function handleSubmit() {
+			$("#slQuestionCategory").prop("disabled", false);
 			if ($("#slQuestionCategory :selected").val() == "2") {
 				let isCorrect = $("input[name='rdIsCorrect']:checked").val();
 				$.ajax({
 					url: '?handler=AddAnswer&type=2&isCorrect=' + isCorrect,
-					success: (data) => {
-						alert("Success.");
-					},
 					error: (error) => {
 						alert("Error: " + error);
 					}

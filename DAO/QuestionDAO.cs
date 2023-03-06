@@ -36,13 +36,11 @@ namespace DAO
         public void Create(Question t)
         {
             dbContext.Questions.Add(t);
-            SaveChanges();
         }
 
         public void Delete(Question t)
         {
             dbContext.Questions.Remove(t);
-            SaveChanges();
         }
 
         public List<Question> GetAll()
@@ -78,7 +76,6 @@ namespace DAO
         public void Update(Question t)
         {
             dbContext.Questions.Update(t); 
-            SaveChanges();
         }
 
         public Task<Question> GetByIdAsync(byte id)

@@ -48,7 +48,7 @@ namespace Repositories
 
 		public void SaveChanges()
 		{
-			throw new NotImplementedException();
+            TestCategoryDAO.Instance.SaveChanges();
 		}
 
 		public void Update(TestCategory t)

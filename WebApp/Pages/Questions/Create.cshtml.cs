@@ -56,43 +56,40 @@ namespace WebApp.Pages.Questions
                 switch (question.QuestionCategoryId)
                 {
                     case 1:
-						foreach (var item in CreateAnswerDTOList)
-						{
-							var answer = new Answer()
-							{
-								Id = item.Id,
-								Content = item.Content,
-								IsCorrect = item.IsCorrect,
-								QuestionId = question.Id
-							};
-							answerList.Add(answer);
-						}
-						break;
+                        foreach (var item in CreateAnswerDTOList)
+                        {
+                            var answer = new Answer()
+                            {
+                                Id = item.Id,
+                                Content = item.Content,
+                                IsCorrect = item.IsCorrect,
+                                QuestionId = question.Id
+                            };
+                            answerList.Add(answer);
+                        }
+                        break;
                     case 2:
-						foreach (var item in CreateAnswerDTOList)
-						{
-							var answer = new Answer()
-							{
-								Id = item.Id,
-								Content = item.Content,
-								IsCorrect = item.IsCorrect,
-								QuestionId = question.Id
-							};
-							answerList.Add(answer);
-						}
-						break;
+                        foreach (var item in CreateAnswerDTOList)
+                        {
+                            var answer = new Answer()
+                            {
+                                Id = item.Id,
+                                Content = item.Content,
+                                IsCorrect = item.IsCorrect,
+                                QuestionId = question.Id
+                            };
+                            answerList.Add(answer);
+                        }
+                        break;
                     case 3:
-						break;
+                        break;
                     default:
                         break;
                 }
-				
-				questionRepository.Create(question);
-				foreach (var answer in answerList)
-				{
-					answerRepository.Create(answer);
-				}
-				CreateAnswerDTOList.Clear();
+                question.Answers = answerList;
+                questionRepository.Create(question);
+                questionRepository.SaveChanges();
+                CreateAnswerDTOList.Clear();
 				return RedirectToPage("./Index");
 			}
             catch (Exception ex)

@@ -49,6 +49,7 @@ namespace WebApp.Pages.Questions
                 if (Question != null)
                 {
                     questionRepository.Delete(Question);
+                    questionRepository.SaveChanges();
                 }
                 return RedirectToPage("./Index");
             }

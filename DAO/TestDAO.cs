@@ -70,7 +70,7 @@ namespace DAO
 
         public Task<Test> GetByIdAsync(Guid id)
         {
-            return dbContext.Tests.Where(t => t.Id == id).Include(t => t.TestCategory).FirstOrDefaultAsync();
+            return dbContext.Tests.Where(t => t.Id == id).Include(t => t.TestCategory).Include(t => t.TestQuestions).ThenInclude(tq => tq.Question).FirstOrDefaultAsync();
         }
     }
 }
