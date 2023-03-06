@@ -1,4 +1,5 @@
 ﻿using BusinessObjects.Models;
+using DAO;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Repositories
     {
         public void Create(TestCreator t)
         {
-            throw new NotImplementedException();
+            TestCreatorDAO.Instance.Create(t);
         }
 
         public void Delete(TestCreator t)
@@ -33,6 +34,11 @@ namespace Repositories
         public List<TestCreator> GetByNameOrEmail(string searchString)
         {
             throw new NotImplementedException();
+        }
+
+        public TestCreator Login(string email, string password)
+        {
+            return TestCreatorDAO.Instance.Login(email, password);
         }
 
         public void Update(TestCreator t)
