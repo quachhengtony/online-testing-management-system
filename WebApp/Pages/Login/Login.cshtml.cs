@@ -68,12 +68,6 @@ namespace WebApp.Pages.Login
 
         public IActionResult OnPost()
         {
-<<<<<<< HEAD
-=======
-            var testCreatorRepository = new TestCreatorRepository();
-            var testTakerRepository = new TestTakerRepository();
-
->>>>>>> 9300bccaf4ce06ae57cbb429f7256c964eae619b
             if (!ModelState.IsValid)
             {
                 return Page();
