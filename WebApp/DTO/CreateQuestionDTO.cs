@@ -11,7 +11,7 @@ namespace WebApp.DTO
         [Required]
         public Guid Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         [StringLength(1000, MinimumLength = 1)]
         public string Content { get; set; }
 
