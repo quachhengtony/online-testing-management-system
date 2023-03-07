@@ -10,6 +10,8 @@ using BusinessObjects.Models;
 using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
+using WebApp.Models;
+using Repositories;
 
 namespace WebApp.Pages.Tests
 {
@@ -17,18 +19,43 @@ namespace WebApp.Pages.Tests
     {
         private readonly ILogger<IndexModel> logger;
         private readonly ITestRepository testRepository;
-		
-        public IList<Test> TestList { get; set; }
+        private readonly IConfiguration configuration;
 
-		public IndexModel(ILogger<IndexModel> logger, ITestRepository testRepository)
+		public string NameSort { get; set; }
+		public string DateSort { get; set; }
+		public string CurrentFilter { get; set; }
+		public string CurrentSort { get; set; }
+		public PaginatedList<Test> TestList { get; set; }
+
+		public IndexModel(ILogger<IndexModel> logger, ITestRepository testRepository, IConfiguration configuration)
         {
             this.logger = logger;
             this.testRepository = testRepository;
-        }
+			this.configuration = configuration;
+		}
 
-        public async Task OnGetAsync()
+		public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
         {
-            TestList = await testRepository.GetAllAsync();
+			List<Test> testList;
+			int pageSize = configuration.GetValue("PageSize", 10);
+			if (searchString != null)
+			{
+				pageIndex = 1;
+			}
+			else
+			{
+				searchString = currentFilter;
+			}
+			CurrentFilter = searchString;
+			if (!string.IsNullOrEmpty(searchString))
+			{
+				testList = await testRepository.GetAllByName(searchString);
+			}
+			else
+			{
+				testList = await testRepository.GetAllAsync();
+			}
+			TestList = PaginatedList<Test>.CreateAsync(testList, pageIndex ?? 1, pageSize);
         }
     }
 }

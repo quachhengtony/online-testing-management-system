@@ -68,6 +68,11 @@ namespace DAO
             return dbContext.Tests.Include(t => t.TestCategory).ToListAsync();
         }
 
+        public Task<List<Test>> GetAllByName(string name)
+        {
+            return dbContext.Tests.Where(t => t.Name.Contains(name)).ToListAsync();
+        }
+
         public Task<Test> GetByIdAsync(Guid id)
         {
             return dbContext.Tests.Where(t => t.Id == id).Include(t => t.TestCategory).Include(t => t.TestQuestions).ThenInclude(tq => tq.Question).FirstOrDefaultAsync();

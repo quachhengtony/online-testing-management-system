@@ -31,7 +31,12 @@ namespace Repositories
             return TestDAO.Instance.GetAllAsync();
         }
 
-        public Test GetById(Guid id)
+		public Task<List<Test>> GetAllByName(string name)
+		{
+            return TestDAO.Instance.GetAllByName(name);
+		}
+
+		public Test GetById(Guid id)
         {
             return TestDAO.Instance.GetById(id);
         }

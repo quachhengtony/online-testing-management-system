@@ -9,5 +9,6 @@ namespace Repositories.Interfaces
 {
     public interface ITestRepository : IRepository<Test>
     {
+        public Task<List<Test>> GetAllByName(string name);
     }
 }
