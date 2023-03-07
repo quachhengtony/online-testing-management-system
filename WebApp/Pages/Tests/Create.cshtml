@@ -64,6 +64,12 @@
 	<div class="col-md-6">
 		<div class="form-group" style="height:800px;overflow:auto;">
 			<label for="exampleCheck1">Select multiple questions:</label>
+			<form method="get" class="form-inline">
+				<div class="form-group mx-sm-3 mb-2">
+					<input name="searchString" class="form-control form-control-sm" />
+				</div>
+				<button class="btn btn-secondary btn-sm mb-2" type="submit">Search</button>
+			</form>
 		    @foreach (var item in Model.QuestionList)
 			{
 				<div class="form-check">
