@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interfaces
 {
-    interface IQuestionCategoryRepository : IRepository<QuestionCategory>
+    public interface IQuestionCategoryRepository : IRepository<QuestionCategory>
     {
     }
 }

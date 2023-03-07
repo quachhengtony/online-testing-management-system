@@ -25,15 +25,19 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+            services.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(15));
+            services.AddHttpContextAccessor();
+            services.AddRazorPages();
+            services.AddSingleton<IQuestionRepository, QuestionRepository>();
+            services.AddSingleton<IAnswerRepository, AnswerRepository>();
+            services.AddSingleton<IQuestionCategoryRepository, QuestionCategoryRepository>();
             services.AddMvc().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AddPageRoute("/Login/Login", "");
             });
-
             services.AddRazorPages();
-
             services.AddSession();
-
             services.AddSingleton<ITestCreatorRepository, TestCreatorRepository>();
             services.AddSingleton<ITestTakerRepository, TestTakerRepository>();
         }
@@ -62,6 +66,7 @@ namespace WebApp
 
             app.UseAuthorization();
 
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

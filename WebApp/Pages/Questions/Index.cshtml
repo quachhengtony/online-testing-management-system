@@ -1,0 +1,69 @@
+﻿@page
+@model WebApp.Pages.Questions.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>Index</h1>
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<div class="row">
+	<div class="col-md-4">
+		<form method="get">
+			<div class="form-group">
+				<label class="control-label">Search</label>
+                <input name="searchString" class="form-control" />
+                <button class="btn btn-secondary" type="submit">Search</button>
+			</div>
+        </form>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.QuestionList[0].Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuestionList[0].Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuestionList[0].QuestionCategory)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.QuestionList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Weight)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionCategory.Category)
+                </td>
+                <td>
+                    @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |*@
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.QuestionList.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.QuestionList.HasNextPage ? "disabled" : "";
+}
+<a asp-page="./Index"
+   asp-route-pageIndex="@(Model.QuestionList.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">Previous</a>
+<a asp-page="./Index"
+   asp-route-pageIndex="@(Model.QuestionList.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">Next</a>

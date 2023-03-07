@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessObjects.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,10 @@ namespace Repositories.Interfaces
     {
         public void Create(T t);
         public List<T> GetAll();
-        public T GetById(string id);
+        public Task<List<T>> GetAllAsync();
+        public T GetById(Guid id);
+        public Task<T> GetByIdAsync(byte id);
+        public Task<T> GetByIdAsync(Guid id);
         public void Update(T t);
         public void Delete(T t);
     }
