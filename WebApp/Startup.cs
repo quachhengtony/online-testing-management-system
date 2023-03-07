@@ -32,6 +32,14 @@ namespace WebApp
             services.AddSingleton<IQuestionRepository, QuestionRepository>();
             services.AddSingleton<IAnswerRepository, AnswerRepository>();
             services.AddSingleton<IQuestionCategoryRepository, QuestionCategoryRepository>();
+            services.AddMvc().AddRazorPagesOptions(options =>
+            {
+                options.Conventions.AddPageRoute("/Login/Login", "");
+            });
+            services.AddRazorPages();
+            services.AddSession();
+            services.AddSingleton<ITestCreatorRepository, TestCreatorRepository>();
+            services.AddSingleton<ITestTakerRepository, TestTakerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +57,9 @@ namespace WebApp
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSession();
+
             app.UseStaticFiles();
 
             app.UseRouting();
