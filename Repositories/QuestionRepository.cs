@@ -46,10 +46,10 @@ namespace Repositories
             return QuestionDAO.Instance.GetByIdAsync(id);
         }
 
-        public Task<Question> GetByIdAsync(byte id)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<Question> GetByIdAsync(byte id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
 		public void SaveChanges()
 		{

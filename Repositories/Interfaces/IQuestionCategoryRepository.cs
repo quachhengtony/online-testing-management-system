@@ -9,5 +9,6 @@ namespace Repositories.Interfaces
 {
     public interface IQuestionCategoryRepository : IRepository<QuestionCategory>
     {
+        public Task<QuestionCategory> GetByIdAsync(byte id);
     }
 }

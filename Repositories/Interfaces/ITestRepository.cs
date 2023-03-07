@@ -9,6 +9,8 @@ namespace Repositories.Interfaces
 {
     public interface ITestRepository : IRepository<Test>
     {
+        public Test GetById(Guid id);
+        public Task<Test> GetByIdAsync(Guid id);
         public Task<List<Test>> GetAllByName(string name);
     }
 }

@@ -42,10 +42,10 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Answer> GetByIdAsync(byte id)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<Answer> GetByIdAsync(byte id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public Answer GetByQuestionId(Guid questionId)
         {

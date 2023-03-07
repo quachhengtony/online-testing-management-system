@@ -55,7 +55,7 @@ namespace DAO
 
         public TestCategory GetById(Guid id)
         {
-            return dbContext.TestCategories.Find(id);
+            throw new NotImplementedException();
         }
 
         public Task<TestCategory> GetByIdAsync(Guid id)
