@@ -69,7 +69,7 @@ namespace WebApp.Pages.Tests
 					KeyCode = CreateTestDTO.KeyCode,
 					StartTime = CreateTestDTO.StartTime,
 					TestCategoryId = CreateTestDTO.TestCategoryId,
-					TestCreatorId = Guid.Parse("0B317DBA-0157-4976-9B35-A2AA7CEEFD59"),
+					TestCreatorId = Guid.Parse("AEC1060F-F755-457E-B6B4-9C2EE79C6214"),
 				};
 				List<TestQuestion> testQuestionList = new();
                 foreach (var question in questionIdList)
