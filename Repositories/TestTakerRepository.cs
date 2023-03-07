@@ -26,6 +26,11 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
+        public Task<List<TestTaker>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public TestTaker GetById(string id)
         {
             throw new NotImplementedException();
@@ -34,6 +39,11 @@ namespace Repositories
         public TestTaker Login(string email, string password)
         {
             return TestTakerDAO.Instance.Login(email, password);
+        }
+
+        public void SaveChanges()
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(TestTaker t)

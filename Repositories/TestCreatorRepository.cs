@@ -56,6 +56,11 @@ namespace Repositories
             return TestCreatorDAO.Instance.Login(email, password);
         }
 
+        public void SaveChanges()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(TestCreator t)
         {
             throw new NotImplementedException();

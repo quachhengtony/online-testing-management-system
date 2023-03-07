@@ -69,5 +69,20 @@ namespace DAO
                 return dbContext.TestCreators.SingleOrDefault(c => c.Email == email && c.Password == password);
             }
         }
+
+        public Task<List<TestCreator>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public TestCreator GetById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TestCreator> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
