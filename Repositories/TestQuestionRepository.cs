@@ -51,7 +51,12 @@ namespace Repositories
             return TestQuestionDAO.Instance.GetByTestId(testId);
         }
 
-        public void Update(TestQuestion t)
+		public void SaveChanges()
+		{
+            TestQuestionDAO.Instance.SaveChanges();
+		}
+
+		public void Update(TestQuestion t)
         {
             TestQuestionDAO.Instance.Update(t); 
         }

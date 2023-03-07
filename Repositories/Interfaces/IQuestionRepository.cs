@@ -10,6 +10,8 @@ namespace Repositories.Interfaces
 {
     public interface IQuestionRepository : IRepository<Question>
     {
+        public Question GetById(Guid id);
+        public Task<Question> GetByIdAsync(Guid id);
         public Task<List<Question>> GetAllByContent(string content);
     }
 }

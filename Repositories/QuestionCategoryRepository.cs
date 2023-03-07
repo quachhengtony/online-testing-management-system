@@ -31,22 +31,27 @@ namespace Repositories
             return QuestionCategoryDAO.Instance.GetAllAsync();
         }
 
-        public QuestionCategory GetById(Guid id)
-        {
-            return QuestionCategoryDAO.Instance.GetById(id);
-        }
+        //public QuestionCategory GetById(Guid id)
+        //{
+        //    return QuestionCategoryDAO.Instance.GetById(id);
+        //}
 
-        public Task<QuestionCategory> GetByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<QuestionCategory> GetByIdAsync(Guid id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public Task<QuestionCategory> GetByIdAsync(byte id)
         {
             return QuestionCategoryDAO.Instance.GetByIdAsync(id);
         }
 
-        public void Update(QuestionCategory t)
+		public void SaveChanges()
+		{
+            QuestionCategoryDAO.Instance.SaveChanges();
+		}
+
+		public void Update(QuestionCategory t)
         {
             QuestionCategoryDAO.Instance.Update(t);
         }

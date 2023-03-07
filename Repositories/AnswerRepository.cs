@@ -1,5 +1,6 @@
 ﻿using BusinessObjects.Models;
 using DAO;
+using Microsoft.EntityFrameworkCore.Storage;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -41,10 +42,10 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Answer> GetByIdAsync(byte id)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<Answer> GetByIdAsync(byte id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public Answer GetByQuestionId(Guid questionId)
         {
@@ -60,5 +61,10 @@ namespace Repositories
         {
             AnswerDAO.Instance.Update(t);
         }
-    }
+
+		public void SaveChanges()
+		{
+            AnswerDAO.Instance.SaveChanges();
+		}
+	}
 }

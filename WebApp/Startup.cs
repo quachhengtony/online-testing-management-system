@@ -29,9 +29,12 @@ namespace WebApp
             services.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(15));
             services.AddHttpContextAccessor();
             services.AddRazorPages();
-            services.AddSingleton<IQuestionRepository, QuestionRepository>();
+			services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+			services.AddSingleton<IQuestionRepository, QuestionRepository>();
             services.AddSingleton<IAnswerRepository, AnswerRepository>();
             services.AddSingleton<IQuestionCategoryRepository, QuestionCategoryRepository>();
+            services.AddSingleton<ITestRepository, TestRepository>();
+            services.AddSingleton<ITestCategoryRepository, TestCategoryRepository>();
             services.AddMvc().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AddPageRoute("/Login/Login", "");

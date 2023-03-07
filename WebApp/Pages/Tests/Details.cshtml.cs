@@ -9,25 +9,25 @@ using BusinessObjects.DbContexts;
 using BusinessObjects.Models;
 using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
+using Repositories;
 
-namespace WebApp.Pages.Questions
+namespace WebApp.Pages.Tests
 {
     public class DetailsModel : PageModel
     {
-        private readonly ILogger<DetailsModel> logger;
+		private readonly ILogger<IndexModel> logger;
+		private readonly ITestRepository testRepository;
         private readonly IQuestionRepository questionRepository;
-        private readonly IAnswerRepository answerRepository;
 
-        public Question Question { get; set; }
-        public List<Answer> AnswerList { get; set; }
+        public List<Question> QuestionList { get; set; } = new();
+        public Test Test { get; set; }
 
-        public DetailsModel(ILogger<DetailsModel> logger, IQuestionRepository questionRepository, IAnswerRepository answerRepository)
+        public DetailsModel(ILogger<IndexModel> logger, ITestRepository testRepository, IQuestionRepository questionRepository)
         {
             this.logger = logger;
+            this.testRepository = testRepository;
             this.questionRepository = questionRepository;
-            this.answerRepository = answerRepository;
         }
-
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -35,9 +35,8 @@ namespace WebApp.Pages.Questions
             {
                 return NotFound();
             }
-            Question = await questionRepository.GetByIdAsync(Guid.Parse(id));
-            AnswerList = await answerRepository.GetAllByQuestionId(Guid.Parse(id));
-            if (Question == null)
+            Test = await testRepository.GetByIdAsync(Guid.Parse(id));
+            if (Test == null)
             {
                 return NotFound();
             }

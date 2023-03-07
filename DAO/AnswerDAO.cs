@@ -36,13 +36,11 @@ namespace DAO
         public void Create(Answer t)
         {
             dbContext.Answers.Add(t);
-            SaveChanges();
         }
 
         public void Delete(Answer t)
         {
             dbContext.Answers.Remove(t);
-            SaveChanges();
         }
 
         public List<Answer> GetAll()
@@ -78,7 +76,6 @@ namespace DAO
         public void Update(Answer t)
         {
             dbContext.Answers.Update(t);
-            SaveChanges();
         }
 
         public Task<Answer> GetByIdAsync(Guid id)

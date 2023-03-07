@@ -56,48 +56,45 @@ namespace WebApp.Pages.Questions
                 switch (question.QuestionCategoryId)
                 {
                     case 1:
-						foreach (var item in CreateAnswerDTOList)
-						{
-							var answer = new Answer()
-							{
-								Id = item.Id,
-								Content = item.Content,
-								IsCorrect = item.IsCorrect,
-								QuestionId = question.Id
-							};
-							answerList.Add(answer);
-						}
-						break;
+                        foreach (var item in CreateAnswerDTOList)
+                        {
+                            var answer = new Answer()
+                            {
+                                Id = item.Id,
+                                Content = item.Content,
+                                IsCorrect = item.IsCorrect,
+                                QuestionId = question.Id
+                            };
+                            answerList.Add(answer);
+                        }
+                        break;
                     case 2:
-						foreach (var item in CreateAnswerDTOList)
-						{
-							var answer = new Answer()
-							{
-								Id = item.Id,
-								Content = item.Content,
-								IsCorrect = item.IsCorrect,
-								QuestionId = question.Id
-							};
-							answerList.Add(answer);
-						}
-						break;
+                        foreach (var item in CreateAnswerDTOList)
+                        {
+                            var answer = new Answer()
+                            {
+                                Id = item.Id,
+                                Content = item.Content,
+                                IsCorrect = item.IsCorrect,
+                                QuestionId = question.Id
+                            };
+                            answerList.Add(answer);
+                        }
+                        break;
                     case 3:
-						break;
+                        break;
                     default:
                         break;
                 }
-				
-				questionRepository.Create(question);
-				foreach (var answer in answerList)
-				{
-					answerRepository.Create(answer);
-				}
-				CreateAnswerDTOList.Clear();
+                question.Answers = answerList;
+                questionRepository.Create(question);
+                questionRepository.SaveChanges();
+                CreateAnswerDTOList.Clear();
 				return RedirectToPage("./Index");
 			}
             catch (Exception ex)
             {
-                logger.LogInformation($"Exception: {ex.Message}\n{ex.InnerException}");
+                logger.LogInformation($"\nException: {ex.Message}\n\t{ex.InnerException}");
                 return Page();
             }
         }
@@ -114,41 +111,49 @@ namespace WebApp.Pages.Questions
                 return Page();
             }
 
-            switch (type)
-            {
-                case "1":
-					if (string.IsNullOrEmpty(content) || string.IsNullOrEmpty(isCorrect))
-					{
-						return Page();
-					}
-					CreateAnswerDTOList.Add(new CreateAnswerDTO { Id = Guid.NewGuid(), Content = content, IsCorrect = bool.Parse(isCorrect) });
-					break;
-                case "2":   
-                    if (string.IsNullOrEmpty(isCorrect))
-                    {
-                        return Page();
-                    }
-                    if (isCorrect == "true")
-                    {
-						CreateAnswerDTOList.Add(new CreateAnswerDTO { Id = Guid.NewGuid(), Content = "True", IsCorrect = true });
-						CreateAnswerDTOList.Add(new CreateAnswerDTO { Id = Guid.NewGuid(), Content = "False", IsCorrect = false });
-					} 
-                    else
-                    {
-						CreateAnswerDTOList.Add(new CreateAnswerDTO { Id = Guid.NewGuid(), Content = "True", IsCorrect = false });
-						CreateAnswerDTOList.Add(new CreateAnswerDTO { Id = Guid.NewGuid(), Content = "False", IsCorrect = true });
-					}
-					break;
-                case "3":
-					break;
-                default:
-                    break;
+			try
+			{
+                switch (type)
+                {
+                    case "1":
+                        if (string.IsNullOrEmpty(content) || string.IsNullOrEmpty(isCorrect))
+                        {
+                            return Page();
+                        }
+                        CreateAnswerDTOList.Add(new CreateAnswerDTO { Id = Guid.NewGuid(), Content = content, IsCorrect = bool.Parse(isCorrect) });
+                        break;
+                    case "2":
+                        if (string.IsNullOrEmpty(isCorrect))
+                        {
+                            return Page();
+                        }
+                        if (isCorrect == "true")
+                        {
+                            CreateAnswerDTOList.Add(new CreateAnswerDTO { Id = Guid.NewGuid(), Content = "True", IsCorrect = true });
+                            CreateAnswerDTOList.Add(new CreateAnswerDTO { Id = Guid.NewGuid(), Content = "False", IsCorrect = false });
+                        }
+                        else
+                        {
+                            CreateAnswerDTOList.Add(new CreateAnswerDTO { Id = Guid.NewGuid(), Content = "True", IsCorrect = false });
+                            CreateAnswerDTOList.Add(new CreateAnswerDTO { Id = Guid.NewGuid(), Content = "False", IsCorrect = true });
+                        }
+                        break;
+                    case "3":
+                        break;
+                    default:
+                        break;
+                }
+                var answers = JsonSerializer.Serialize(CreateAnswerDTOList, new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
+                return new JsonResult(answers);
             }
-            var answers = JsonSerializer.Serialize(CreateAnswerDTOList, new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
-			return new JsonResult(answers);
+			catch (Exception ex)
+			{
+                logger.LogInformation($"\nException: {ex.Message}\n\t{ex.InnerException}");
+                return Page();
+            }
         }
     }
 }

@@ -28,17 +28,22 @@ namespace Repositories
 
         public Task<List<Test>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return TestDAO.Instance.GetAllAsync();
         }
 
-        public Test GetById(Guid id)
+		public Task<List<Test>> GetAllByName(string name)
+		{
+            return TestDAO.Instance.GetAllByName(name);
+		}
+
+		public Test GetById(Guid id)
         {
             return TestDAO.Instance.GetById(id);
         }
 
         public Task<Test> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return TestDAO.Instance.GetByIdAsync(id);
         }
 
         public Task<Test> GetByIdAsync(byte id)
@@ -46,7 +51,12 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(Test t)
+		public void SaveChanges()
+		{
+            TestDAO.Instance.SaveChanges();
+		}
+
+		public void Update(Test t)
         {
             TestDAO.Instance.Update(t);
         }
