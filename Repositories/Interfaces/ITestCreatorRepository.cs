@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interfaces
 {
-    interface ITestCreatorRepository : IRepository<TestCreator>
+    public interface ITestCreatorRepository : IRepository<TestCreator>
     {
         public List<TestCreator> GetByNameOrEmail(string searchString);
+
+        public TestCreator Login(string email, string password);
     }
 }

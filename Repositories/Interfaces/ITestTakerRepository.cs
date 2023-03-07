@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interfaces
 {
-    interface ITestTakerRepository : IRepository<TestTaker>
+    public interface ITestTakerRepository : IRepository<TestTaker>
     {
+        public TestTaker Login(string email, string password);
     }
 }
