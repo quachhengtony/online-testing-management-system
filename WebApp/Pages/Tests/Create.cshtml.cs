@@ -34,7 +34,7 @@ namespace WebApp.Pages.Tests
             this.questionRepository = questionRepository;
         }
 
-        public async Task<IActionResult> OnGetAsync([FromQuery] string searchString)
+        public async Task OnGetAsync([FromQuery] string searchString)
         {
             ViewData["TestCategory"] = new SelectList(await testCategoryRepository.GetAllAsync(), "Id", "Category");
             if (!string.IsNullOrEmpty(searchString))
@@ -45,7 +45,6 @@ namespace WebApp.Pages.Tests
             {
 				QuestionList = await questionRepository.GetAllAsync();
 			}
-			return Page();
         }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD

@@ -87,12 +87,31 @@
 </div>
 @section Scripts {
 	<script type="text/javascript">
-		function handleSubmit() {
-			var selectedCheckboxes = $('input[type="checkbox"]:checked');
-			var selectedIds = [];
-			selectedCheckboxes.each(function() {
+		let localQuestions = [];
+		localQuestions = JSON.parse(localStorage.getItem("selectedQuestions"));
+		if (localQuestions != null && localQuestions.length > 0) {
+			$("input[type=checkbox]").each(function () {
+				if (localQuestions.includes($(this).val())) {
+					$(this).prop("checked", true);
+				}
+			});
+		}		
+		$("input[type=checkbox]").change(function (e) {
+			localStorage.removeItem("selectedQuestions");
+			let selectedIds = [];
+			$('input[type="checkbox"]:checked').each(function() {
 				selectedIds.push($(this).val());
 			});
+			localStorage.setItem("selectedQuestions", JSON.stringify(selectedIds))
+		});
+		function handleSubmit() {
+			let selectedQuestions = [];
+			selectedQuestions = JSON.parse(localStorage.getItem("selectedQuestions"));
+			if (selectedQuestions.length <= 0) {
+				alert("Please select questions to add to the test.");
+				return;
+			}
+			console.log(selectedQuestions);
 			$.ajax({
 				url: '?handler=AddQuestions',
 				type: 'POST',
@@ -100,13 +119,14 @@
 				dataType: 'json',
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader("XSRF-TOKEN",
-						$('input:hidden[name="__RequestVerificationToken"]').val());
+					$('input:hidden[name="__RequestVerificationToken"]').val());
 				},
 				data: JSON.stringify({
-					questionIds: selectedIds
+					questionIds: selectedQuestions
 				}),
 				success: (data) => {
 					$("#btnSubmit").click();
+					localStorage.removeItem("selectedQuestions");
 				},
 				error: (error) => {
 					alert("Error: " + error);
