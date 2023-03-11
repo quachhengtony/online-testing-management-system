@@ -36,6 +36,11 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
+        public TestTaker GetById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public TestTaker Login(string email, string password)
         {
             return TestTakerDAO.Instance.Login(email, password);
