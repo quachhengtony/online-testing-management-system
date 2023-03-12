@@ -51,7 +51,21 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-		public void SaveChanges()
+        public async Task<bool> IsDue(Guid id)
+        {
+            var test = await TestDAO.Instance.GetByIdAsync(id);
+            if (test == null)
+            {
+                return false;
+            }
+            if (DateTime.Now < test.StartTime)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void SaveChanges()
 		{
             TestDAO.Instance.SaveChanges();
 		}

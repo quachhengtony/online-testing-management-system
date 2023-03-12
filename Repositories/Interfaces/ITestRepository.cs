@@ -12,5 +12,6 @@ namespace Repositories.Interfaces
         public Test GetById(Guid id);
         public Task<Test> GetByIdAsync(Guid id);
         public Task<List<Test>> GetAllByName(string name);
+        public Task<bool> IsDue(Guid id);
     }
 }
