@@ -1,5 +1,4 @@
-﻿using BusinessObjects.DbContexts;
-using BusinessObjects.Models;
+﻿using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -71,6 +70,16 @@ namespace DAO
         public Task<List<Test>> GetAllByName(string name)
         {
             return dbContext.Tests.Where(t => t.Name.Contains(name)).ToListAsync();
+        }
+
+        public Task<List<Test>> GetAllByNameAndCreatorId(string name, Guid creatorId)
+        {
+            return dbContext.Tests.Where(t => t.Name.Contains(name) && creatorId.Equals(creatorId)).ToListAsync();
+        }
+
+        public Task<List<Test>> GetAllByCreatorId(Guid creatorId)
+        {
+            return dbContext.Tests.Where(t => creatorId.Equals(creatorId)).ToListAsync();
         }
 
         public Task<Test> GetByIdAsync(Guid id)

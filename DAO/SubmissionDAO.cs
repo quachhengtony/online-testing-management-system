@@ -1,5 +1,5 @@
-﻿using BusinessObjects.DbContexts;
-using BusinessObjects.Models;
+﻿using BusinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,7 +78,7 @@ namespace DAO
 
         public List<Submission> GetByTestId(Guid testId)
         {
-            return _context.Submissions.Where(s => s.TestId == testId).ToList();
+            return _context.Submissions.Where(s => s.TestId == testId).Include(t => t.TestTaker).Include(t => t.Test).ToList();
         }
 
         public List<Submission> GetByTestIdAndSubmittedDateRange(Guid testId, DateTime startDate, DateTime endDate)

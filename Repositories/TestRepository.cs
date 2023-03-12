@@ -36,6 +36,16 @@ namespace Repositories
             return TestDAO.Instance.GetAllByName(name);
 		}
 
+        public Task<List<Test>> GetAllByCreatorId(Guid creatorId)
+        {
+            return TestDAO.Instance.GetAllByCreatorId(creatorId);
+        }
+
+        public Task<List<Test>> GetAllByNameAndCreatorId(string name, Guid creatorId)
+        {
+            return TestDAO.Instance.GetAllByNameAndCreatorId(name,creatorId);
+        }
+
         public Test GetById(Guid id)
         {
             return TestDAO.Instance.GetById(id);

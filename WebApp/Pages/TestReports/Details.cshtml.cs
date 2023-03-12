@@ -11,22 +11,23 @@ using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using Repositories;
 
-namespace WebApp.Pages.Tests
+namespace WebApp.Pages.TestReports
 {
     public class DetailsModel : PageModel
     {
 		private readonly ILogger<IndexModel> logger;
 		private readonly ITestRepository testRepository;
-        private readonly IQuestionRepository questionRepository;
+        private readonly ISubmissionRepository submissionRepository;
+        public List<Submission> submissionList { get; set; }
 
         public List<Question> QuestionList { get; set; } = new();
         public Test Test { get; set; }
 
-        public DetailsModel(ILogger<IndexModel> logger, ITestRepository testRepository, IQuestionRepository questionRepository)
+        public DetailsModel(ILogger<IndexModel> logger, ITestRepository testRepository, ISubmissionRepository submissionRepository)
         {
             this.logger = logger;
             this.testRepository = testRepository;
-            this.questionRepository = questionRepository;
+            this.submissionRepository = submissionRepository;
         }
 
         public async Task<IActionResult> OnGetAsync(string id)
@@ -40,6 +41,7 @@ namespace WebApp.Pages.Tests
             {
                 return NotFound();
             }
+            submissionList = submissionRepository.GetByTestId(Guid.Parse(id));
             return Page();
         }
     }
