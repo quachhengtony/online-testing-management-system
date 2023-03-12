@@ -44,7 +44,7 @@ namespace DAO
             return _context.Submissions.ToList();
         }
 
-        public Submission GetById(string id)
+        public Submission GetById(Guid id)
         {
             return _context.Submissions.FirstOrDefault(s => s.Id == id);
         }
@@ -71,21 +71,31 @@ namespace DAO
             _context.SaveChanges();
         }
 
-        public List<Submission> GetByTestTakerId(string testTakerId)
+        public List<Submission> GetByTestTakerId(Guid testTakerId)
         {
             return _context.Submissions.Where(s => s.TestTakerId == testTakerId).ToList();
         }
 
-        public List<Submission> GetByTestId(string testId)
+        public List<Submission> GetByTestId(Guid testId)
         {
             return _context.Submissions.Where(s => s.TestId == testId).ToList();
         }
 
-        public List<Submission> GetByTestIdAndSubmittedDateRange(string testId, DateTime startDate, DateTime endDate)
+        public List<Submission> GetByTestIdAndSubmittedDateRange(Guid testId, DateTime startDate, DateTime endDate)
         {
             return _context.Submissions
                 .Where(s => s.TestId == testId && s.SubmittedDate >= startDate && s.SubmittedDate <= endDate)
                 .ToList();
+        }
+
+        public Task<List<Submission>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Submission> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

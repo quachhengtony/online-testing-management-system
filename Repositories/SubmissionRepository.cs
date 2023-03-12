@@ -25,12 +25,12 @@ namespace OnlineTestingManagementSystem.Repository
             _submissionDAO.Update(submission);
         }
 
-        public void Delete(String id)
+        public void Delete(Guid id)
         {
             _submissionDAO.Delete(GetById(id));
         }
 
-        public Submission GetById(string id)
+        public Submission GetById(Guid id)
         {
             return _submissionDAO.GetById(id);
         }
@@ -40,17 +40,17 @@ namespace OnlineTestingManagementSystem.Repository
             return _submissionDAO.GetAll();
         }
 
-        public List<Submission> GetByTestTakerId(string testTakerId)
+        public List<Submission> GetByTestTakerId(Guid testTakerId)
         {
             return _submissionDAO.GetByTestTakerId(testTakerId);
         }
 
-        public List<Submission> GetByTestId(string testId)
+        public List<Submission> GetByTestId(Guid testId)
         {
             return _submissionDAO.GetByTestId(testId);
         }
 
-        public List<Submission> GetByTestIdAndSubmittedDateRange(string testId, DateTime startDate, DateTime endDate)
+        public List<Submission> GetByTestIdAndSubmittedDateRange(Guid testId, DateTime startDate, DateTime endDate)
         {
             return _submissionDAO.GetByTestIdAndSubmittedDateRange(testId, startDate, endDate);
         }

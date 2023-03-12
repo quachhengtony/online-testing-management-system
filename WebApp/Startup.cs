@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Repositories;
+using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,13 +29,20 @@ namespace WebApp
             services.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(15));
             services.AddHttpContextAccessor();
             services.AddRazorPages();
-            services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+			services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+			services.AddSingleton<IQuestionRepository, QuestionRepository>();
+            services.AddSingleton<IAnswerRepository, AnswerRepository>();
+            services.AddSingleton<IQuestionCategoryRepository, QuestionCategoryRepository>();
+            services.AddSingleton<ITestRepository, TestRepository>();
+            services.AddSingleton<ITestCategoryRepository, TestCategoryRepository>();
             services.AddMvc().AddRazorPagesOptions(options =>
             {
-                options.Conventions.AddPageRoute("/Submissions", "");
+                options.Conventions.AddPageRoute("/Login/Login", "");
             });
             services.AddRazorPages();
             services.AddSession();
+            services.AddSingleton<ITestCreatorRepository, TestCreatorRepository>();
+            services.AddSingleton<ITestTakerRepository, TestTakerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

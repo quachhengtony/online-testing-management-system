@@ -1,4 +1,5 @@
 ﻿using BusinessObjects.Models;
+using DAO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,10 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interfaces
 {
-    interface IQuestionRepository : IRepository<Question>
+    public interface IQuestionRepository : IRepository<Question>
     {
+        public Question GetById(Guid id);
+        public Task<Question> GetByIdAsync(Guid id);
+        public Task<List<Question>> GetAllByContent(string content);
     }
 }

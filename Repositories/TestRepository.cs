@@ -31,17 +31,17 @@ namespace Repositories
             return TestDAO.Instance.GetAllAsync();
         }
 
-        public Task<List<Test>> GetAllByName(string name)
-        {
+		public Task<List<Test>> GetAllByName(string name)
+		{
             return TestDAO.Instance.GetAllByName(name);
-        }
+		}
 
-        public Test GetById(string id)
+        public Test GetById(Guid id)
         {
             return TestDAO.Instance.GetById(id);
         }
 
-        public Task<Test> GetByIdAsync(string id)
+        public Task<Test> GetByIdAsync(Guid id)
         {
             return TestDAO.Instance.GetByIdAsync(id);
         }
@@ -52,11 +52,11 @@ namespace Repositories
         }
 
         public void SaveChanges()
-        {
+		{
             TestDAO.Instance.SaveChanges();
-        }
+		}
 
-        public void Update(Test t)
+		public void Update(Test t)
         {
             TestDAO.Instance.Update(t);
         }

@@ -29,7 +29,7 @@ namespace WebApp.Pages.Submissions
 
         public void OnGet()
         {
-            string testTakerId = "";
+            Guid testTakerId = new Guid();
             Submissions = submissionRepository.GetByTestTakerId(testTakerId);
         }
     }

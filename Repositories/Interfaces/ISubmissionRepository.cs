@@ -10,13 +10,13 @@ namespace Repositories.Interfaces
     public interface ISubmissionRepository
     {
         void Create(Submission submission);
-        Submission GetById(string id);
+        Submission GetById(Guid id);
         List<Submission> GetAll();
-        List<Submission> GetByTestId(string testId);
-        List<Submission> GetByTestTakerId(string testTakerId);
-        List<Submission> GetByTestIdAndSubmittedDateRange(string testId, DateTime startDate, DateTime endDate);
+        List<Submission> GetByTestId(Guid testId);
+        List<Submission> GetByTestTakerId(Guid testTakerId);
+        List<Submission> GetByTestIdAndSubmittedDateRange(Guid testId, DateTime startDate, DateTime endDate);
         void Update(Submission submission);
-        void Delete(string id);
+        void Delete(Guid id);
         void SaveChanges();
     }
 }

@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interfaces
 {
-    interface ITestRepository : IRepository<Test>
+    public interface ITestRepository : IRepository<Test>
     {
+        public Test GetById(Guid id);
+        public Task<Test> GetByIdAsync(Guid id);
+        public Task<List<Test>> GetAllByName(string name);
     }
 }

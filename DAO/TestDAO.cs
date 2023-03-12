@@ -19,7 +19,7 @@ namespace DAO
         {
             get
             {
-                lock (instaneLock)
+                lock(instaneLock)
                 {
                     if (instance == null)
                     {
@@ -48,7 +48,7 @@ namespace DAO
             return dbContext.Tests.ToList();
         }
 
-        public Test GetById(String id)
+        public Test GetById(Guid id)
         {
             return dbContext.Tests.Find(id);
         }
@@ -73,7 +73,7 @@ namespace DAO
             return dbContext.Tests.Where(t => t.Name.Contains(name)).ToListAsync();
         }
 
-        public Task<Test> GetByIdAsync(string id)
+        public Task<Test> GetByIdAsync(Guid id)
         {
             return dbContext.Tests.Where(t => t.Id == id).Include(t => t.TestCategory).Include(t => t.TestQuestions).ThenInclude(tq => tq.Question).FirstOrDefaultAsync();
         }

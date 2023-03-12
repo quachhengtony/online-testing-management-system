@@ -52,42 +52,38 @@ namespace BusinessObjects.DbContexts
             {
                 entity.ToTable("Answer");
 
-                entity.Property(e => e.Content).HasMaxLength(1000);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.QuestionId)
-                    .IsRequired()
-                    .HasMaxLength(25);
+                entity.Property(e => e.Content).HasMaxLength(1000);
 
                 entity.HasOne(d => d.Question)
                     .WithMany(p => p.Answers)
                     .HasForeignKey(d => d.QuestionId)
-                    .HasConstraintName("FK__Answer__Question__45F365D3");
+                    .HasConstraintName("FK__Answer__Question__44FF419A");
             });
 
             modelBuilder.Entity<Question>(entity =>
             {
                 entity.ToTable("Question");
 
-                entity.Property(e => e.Id).HasMaxLength(25);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Content)
                     .IsRequired()
                     .HasMaxLength(1000);
 
-                entity.Property(e => e.QuestionCreatorId)
-                    .IsRequired()
-                    .HasMaxLength(25);
+                entity.Property(e => e.Weight).HasColumnType("decimal(18, 0)");
 
                 entity.HasOne(d => d.QuestionCategory)
                     .WithMany(p => p.Questions)
                     .HasForeignKey(d => d.QuestionCategoryId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Question__Questi__44FF419A");
+                    .HasConstraintName("FK__Question__Questi__440B1D61");
 
                 entity.HasOne(d => d.QuestionCreator)
                     .WithMany(p => p.Questions)
                     .HasForeignKey(d => d.QuestionCreatorId)
-                    .HasConstraintName("FK__Question__Questi__47DBAE45");
+                    .HasConstraintName("FK__Question__Questi__46E78A0C");
             });
 
             modelBuilder.Entity<QuestionCategory>(entity =>
@@ -104,7 +100,7 @@ namespace BusinessObjects.DbContexts
             {
                 entity.ToTable("Submission");
 
-                entity.Property(e => e.Id).HasMaxLength(25);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Content).IsRequired();
 
@@ -116,30 +112,22 @@ namespace BusinessObjects.DbContexts
 
                 entity.Property(e => e.SubmittedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.TestId)
-                    .IsRequired()
-                    .HasMaxLength(25);
-
-                entity.Property(e => e.TestTakerId)
-                    .IsRequired()
-                    .HasMaxLength(25);
-
                 entity.HasOne(d => d.Test)
                     .WithMany(p => p.Submissions)
                     .HasForeignKey(d => d.TestId)
-                    .HasConstraintName("FK__Submissio__TestI__48CFD27E");
+                    .HasConstraintName("FK__Submissio__TestI__47DBAE45");
 
                 entity.HasOne(d => d.TestTaker)
                     .WithMany(p => p.Submissions)
                     .HasForeignKey(d => d.TestTakerId)
-                    .HasConstraintName("FK__Submissio__TestT__49C3F6B7");
+                    .HasConstraintName("FK__Submissio__TestT__48CFD27E");
             });
 
             modelBuilder.Entity<Test>(entity =>
             {
                 entity.ToTable("Test");
 
-                entity.Property(e => e.Id).HasMaxLength(25);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Batch)
                     .IsRequired()
@@ -162,20 +150,16 @@ namespace BusinessObjects.DbContexts
 
                 entity.Property(e => e.StartTime).HasColumnType("datetime");
 
-                entity.Property(e => e.TestCreatorId)
-                    .IsRequired()
-                    .HasMaxLength(25);
-
                 entity.HasOne(d => d.TestCategory)
                     .WithMany(p => p.Tests)
                     .HasForeignKey(d => d.TestCategoryId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Test__TestCatego__4AB81AF0");
+                    .HasConstraintName("FK__Test__TestCatego__49C3F6B7");
 
                 entity.HasOne(d => d.TestCreator)
                     .WithMany(p => p.Tests)
                     .HasForeignKey(d => d.TestCreatorId)
-                    .HasConstraintName("FK__Test__TestCreato__46E78A0C");
+                    .HasConstraintName("FK__Test__TestCreato__45F365D3");
             });
 
             modelBuilder.Entity<TestCategory>(entity =>
@@ -192,7 +176,7 @@ namespace BusinessObjects.DbContexts
             {
                 entity.ToTable("TestCreator");
 
-                entity.Property(e => e.Id).HasMaxLength(25);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -218,23 +202,19 @@ namespace BusinessObjects.DbContexts
             modelBuilder.Entity<TestQuestion>(entity =>
             {
                 entity.HasKey(e => new { e.QuestionId, e.TestId })
-                    .HasName("PK__TestQues__150C5CBAF0471F96");
+                    .HasName("PK__TestQues__150C5CBA1AC1E7D7");
 
                 entity.ToTable("TestQuestion");
-
-                entity.Property(e => e.QuestionId).HasMaxLength(25);
-
-                entity.Property(e => e.TestId).HasMaxLength(25);
 
                 entity.HasOne(d => d.Question)
                     .WithMany(p => p.TestQuestions)
                     .HasForeignKey(d => d.QuestionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_TestQuestion_Question");
 
                 entity.HasOne(d => d.Test)
                     .WithMany(p => p.TestQuestions)
                     .HasForeignKey(d => d.TestId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_TestQuestion_Test");
             });
 
@@ -242,7 +222,7 @@ namespace BusinessObjects.DbContexts
             {
                 entity.ToTable("TestTaker");
 
-                entity.Property(e => e.Id).HasMaxLength(25);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Email)
                     .IsRequired()

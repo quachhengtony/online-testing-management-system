@@ -13,11 +13,11 @@ namespace BusinessObjects.Models
             TestQuestions = new HashSet<TestQuestion>();
         }
 
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Content { get; set; }
-        public byte Weight { get; set; }
+        public decimal Weight { get; set; }
         public byte? QuestionCategoryId { get; set; }
-        public string QuestionCreatorId { get; set; }
+        public Guid QuestionCreatorId { get; set; }
 
         public virtual QuestionCategory QuestionCategory { get; set; }
         public virtual TestCreator QuestionCreator { get; set; }
