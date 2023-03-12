@@ -1,0 +1,44 @@
+﻿@page
+@model WebApp.Pages.TestCreators.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>TestCreator</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TestCreator.Username)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TestCreator.Username)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TestCreator.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TestCreator.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TestCreator.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TestCreator.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TestCreator.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TestCreator.LastName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.TestCreator.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

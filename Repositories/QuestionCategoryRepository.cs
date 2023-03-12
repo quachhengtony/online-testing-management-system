@@ -31,10 +31,10 @@ namespace Repositories
             return QuestionCategoryDAO.Instance.GetAllAsync();
         }
 
-        //public QuestionCategory GetById(Guid id)
-        //{
-        //    return QuestionCategoryDAO.Instance.GetById(id);
-        //}
+        public QuestionCategory GetById(Guid id)
+        {
+            return QuestionCategoryDAO.Instance.GetById(id);
+        }
 
         //public Task<QuestionCategory> GetByIdAsync(Guid id)
         //{

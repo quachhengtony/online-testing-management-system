@@ -76,7 +76,7 @@ namespace WebApp.Pages.Login
             {
                 if(LoginByAdminAccount(Email, Password))
                 {
-                    return Redirect("/Error");
+                    return Redirect("/Privacy");
                 }
                 else if(testCreatorRepository.Login(Email, Password) != null)
                 {

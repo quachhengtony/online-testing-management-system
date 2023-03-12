@@ -18,12 +18,12 @@ namespace Repositories
 
         public void Delete(TestCreator t)
         {
-            throw new NotImplementedException();
+            TestCreatorDAO.Instance.Delete(t);
         }
 
         public List<TestCreator> GetAll()
         {
-            throw new NotImplementedException();
+            return TestCreatorDAO.Instance.GetAll();
         }
 
         public Task<List<TestCreator>> GetAllAsync()
@@ -33,7 +33,7 @@ namespace Repositories
 
         public TestCreator GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return TestCreatorDAO.Instance.GetById(id);
         }
 
         public Task<TestCreator> GetByIdAsync(Guid id)
@@ -63,7 +63,7 @@ namespace Repositories
 
         public void Update(TestCreator t)
         {
-            throw new NotImplementedException();
+            TestCreatorDAO.Instance.Update(t);
         }
     }
 }

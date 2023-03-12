@@ -1,5 +1,6 @@
 ﻿using BusinessObjects.DbContexts;
 using BusinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,12 +40,19 @@ namespace DAO
 
         public void Delete(TestCreator t)
         {
-            throw new NotImplementedException();
+            using (var dbContext = new OnlineTestingManagementSystemDbContext())
+            {
+                dbContext.TestCreators.Remove(t);
+                dbContext.SaveChanges();
+            }
         }
 
         public List<TestCreator> GetAll()
         {
-            throw new NotImplementedException();
+            using (var dbContext = new OnlineTestingManagementSystemDbContext())
+            {
+                return dbContext.TestCreators.ToList();
+            }
         }
 
         public TestCreator GetById(string id)
@@ -59,7 +67,11 @@ namespace DAO
 
         public void Update(TestCreator t)
         {
-            throw new NotImplementedException();
+            using (var dbContext = new OnlineTestingManagementSystemDbContext())
+            {
+                dbContext.Entry<TestCreator>(t).State = EntityState.Modified;
+                dbContext.SaveChanges();
+            }
         }
 
         public TestCreator Login(string email, string password)
@@ -77,7 +89,10 @@ namespace DAO
 
         public TestCreator GetById(Guid id)
         {
-            throw new NotImplementedException();
+            using (var dbContext = new OnlineTestingManagementSystemDbContext())
+            {
+                return dbContext.TestCreators.SingleOrDefault(t => t.Id == id);
+            }
         }
 
         public Task<TestCreator> GetByIdAsync(Guid id)

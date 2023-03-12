@@ -1,0 +1,47 @@
+﻿@page
+@model WebApp.Pages.TestCreators.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>TestCreator</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TestCreator.Username)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TestCreator.Username)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TestCreator.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TestCreator.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TestCreator.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TestCreator.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TestCreator.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TestCreator.LastName)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="TestCreator.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>
