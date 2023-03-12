@@ -37,6 +37,7 @@ namespace WebApp
             services.AddSingleton<ITestRepository, TestRepository>();
             services.AddSingleton<ITestCategoryRepository, TestCategoryRepository>();
             services.AddSingleton<ISubmissionRepository, SubmissionRepository>();
+            services.AddSingleton<ITestQuestionRepository, TestQuestionRepository>();
             services.AddMvc().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AddPageRoute("/Login/Login", "");

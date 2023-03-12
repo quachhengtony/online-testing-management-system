@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    internal class TestQuestionRepository : ITestQuestionRepository
+    public class TestQuestionRepository : ITestQuestionRepository
     {
         public void Create(TestQuestion t)
         {
@@ -51,7 +51,18 @@ namespace Repositories
             return TestQuestionDAO.Instance.GetByTestId(testId);
         }
 
-		public void SaveChanges()
+        public async Task<List<Guid>> GetAllTestsByQuestionId(Guid questionId)
+        {
+            List<Guid> testGuids = new();
+            var testQuestions = await TestQuestionDAO.Instance.GetAllTestsByQuestionId(questionId);
+            foreach (var test in testQuestions)
+            {
+                testGuids.Add(test.TestId);
+            }
+            return testGuids;
+        }
+
+        public void SaveChanges()
 		{
             TestQuestionDAO.Instance.SaveChanges();
 		}

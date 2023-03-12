@@ -58,6 +58,11 @@ namespace DAO
             return dbContext.TestQuestions.Where(tq => tq.TestId.Equals(testId)).FirstOrDefault();
         }
 
+        public Task<TestQuestion> GetByQuestionIdAsync(Guid questionId)
+        {
+            return dbContext.TestQuestions.Where(tq => tq.QuestionId == questionId).FirstOrDefaultAsync();
+        }
+
         public void SaveChanges()
         {
             dbContext.SaveChanges();
@@ -81,6 +86,11 @@ namespace DAO
         public Task<TestQuestion> GetByIdAsync(byte id)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<List<TestQuestion>> GetAllTestsByQuestionId(Guid questionId)
+        {
+            return dbContext.TestQuestions.Where(tq => tq.QuestionId == questionId).ToListAsync();
         }
     }
 }
