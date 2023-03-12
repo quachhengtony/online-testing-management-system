@@ -11,21 +11,21 @@ using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using Repositories;
 
-namespace WebApp.Pages.Tests
+namespace WebApp.Pages.SubmissionPage
 {
     public class DetailsModel : PageModel
     {
-		private readonly ILogger<IndexModel> logger;
-		private readonly ITestRepository testRepository;
+        private readonly ILogger<DetailsModel> logger;
+        private readonly ISubmissionRepository submissionRepository;
         private readonly IQuestionRepository questionRepository;
 
         public List<Question> QuestionList { get; set; } = new();
-        public Test Test { get; set; }
+        public Submission Submission { get; set; }
 
-        public DetailsModel(ILogger<IndexModel> logger, ITestRepository testRepository, IQuestionRepository questionRepository)
+        public DetailsModel(ILogger<DetailsModel> logger, ISubmissionRepository submissionRepository, IQuestionRepository questionRepository)
         {
             this.logger = logger;
-            this.testRepository = testRepository;
+            this.submissionRepository = submissionRepository;
             this.questionRepository = questionRepository;
         }
 
@@ -35,8 +35,8 @@ namespace WebApp.Pages.Tests
             {
                 return NotFound();
             }
-            Test = await testRepository.GetByIdAsync(Guid.Parse(id));
-            if (Test == null)
+            Submission = submissionRepository.GetById(Guid.Parse(id));
+            if (Submission == null)
             {
                 return NotFound();
             }

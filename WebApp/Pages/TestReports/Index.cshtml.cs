@@ -9,34 +9,36 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObjects.Models;
 using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
-using WebApp.Models;
 using Microsoft.Extensions.Configuration;
+using WebApp.Models;
+using Repositories;
 
-namespace WebApp.Pages.Questions
+namespace WebApp.Pages.TestReports
 {
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> logger;
-        private readonly IQuestionRepository questionRepository;
+        private readonly ITestRepository testRepository;
         private readonly IConfiguration configuration;
 
         public string NameSort { get; set; }
         public string DateSort { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
-        public PaginatedList<Question> QuestionList { get; set; }
+        public PaginatedList<Test> TestList { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration, IQuestionRepository questionRepository)
+        public IndexModel(ILogger<IndexModel> logger, ITestRepository testRepository, IConfiguration configuration)
         {
             this.logger = logger;
-            this.questionRepository = questionRepository;
+            this.testRepository = testRepository;
             this.configuration = configuration;
         }
 
-        public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
+        public async Task OnGetAsync(string currentFilter, string searchString, Guid creatorId, int? pageIndex)
         {
-            List<Question> questionList;
+            List<Test> testList;
             int pageSize = configuration.GetValue("PageSize", 10);
+            creatorId = new Guid("411DEE92-915C-44DE-A892-61A468A27985");
             if (searchString != null)
             {
                 pageIndex = 1;
@@ -48,13 +50,13 @@ namespace WebApp.Pages.Questions
             CurrentFilter = searchString;
             if (!string.IsNullOrEmpty(searchString))
             {
-                questionList = await questionRepository.GetAllByContent(searchString);
-            } 
+                testList = await testRepository.GetAllByNameAndCreatorId(searchString, creatorId);
+            }
             else
             {
-                questionList = await questionRepository.GetAllAsync();
+                testList = await testRepository.GetAllByCreatorId(creatorId);
             }
-            QuestionList = PaginatedList<Question>.CreateAsync(questionList, pageIndex ?? 1, pageSize);
+            TestList = PaginatedList<Test>.CreateAsync(testList, pageIndex ?? 1, pageSize);
         }
     }
 }
