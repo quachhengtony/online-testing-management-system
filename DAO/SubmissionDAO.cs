@@ -12,7 +12,7 @@ namespace DAO
     {
         private static SubmissionDAO instance;
         private static readonly object instaneLock = new object();
-        private static readonly OnlineTestingManagementSystemDbContext _context;
+        private static  OnlineTestingManagementSystemDbContext _context;
 
         public SubmissionDAO()
         {

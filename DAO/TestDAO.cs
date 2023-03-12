@@ -1,5 +1,6 @@
 ﻿using BusinessObjects.DbContexts;
 using BusinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,5 +63,19 @@ namespace DAO
             dbContext.Tests.Update(t);
         }
 
+        public Task<List<Test>> GetAllAsync()
+        {
+            return dbContext.Tests.Include(t => t.TestCategory).ToListAsync();
+        }
+
+        public Task<List<Test>> GetAllByName(string name)
+        {
+            return dbContext.Tests.Where(t => t.Name.Contains(name)).ToListAsync();
+        }
+
+        public Task<Test> GetByIdAsync(string id)
+        {
+            return dbContext.Tests.Where(t => t.Id == id).Include(t => t.TestCategory).Include(t => t.TestQuestions).ThenInclude(tq => tq.Question).FirstOrDefaultAsync();
+        }
     }
 }

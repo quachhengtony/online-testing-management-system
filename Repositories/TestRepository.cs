@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BusinessObjects.Models;
+using DAO;
+using Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +9,56 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    class TestRepository
+    public class TestRepository : ITestRepository
     {
+        public void Create(Test t)
+        {
+            TestDAO.Instance.Create(t);
+        }
+
+        public void Delete(Test t)
+        {
+            TestDAO.Instance.Delete(t);
+        }
+
+        public List<Test> GetAll()
+        {
+            return TestDAO.Instance.GetAll();
+        }
+
+        public Task<List<Test>> GetAllAsync()
+        {
+            return TestDAO.Instance.GetAllAsync();
+        }
+
+        public Task<List<Test>> GetAllByName(string name)
+        {
+            return TestDAO.Instance.GetAllByName(name);
+        }
+
+        public Test GetById(string id)
+        {
+            return TestDAO.Instance.GetById(id);
+        }
+
+        public Task<Test> GetByIdAsync(string id)
+        {
+            return TestDAO.Instance.GetByIdAsync(id);
+        }
+
+        public Task<Test> GetByIdAsync(byte id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveChanges()
+        {
+            TestDAO.Instance.SaveChanges();
+        }
+
+        public void Update(Test t)
+        {
+            TestDAO.Instance.Update(t);
+        }
     }
 }
