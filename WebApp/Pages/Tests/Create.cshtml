@@ -13,47 +13,47 @@
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group">
 				<label asp-for="CreateTestDTO.Name" class="control-label"></label>
-				<input asp-for="CreateTestDTO.Name" class="form-control" />
+				<input id="ipTestName" asp-for="CreateTestDTO.Name" class="form-control" />
 				<span asp-validation-for="CreateTestDTO.Name" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="CreateTestDTO.KeyCode" class="control-label"></label>
-				<input asp-for="CreateTestDTO.KeyCode" class="form-control" />
+				<input id="ipTestKeyCode" asp-for="CreateTestDTO.KeyCode" class="form-control" />
 				<span asp-validation-for="CreateTestDTO.KeyCode" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="CreateTestDTO.StartTime" class="control-label"></label>
-				<input asp-for="CreateTestDTO.StartTime" class="form-control" />
+				<input id="ipTestStartTime" asp-for="CreateTestDTO.StartTime" class="form-control" />
 				<span asp-validation-for="CreateTestDTO.StartTime" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="CreateTestDTO.EndTime" class="control-label"></label>
-				<input asp-for="CreateTestDTO.EndTime" class="form-control" />
+				<input id="ipTestEndTime" asp-for="CreateTestDTO.EndTime" class="form-control" />
 				<span asp-validation-for="CreateTestDTO.EndTime" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="CreateTestDTO.GradeReleaseDate" class="control-label"></label>
-				<input asp-for="CreateTestDTO.GradeReleaseDate" class="form-control" />
+				<input id="ipTestGradeReleaseDate" asp-for="CreateTestDTO.GradeReleaseDate" class="form-control" />
 				<span asp-validation-for="CreateTestDTO.GradeReleaseDate" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="CreateTestDTO.GradeFinalizationDate" class="control-label"></label>
-				<input asp-for="CreateTestDTO.GradeFinalizationDate" class="form-control" />
+				<input id="ipTestGradeFinalizationDate" asp-for="CreateTestDTO.GradeFinalizationDate" class="form-control" />
 				<span asp-validation-for="CreateTestDTO.GradeFinalizationDate" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="CreateTestDTO.Duration" class="control-label"></label>
-				<input asp-for="CreateTestDTO.Duration" class="form-control" />
+				<input id="ipTestDuration" asp-for="CreateTestDTO.Duration" class="form-control" />
 				<span asp-validation-for="CreateTestDTO.Duration" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="CreateTestDTO.Batch" class="control-label"></label>
-				<input asp-for="CreateTestDTO.Batch" class="form-control" />
+				<input id="ipTestBatch" asp-for="CreateTestDTO.Batch" class="form-control" />
 				<span asp-validation-for="CreateTestDTO.Batch" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="CreateTestDTO.TestCategoryId" class="control-label"></label>
-				<select asp-for="CreateTestDTO.TestCategoryId" class="form-control" asp-items="ViewBag.TestCategory"></select>
+				<select id="slTestCategory" asp-for="CreateTestDTO.TestCategoryId" class="form-control" asp-items="ViewBag.TestCategory"></select>
 			</div>
 			<div class="form-group">
 				<input type="submit" id="btnSubmit" value="Create" class="btn btn-primary" hidden />
@@ -68,7 +68,7 @@
 				<div class="form-group mx-sm-3 mb-2">
 					<input name="searchString" class="form-control form-control-sm" />
 				</div>
-				<button class="btn btn-secondary btn-sm mb-2" type="submit">Search</button>
+				<button id="btnSearchQuestions" class="btn btn-secondary btn-sm mb-2" type="submit">Search</button>
 			</form>
 		    @foreach (var item in Model.QuestionList)
 			{
@@ -87,8 +87,21 @@
 </div>
 @section Scripts {
 	<script type="text/javascript">
+		let localTest = {};
 		let localQuestions = [];
+		localTest = JSON.parse(localStorage.getItem("testInfo"));
 		localQuestions = JSON.parse(localStorage.getItem("selectedQuestions"));
+		if (localTest != null) {
+			$("#ipTestName").val(localTest["name"]);;
+			$("#ipTestKeyCode").val(localTest["keyCode"]);
+			$("#ipTestStartTime").val(localTest["startTime"]);
+			$("#ipTestEndTime").val(localTest["endTime"]);
+			$("#ipTestGradeReleaseDate").val(localTest["gradeReleaseDate"]);
+			$("#ipTestGradeFinalizationDate").val(localTest["gradeFinalizationDate"]);
+			$("#ipTestDuration").val(localTest["duration"]);
+			$("#ipTestBatch").val(localTest["batch"]);
+			$("#slTestCategory").val(localTest["testCategory"]);
+		}
 		if (localQuestions != null && localQuestions.length > 0) {
 			$("input[type=checkbox]").each(function () {
 				if (localQuestions.includes($(this).val())) {
@@ -104,6 +117,20 @@
 			});
 			localStorage.setItem("selectedQuestions", JSON.stringify(selectedIds))
 		});
+		$("#btnSearchQuestions").click(function() {
+			var testInfo = {
+				name: $("#ipTestName").val(),
+				keyCode: $("#ipTestKeyCode").val(),
+				startTime: $("#ipTestStartTime").val(),
+				endTime: $("#ipTestEndTime").val(),
+				gradeReleaseDate: $("#ipTestGradeReleaseDate").val(),
+				gradeFinalizationDate: $("#ipTestGradeFinalizationDate").val(),
+				duration: $("#ipTestDuration").val(),
+				batch: $("#ipTestBatch").val(),
+				testCategory: $("#slTestCategory").val()
+			};
+			localStorage.setItem("testInfo", JSON.stringify(testInfo));
+		});
 		function handleSubmit() {
 			let selectedQuestions = [];
 			selectedQuestions = JSON.parse(localStorage.getItem("selectedQuestions"));
@@ -111,7 +138,6 @@
 				alert("Please select questions to add to the test.");
 				return;
 			}
-			console.log(selectedQuestions);
 			$.ajax({
 				url: '?handler=AddQuestions',
 				type: 'POST',
@@ -126,6 +152,7 @@
 				}),
 				success: (data) => {
 					$("#btnSubmit").click();
+					localStorage.removeItem("testInfo");
 					localStorage.removeItem("selectedQuestions");
 				},
 				error: (error) => {
