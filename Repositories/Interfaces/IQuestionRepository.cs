@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interfaces
 {
-    interface IQuestionRepository : IRepository<Question>
+    public interface IQuestionRepository : IRepository<Question>
     {
+        //Task<List<Question>> GetByTestNameAndBatchAsync(string batch, string name);
+
     }
 }

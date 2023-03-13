@@ -7,7 +7,13 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interfaces
 {
-    interface ITestRepository : IRepository<Test>
+    public interface ITestRepository : IRepository<Test>
     {
+        Task<List<Test>> GetBySearchAsync(string search);
+        bool IsKeyCodeCorrect(Guid testId, string keyCode);
+        bool IsTestAvailable(Guid testId, DateTime currentTime);
+        Task<List<String>> GetTestNamesByBatch(string batch);
+        List<Test> GetAllByBatch();
+        Task<Test> GetByTestNameAndBatchAsync(string batch, string name);
     }
 }

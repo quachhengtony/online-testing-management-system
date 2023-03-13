@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Repositories;
+using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,13 @@ namespace WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+
+            services.AddSession();
+
+            services.AddSingleton<IQuestionRepository, QuestionRepository>();
+            services.AddSingleton<ITestRepository, TestRepository>();
+            services.AddSingleton<ISubmissionRepository, SubmissionRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +50,7 @@ namespace WebApp
             }
 
             app.UseHttpsRedirection();
+            app.UseSession();
             app.UseStaticFiles();
 
             app.UseRouting();

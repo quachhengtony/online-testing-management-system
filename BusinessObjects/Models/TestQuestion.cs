@@ -7,8 +7,8 @@ namespace BusinessObjects.Models
 {
     public partial class TestQuestion
     {
-        public string QuestionId { get; set; }
-        public string TestId { get; set; }
+        public Guid QuestionId { get; set; }
+        public Guid TestId { get; set; }
 
         public virtual Question Question { get; set; }
         public virtual Test Test { get; set; }

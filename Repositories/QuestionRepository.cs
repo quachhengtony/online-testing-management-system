@@ -5,42 +5,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAO;
 
 namespace Repositories
 {
-    public class TestCreatorRepository : ITestCreatorRepository
+    public class QuestionRepository : IQuestionRepository
     {
-        public void Create(TestCreator t)
+        public void Create(Question t)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(TestCreator t)
+        public void Delete(Question t)
         {
             throw new NotImplementedException();
         }
 
-        public List<TestCreator> GetAll()
+        public List<Question> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<TestCreator>> GetAllAsync()
+        public Task<List<Question>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public TestCreator GetById(Guid id)
+        public Question GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return QuestionDAO.Instance.GetById(id);
         }
 
-        public List<TestCreator> GetByNameOrEmail(string searchString)
+        /*public Task<List<Question>> GetByTestNameAndBatchAsync(string batch, string name)
         {
-            throw new NotImplementedException();
-        }
+            return QuestionDAO.Instance.GetByTestNameAndBatchAsync(batch, name);
+        }*/
 
-        public void Update(TestCreator t)
+        public void Update(Question t)
         {
             throw new NotImplementedException();
         }

@@ -13,7 +13,7 @@ namespace BusinessObjects.Models
             TestQuestions = new HashSet<TestQuestion>();
         }
 
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string KeyCode { get; set; }
         public DateTime StartTime { get; set; }
@@ -23,7 +23,7 @@ namespace BusinessObjects.Models
         public byte Duration { get; set; }
         public string Batch { get; set; }
         public byte? TestCategoryId { get; set; }
-        public string TestCreatorId { get; set; }
+        public Guid TestCreatorId { get; set; }
 
         public virtual TestCategory TestCategory { get; set; }
         public virtual TestCreator TestCreator { get; set; }
