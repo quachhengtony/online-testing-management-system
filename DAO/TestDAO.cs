@@ -12,14 +12,14 @@ namespace DAO
     public class TestDAO : IDAO<Test>
     {
         private static TestDAO instance;
-        private static readonly object instaneLock = new object();
+        private static readonly object instanceLock = new object();
         private static OnlineTestingManagementSystemDbContext dbContext;
 
         public static TestDAO Instance
         {
             get
             {
-                lock(instaneLock)
+                lock (instanceLock)
                 {
                     if (instance == null)
                     {
@@ -45,9 +45,40 @@ namespace DAO
 
         public List<Test> GetAll()
         {
-            return dbContext.Tests.ToList();
+            throw new NotImplementedException();
         }
 
+        public Task<List<Test>> GetAllForTestTakerAsync()
+        {
+            return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).ToListAsync();
+        }
+
+        public Task<List<Test>> GetBySearchForTestTakerAsync(string search)
+        {
+            return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).Where(t => t.Batch.Contains(search)).ToListAsync();
+        }
+
+        public Test GetByIdForTestTaker(Guid id)
+        {
+            return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).Where(t => t.Id == id).FirstOrDefault();
+        }
+
+        public Task<Test> GetByIdAsync(byte id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Test> GetByIdForTestTakerAsync(Guid id)
+        {
+            return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).Where(t => t.Id == id).FirstOrDefaultAsync();
+        }
+
+        public Task<List<String>> GetTestNamesByBatchForTestTaker(string batch)
+        {
+            return (from t in dbContext.Tests
+                    where t.Batch == batch
+                    select t.Name).ToListAsync();
+        }
         public Test GetById(Guid id)
         {
             return dbContext.Tests.Find(id);
@@ -63,6 +94,22 @@ namespace DAO
             dbContext.Tests.Update(t);
         }
 
+        public bool IsKeyCodeCorrectForTestTaker(Guid testId, string keyCode)
+        {
+            return dbContext.Tests.Where(t => t.Id == testId && t.KeyCode == keyCode).Count() > 0;
+        }
+
+        public bool IsTestAvailableForTestTaker(Guid testId, DateTime currentTime)
+        {
+            return dbContext.Tests.Where(t => t.Id == testId && t.StartTime < currentTime && t.EndTime > currentTime).Count() > 0;
+
+        }
+
+        public Task<Test> GetByTestNameAndBatchForTestTakerAsync(string batch, string name)
+        {
+            return dbContext.Tests.Where(t => t.Batch == batch && t.Name == name).Include(t => t.TestQuestions)
+                .ThenInclude(tq => tq.Question).ThenInclude(q => q.Answers).FirstOrDefaultAsync();
+        }
         public Task<List<Test>> GetAllAsync()
         {
             return dbContext.Tests.Include(t => t.TestCategory).ToListAsync();

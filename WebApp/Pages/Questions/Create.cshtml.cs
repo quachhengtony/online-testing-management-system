@@ -50,7 +50,7 @@ namespace WebApp.Pages.Questions
 					Id = Guid.NewGuid(),
 					Content = CreateQuestionDTO.Content,
 					QuestionCategoryId = CreateQuestionDTO.QuestionCategoryId,
-					QuestionCreatorId = Guid.Parse("AEC1060F-F755-457E-B6B4-9C2EE79C6214"),
+					QuestionCreatorId = Guid.Parse("D9EB24B3-750D-40B6-95DE-3D90B2D0C4F0"),
 					Weight = CreateQuestionDTO.Weight,
 				};
                 switch (question.QuestionCategoryId)

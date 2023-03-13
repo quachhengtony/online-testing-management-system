@@ -1,0 +1,58 @@
+﻿@page
+@model WebApp.Pages.TestInfo.TestTakingModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h1>Test</h1>
+<p id="demo"></p>
+
+        @{
+            var i = 0;
+        }
+<form method="post" id="testForm">
+    @foreach (var item in Model.QuestionList) {
+        i++;
+        <div>
+            <p><strong>@i</strong> @item.Content</p>
+            @if (item.QuestionCategoryId == 1)
+            {
+                @foreach (var ans in item.Answers)
+                {
+                     <input type="checkbox" id="@ans.Id" name="@item.Id" value="@ans.Id">
+                     <label for="@ans.Id">@ans.Content</label> <br />
+                }
+            } else if (item.QuestionCategoryId == 2)
+            {
+                @foreach (var ans in item.Answers)
+                {
+                    <input type="radio" name="@item.Id" value="@ans.Id" id="@ans.Id"/>
+                    <label for="@ans.Id">@ans.Content</label> <br />
+                }
+            } else if (item.QuestionCategoryId == 3)
+            {
+                <textarea placeholder="Enter your answer here..." id="@item.Id" name="@item.Id"></textarea>
+            }
+        </div>
+    }
+    <input type="submit" value="Submit" />
+</form>
+
+
+<script type="text/javascript">
+    var distance = 2 * 60;
+
+    var x = setInterval(function() {
+        var minutes = Math.floor(distance / 60);
+        var seconds = distance % 60;
+
+        document.getElementById("demo").innerHTML = minutes + "m :" + seconds + "s ";
+        distance--;
+
+        if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("testForm").submit();
+        }
+    }, 1000);
+</script>

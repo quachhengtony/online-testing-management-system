@@ -32,9 +32,27 @@ namespace Repositories
         }
 
 		public Task<List<Test>> GetAllByName(string name)
-		{
+        {
             return TestDAO.Instance.GetAllByName(name);
-		}
+        }
+
+        public List<Test> GetAllByBatchForTestTaker()
+		{
+            var tests = TestDAO.Instance.GetAllForTestTakerAsync().Result;
+            var batchs = new List<String>();
+            foreach (var test in tests.ToList())
+            {
+                if (batchs != null && batchs.Contains(test.Batch))
+                {
+                    tests.Remove(test);
+                }
+                else
+                {
+                    batchs.Add(test.Batch);
+                }
+            }
+            return tests;
+        }
 
 		public Test GetById(Guid id)
         {
@@ -46,9 +64,18 @@ namespace Repositories
             return TestDAO.Instance.GetByIdAsync(id);
         }
 
+        public Task<Test> GetByIdForTestTakerAsync(Guid id)
+        {
+            return TestDAO.Instance.GetByIdForTestTakerAsync(id);
+        }
+
         public Task<Test> GetByIdAsync(byte id)
         {
             throw new NotImplementedException();
+        }
+        public Task<List<Test>> GetBySearchForTestTakerAsync(string search)
+        {
+            return TestDAO.Instance.GetBySearchForTestTakerAsync(search);
         }
 
         public async Task<bool> IsDue(Guid id)
@@ -65,9 +92,30 @@ namespace Repositories
             return true;
         }
 
+        public Task<Test> GetByTestNameAndBatchForTestTakerAsync(string batch, string name)
+        {
+            return TestDAO.Instance.GetByTestNameAndBatchForTestTakerAsync(batch, name);
+        }
+
+        public Task<List<string>> GetTestNamesByBatchForTestTaker(string batch)
+        {
+            return TestDAO.Instance.GetTestNamesByBatchForTestTaker(batch);
+        }
+
+        public bool IsKeyCodeCorrectForTestTaker(Guid testId, string keyCode)
+        {
+            return TestDAO.Instance.IsKeyCodeCorrectForTestTaker(testId, keyCode);
+            
+        }
+
         public void SaveChanges()
-		{
+        {
             TestDAO.Instance.SaveChanges();
+        }
+
+        public bool IsTestAvailableForTestTaker(Guid testId, DateTime currentTime)
+		{
+            return TestDAO.Instance.IsTestAvailableForTestTaker(testId, currentTime);
 		}
 
 		public void Update(Test t)

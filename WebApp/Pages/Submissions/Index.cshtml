@@ -1,0 +1,55 @@
+﻿@page
+@model WebApp.Pages.Submissions.IndexModel
+
+@{
+    ViewData["Title"] = "Submissions";
+}
+
+<h1>Submissions History</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Submission[0].Test.Batch)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Submission[0].TimeTaken)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Submission[0].SubmittedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Submission[0].GradedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Submission[0].Score)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Submission) {
+        <tr>            
+            <td>
+                @Html.DisplayFor(modelItem => item.Test.Batch)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeTaken)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubmittedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GradedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Score)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

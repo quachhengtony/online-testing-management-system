@@ -1,0 +1,72 @@
+﻿@page
+@model WebApp.Pages.TestInfo.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<span class="text-danger">@Model.ErrorMessage</span>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Test[0].Batch)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Test[0].StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Test[0].EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Test[0].Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Test[0].TestCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Test[0].TestCreator)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Test) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Batch)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TestCategory.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TestCreator.FirstName)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <form method="post" class="d-flex justify-content-center">
+                    <input name="keyCode" type="password" class="form-control" required/>
+                    <input type="hidden" name="id" value="@item.Id" />
+                    <input type="submit" value="Join" class="btn btn-primary" />
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
