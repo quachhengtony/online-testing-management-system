@@ -25,13 +25,13 @@ namespace WebApp.Pages.TestInfo
 
         public async Task OnGetAsync()
         {
-            Test = testRepository.GetAllByBatch();
+            Test = testRepository.GetAllByBatchForTestTaker();
         }
 
         public IActionResult OnPost(String keyCode, Guid id)
         {
-            Test = testRepository.GetAllByBatch();
-            var test = testRepository.GetById(id);
+            Test = testRepository.GetAllByBatchForTestTaker();
+            var test = testRepository.GetByIdForTestTakerAsync(id).Result;
 
 
             if (test.KeyCode != keyCode)

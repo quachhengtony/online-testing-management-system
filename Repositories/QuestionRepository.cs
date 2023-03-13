@@ -36,11 +36,6 @@ namespace Repositories
             return QuestionDAO.Instance.GetById(id);
         }
 
-        /*public Task<List<Question>> GetByTestNameAndBatchAsync(string batch, string name)
-        {
-            return QuestionDAO.Instance.GetByTestNameAndBatchAsync(batch, name);
-        }*/
-
         public void Update(Question t)
         {
             throw new NotImplementedException();

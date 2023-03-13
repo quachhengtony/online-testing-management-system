@@ -36,31 +36,29 @@ namespace DAO
         public void Create(Test t)
         {
             dbContext.Tests.Add(t);
-            SaveChanges();
         }
 
         public void Delete(Test t)
         {
             dbContext.Tests.Remove(t);
-            SaveChanges();
         }
 
         public List<Test> GetAll()
         {
-            return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).ToList();
+            throw new NotImplementedException();
         }
 
-        public Task<List<Test>> GetAllAsync()
+        public Task<List<Test>> GetAllForTestTakerAsync()
         {
             return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).ToListAsync();
         }
 
-        public Task<List<Test>> GetBySearchAsync(string search)
+        public Task<List<Test>> GetBySearchForTestTakerAsync(string search)
         {
             return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).Where(t => t.Batch.Contains(search)).ToListAsync();
         }
 
-        public Test GetById(Guid id)
+        public Test GetByIdForTestTaker(Guid id)
         {
             return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).Where(t => t.Id == id).FirstOrDefault();
         }
@@ -70,12 +68,12 @@ namespace DAO
             throw new NotImplementedException();
         }
 
-        public Task<Test> GetByIdAsync(Guid id)
+        public Task<Test> GetByIdForTestTakerAsync(Guid id)
         {
             return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).Where(t => t.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<List<String>> GetTestNamesByBatch(string batch)
+        public Task<List<String>> GetTestNamesByBatchForTestTaker(string batch)
         {
             return (from t in dbContext.Tests
                     where t.Batch == batch
@@ -93,23 +91,36 @@ namespace DAO
             SaveChanges();
         }
 
-        public bool IsKeyCodeCorrect(Guid testId, string keyCode)
+        public bool IsKeyCodeCorrectForTestTaker(Guid testId, string keyCode)
         {
             return dbContext.Tests.Where(t => t.Id == testId && t.KeyCode == keyCode).Count() > 0;
         }
 
-        public bool IsTestAvailable(Guid testId, DateTime currentTime)
+        public bool IsTestAvailableForTestTaker(Guid testId, DateTime currentTime)
         {
             return dbContext.Tests.Where(t => t.Id == testId && t.StartTime < currentTime && t.EndTime > currentTime).Count() > 0;
 
         }
 
-        public Task<Test> GetByTestNameAndBatchAsync(string batch, string name)
+        public Task<Test> GetByTestNameAndBatchForTestTakerAsync(string batch, string name)
         {
             return dbContext.Tests.Where(t => t.Batch == batch && t.Name == name).Include(t => t.TestQuestions)
                 .ThenInclude(tq => tq.Question).ThenInclude(q => q.Answers).FirstOrDefaultAsync();
         }
-                    
 
+        public Test GetById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Test> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Test>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

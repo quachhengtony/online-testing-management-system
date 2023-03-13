@@ -55,15 +55,6 @@ namespace DAO
             return dbContext.Questions.Include(q => q.Answers).Include(q => q.QuestionCategory).ToListAsync();
         }
 
-        /*public Task<List<Question>> GetByTestNameAndBatchAsync(string batch, string name)
-        {
-            return (from q in dbContext.Questions
-                    join qt in dbContext.TestQuestions on q.Id equals qt.QuestionId
-                    join t in dbContext.Tests on qt.TestId equals t.Id
-                    where t.Name == name && t.Batch == batch
-                    select q).Include("Answer").ToListAsync();
-        }*/
-
         public Question GetById(Guid id)
         {
             return dbContext.Questions.Where(q => q.Id == id).Include(q => q.Answers).Include(q => q.QuestionCategory).FirstOrDefault();

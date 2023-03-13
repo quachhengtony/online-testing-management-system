@@ -30,11 +30,11 @@ namespace WebApp.Pages.TestInfo
 
         public async void OnGet(string batch)
         {
-            var testNames = testRepository.GetTestNamesByBatch(batch).Result;
+            var testNames = testRepository.GetTestNamesByBatchForTestTaker(batch).Result;
             var name = testNames[new Random().Next(testNames.Count)];
 
 
-            var test = testRepository.GetByTestNameAndBatchAsync(batch, name).Result;
+            var test = testRepository.GetByTestNameAndBatchForTestTakerAsync(batch, name).Result;
             foreach (var testQuestion in test.TestQuestions)
             {
                 QuestionList.Add(testQuestion.Question);

@@ -31,9 +31,9 @@ namespace Repositories
             return TestDAO.Instance.GetAllAsync();
         }
 
-        public List<Test> GetAllByBatch()
+        public List<Test> GetAllByBatchForTestTaker()
         {
-            var tests = TestDAO.Instance.GetAllAsync().Result;
+            var tests = TestDAO.Instance.GetAllForTestTakerAsync().Result;
             var batchs = new List<String>();
             foreach (var test in tests.ToList())
             {
@@ -53,29 +53,34 @@ namespace Repositories
             return TestDAO.Instance.GetById(id);
         }
 
-        public Task<List<Test>> GetBySearchAsync(string search)
+        public Task<Test> GetByIdForTestTakerAsync(Guid id)
         {
-            return TestDAO.Instance.GetBySearchAsync(search);
+            return TestDAO.Instance.GetByIdForTestTakerAsync(id);
         }
 
-        public Task<Test> GetByTestNameAndBatchAsync(string batch, string name)
+        public Task<List<Test>> GetBySearchForTestTakerAsync(string search)
         {
-            return TestDAO.Instance.GetByTestNameAndBatchAsync(batch, name);
+            return TestDAO.Instance.GetBySearchForTestTakerAsync(search);
         }
 
-        public Task<List<string>> GetTestNamesByBatch(string batch)
+        public Task<Test> GetByTestNameAndBatchForTestTakerAsync(string batch, string name)
         {
-            return TestDAO.Instance.GetTestNamesByBatch(batch);
+            return TestDAO.Instance.GetByTestNameAndBatchForTestTakerAsync(batch, name);
         }
 
-        public bool IsKeyCodeCorrect(Guid testId, string keyCode)
+        public Task<List<string>> GetTestNamesByBatchForTestTaker(string batch)
         {
-            return TestDAO.Instance.IsKeyCodeCorrect(testId, keyCode);
+            return TestDAO.Instance.GetTestNamesByBatchForTestTaker(batch);
         }
 
-        public bool IsTestAvailable(Guid testId, DateTime currentTime)
+        public bool IsKeyCodeCorrectForTestTaker(Guid testId, string keyCode)
         {
-            return TestDAO.Instance.IsTestAvailable(testId, currentTime);
+            return TestDAO.Instance.IsKeyCodeCorrectForTestTaker(testId, keyCode);
+        }
+
+        public bool IsTestAvailableForTestTaker(Guid testId, DateTime currentTime)
+        {
+            return TestDAO.Instance.IsTestAvailableForTestTaker(testId, currentTime);
         }
 
         public void Update(Test t)

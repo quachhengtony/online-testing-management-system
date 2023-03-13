@@ -26,7 +26,7 @@ namespace WebApp.Pages.TestInfo
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
 
-            Test = testRepository.GetById(id);
+            Test = testRepository.GetByIdForTestTakerAsync(id).Result;
 
             if (Test == null)
             {
