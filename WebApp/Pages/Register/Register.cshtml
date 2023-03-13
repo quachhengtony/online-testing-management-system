@@ -1,0 +1,58 @@
+﻿@page
+@model WebApp.Pages.Register.RegisterModel
+@{
+}
+
+<h1>LOGIN</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="POST">
+            <div class="form-group">
+                <label asp-for="Username" class="control-label">User Name</label>
+                <input asp-for="Username" class="form-control" value="@ViewData["UserName"]" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Email</label>
+                <input asp-for="Email" class="form-control" value="@ViewData["Email"]" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label">Password</label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label">FirstName</label>
+                <input asp-for="FirstName" type="text" class="form-control" value="@ViewData["FirstName"]" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label">LastName</label>
+                <input asp-for="LastName" type="text" class="form-control" value="@ViewData["LastName"]" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Role" class="control-label">Role</label>
+                <select asp-for="Role" class="form-control">
+                    <option value="">Select a role</option>
+                    <option value="taker">Test-taker</option>
+                    <option value="creator">Test-creator</option>
+                </select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-primary" />
+            </div>
+            <div class="form-group">
+                You have account? <a asp-page="../Login/Login">Login</a>
+            </div>
+        </form>
+
+        @if (!string.IsNullOrEmpty(ViewBag.Message))
+        {
+            <p class="alert alert-danger" role="alert">@ViewData["Message"]</p>
+        }
+    </div>
+</div>

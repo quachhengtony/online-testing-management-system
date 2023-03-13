@@ -74,10 +74,12 @@ namespace DAO
         }
 
         public Task<List<String>> GetTestNamesByBatchForTestTaker(string batch)
+        public Test GetById(Guid id)
         {
             return (from t in dbContext.Tests
                     where t.Batch == batch
                     select t.Name).ToListAsync();
+            return dbContext.Tests.Find(id);
         }
 
         public void SaveChanges()
@@ -88,7 +90,6 @@ namespace DAO
         public void Update(Test t)
         {
             dbContext.Tests.Update(t);
-            SaveChanges();
         }
 
         public bool IsKeyCodeCorrectForTestTaker(Guid testId, string keyCode)
@@ -103,24 +104,21 @@ namespace DAO
         }
 
         public Task<Test> GetByTestNameAndBatchForTestTakerAsync(string batch, string name)
+        public Task<List<Test>> GetAllAsync()
         {
             return dbContext.Tests.Where(t => t.Batch == batch && t.Name == name).Include(t => t.TestQuestions)
                 .ThenInclude(tq => tq.Question).ThenInclude(q => q.Answers).FirstOrDefaultAsync();
+            return dbContext.Tests.Include(t => t.TestCategory).ToListAsync();
         }
 
-        public Test GetById(Guid id)
+        public Task<List<Test>> GetAllByName(string name)
         {
-            throw new NotImplementedException();
+            return dbContext.Tests.Where(t => t.Name.Contains(name)).ToListAsync();
         }
 
         public Task<Test> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Test>> GetAllAsync()
-        {
-            throw new NotImplementedException();
+            return dbContext.Tests.Where(t => t.Id == id).Include(t => t.TestCategory).Include(t => t.TestQuestions).ThenInclude(tq => tq.Question).FirstOrDefaultAsync();
         }
     }
 }

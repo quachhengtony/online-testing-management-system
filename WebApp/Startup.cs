@@ -25,6 +25,21 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+            services.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(15));
+            services.AddHttpContextAccessor();
+            services.AddRazorPages();
+			services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+			services.AddSingleton<IQuestionRepository, QuestionRepository>();
+            services.AddSingleton<IAnswerRepository, AnswerRepository>();
+            services.AddSingleton<IQuestionCategoryRepository, QuestionCategoryRepository>();
+            services.AddSingleton<ITestRepository, TestRepository>();
+            services.AddSingleton<ITestCategoryRepository, TestCategoryRepository>();
+            services.AddSingleton<ITestQuestionRepository, TestQuestionRepository>();
+            services.AddMvc().AddRazorPagesOptions(options =>
+            {
+                options.Conventions.AddPageRoute("/Login/Login", "");
+            });
             services.AddRazorPages();
 
             services.AddSession();
@@ -33,6 +48,9 @@ namespace WebApp
             services.AddSingleton<ITestRepository, TestRepository>();
             services.AddSingleton<ISubmissionRepository, SubmissionRepository>();
 
+            services.AddSession();
+            services.AddSingleton<ITestCreatorRepository, TestCreatorRepository>();
+            services.AddSingleton<ITestTakerRepository, TestTakerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,13 +68,16 @@ namespace WebApp
             }
 
             app.UseHttpsRedirection();
+
             app.UseSession();
+
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

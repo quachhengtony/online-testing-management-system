@@ -5,7 +5,6 @@ using BusinessObjects.Models;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
-
 #nullable disable
 
 namespace BusinessObjects.DbContexts
@@ -203,19 +202,19 @@ namespace BusinessObjects.DbContexts
             modelBuilder.Entity<TestQuestion>(entity =>
             {
                 entity.HasKey(e => new { e.QuestionId, e.TestId })
-                    .HasName("PK__TestQues__150C5CBA3360C59A");
+                    .HasName("PK__TestQues__150C5CBA1AC1E7D7");
 
                 entity.ToTable("TestQuestion");
 
                 entity.HasOne(d => d.Question)
                     .WithMany(p => p.TestQuestions)
                     .HasForeignKey(d => d.QuestionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_TestQuestion_Question");
 
                 entity.HasOne(d => d.Test)
                     .WithMany(p => p.TestQuestions)
                     .HasForeignKey(d => d.TestId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_TestQuestion_Test");
             });
 

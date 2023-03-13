@@ -1,4 +1,5 @@
 ﻿using BusinessObjects.Models;
+using DAO;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,22 +14,27 @@ namespace Repositories
     {
         public void Create(Question t)
         {
-            throw new NotImplementedException();
+            QuestionDAO.Instance.Create(t);
         }
 
         public void Delete(Question t)
         {
-            throw new NotImplementedException();
+            QuestionDAO.Instance.Delete(t);
         }
 
         public List<Question> GetAll()
         {
-            throw new NotImplementedException();
+            return QuestionDAO.Instance.GetAll();
         }
 
         public Task<List<Question>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return QuestionDAO.Instance.GetAllAsync();
+        }
+
+        public Task<List<Question>> GetAllByContent(string content)
+        {
+            return QuestionDAO.Instance.GetAllByContent(content);
         }
 
         public Question GetById(Guid id)
@@ -36,9 +42,24 @@ namespace Repositories
             return QuestionDAO.Instance.GetById(id);
         }
 
-        public void Update(Question t)
+        public Task<Question> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return QuestionDAO.Instance.GetByIdAsync(id);
+        }
+
+        //public Task<Question> GetByIdAsync(byte id)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+		public void SaveChanges()
+		{
+            QuestionDAO.Instance.SaveChanges();
+		}
+
+		public void Update(Question t)
+        {
+            QuestionDAO.Instance.Update(t);
         }
     }
 }

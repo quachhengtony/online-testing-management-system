@@ -16,5 +16,9 @@ namespace Repositories.Interfaces
         Task<List<String>> GetTestNamesByBatchForTestTaker(string batch);
         List<Test> GetAllByBatchForTestTaker();
         Task<Test> GetByTestNameAndBatchForTestTakerAsync(string batch, string name);
+        public Test GetById(Guid id);
+        public Task<Test> GetByIdAsync(Guid id);
+        public Task<List<Test>> GetAllByName(string name);
+        public Task<bool> IsDue(Guid id);
     }
 }

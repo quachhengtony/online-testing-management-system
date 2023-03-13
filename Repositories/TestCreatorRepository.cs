@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Models;
+using BusinessObjects.Models;
+using DAO;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,17 +13,17 @@ namespace Repositories
     {
         public void Create(TestCreator t)
         {
-            throw new NotImplementedException();
+            TestCreatorDAO.Instance.Create(t);
         }
 
         public void Delete(TestCreator t)
         {
-            throw new NotImplementedException();
+            TestCreatorDAO.Instance.Delete(t);
         }
 
         public List<TestCreator> GetAll()
         {
-            throw new NotImplementedException();
+            return TestCreatorDAO.Instance.GetAll();
         }
 
         public Task<List<TestCreator>> GetAllAsync()
@@ -32,6 +33,16 @@ namespace Repositories
 
         public TestCreator GetById(Guid id)
         {
+            return TestCreatorDAO.Instance.GetById(id);
+        }
+
+        public Task<TestCreator> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TestCreator> GetByIdAsync(byte id)
+        {
             throw new NotImplementedException();
         }
 
@@ -40,9 +51,19 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(TestCreator t)
+        public TestCreator Login(string email, string password)
+        {
+            return TestCreatorDAO.Instance.Login(email, password);
+        }
+
+        public void SaveChanges()
         {
             throw new NotImplementedException();
+        }
+
+        public void Update(TestCreator t)
+        {
+            TestCreatorDAO.Instance.Update(t);
         }
     }
 }

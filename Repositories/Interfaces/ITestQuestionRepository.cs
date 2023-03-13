@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interfaces
 {
-    interface ITestQuestionRepository : IRepository<TestQuestion>
+    public interface ITestQuestionRepository : IRepository<TestQuestion>
     {
+        public Task<List<Guid>> GetAllTestsByQuestionId(Guid questionId);
     }
 }

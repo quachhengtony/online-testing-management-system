@@ -1,0 +1,85 @@
+﻿@page
+@model WebApp.Pages.Tests.DetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+<h1>Details</h1>
+<div>
+    <h4>Test</h4>
+    <hr />
+    <dl class="row">
+        <div class="col-md-6">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Test.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Test.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Test.KeyCode)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Test.KeyCode)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Test.StartTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Test.StartTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Test.EndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Test.EndTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Test.GradeReleaseDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Test.GradeReleaseDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Test.GradeFinalizationDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Test.GradeFinalizationDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Test.Duration)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Test.Duration)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Test.Batch)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Test.Batch)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Test.TestCategory)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Test.TestCategory.Category)
+            </dd>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group" style="height:800px;overflow:auto;">
+                <label for="exampleCheck1">Questions:</label>
+                @foreach (var item in Model.Test.TestQuestions)
+                {
+                    <div class="form-check">
+                        <label class="form-check-label" for="option1">
+                            @Html.DisplayFor(modelItem => item.Question.Content) - @Html.DisplayFor(modelItem => item.Question.Weight)%
+                        </label>
+                    </div>
+                }
+            </div>
+        </div>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Test.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

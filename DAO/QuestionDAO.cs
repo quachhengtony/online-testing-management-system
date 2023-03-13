@@ -36,13 +36,11 @@ namespace DAO
         public void Create(Question t)
         {
             dbContext.Questions.Add(t);
-            SaveChanges();
         }
 
         public void Delete(Question t)
         {
             dbContext.Questions.Remove(t);
-            SaveChanges();
         }
 
         public List<Question> GetAll()
@@ -60,6 +58,11 @@ namespace DAO
             return dbContext.Questions.Where(q => q.Id == id).Include(q => q.Answers).Include(q => q.QuestionCategory).FirstOrDefault();
         }
 
+        public Task<List<Question>> GetAllByContent(string content)
+        {
+            return dbContext.Questions.Where(q => q.Content.Contains(content)).ToListAsync();
+        }
+
         public Task<Question> GetByIdAsync(Guid id)
         {
             return dbContext.Questions.Where(q => q.Id == id).Include(q => q.Answers).Include(q => q.QuestionCategory).FirstOrDefaultAsync();
@@ -72,8 +75,7 @@ namespace DAO
 
         public void Update(Question t)
         {
-            dbContext.Questions.Update(t);
-            SaveChanges();
+            dbContext.Questions.Update(t); 
         }
 
         public Task<Question> GetByIdAsync(byte id)
