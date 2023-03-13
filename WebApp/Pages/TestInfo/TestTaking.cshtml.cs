@@ -43,6 +43,7 @@ namespace WebApp.Pages.TestInfo
             HttpContext.Session.SetString("QuestionListId", JsonSerializer.Serialize(QuestionList.Select(i => i.Id).ToList()));
             HttpContext.Session.SetString("TestId", test.Id.ToString());
             HttpContext.Session.SetString("GradeFinalDate", test.GradeFinalizationDate.ToString());
+            HttpContext.Session.SetString("StartTime", DateTime.Now.ToString());
         }
 
         public IActionResult OnPost()
@@ -61,14 +62,58 @@ namespace WebApp.Pages.TestInfo
                 TestId = Guid.Parse(HttpContext.Session.GetString("TestId")),
                 SubmittedDate = DateTime.Now,
                 GradedDate = DateTime.Parse(HttpContext.Session.GetString("GradeFinalDate")),
-                TimeTaken = 50,
-                Score = 0,
+                TimeTaken = (byte)((DateTime.Now - DateTime.Parse(HttpContext.Session.GetString("StartTime"))).Minutes + 1),
+                Score = GetScore(TestAnswer),
                 Feedback = null,
-                IsGraded = false,
+                IsGraded = true,
                 Content = JsonSerializer.Serialize(TestAnswer)
             };
             submissionRepository.Create(submission);
             return RedirectToPage("/Submissions/Index");
+        }
+
+        public decimal GetScore(Dictionary<Guid, String> testAnswer)
+        {
+            decimal score = 0.0m;
+            decimal totalWeight = 0;
+            var questionList = new List<Question>();
+            foreach (var key in testAnswer.Keys)
+            {
+                var question = questionRepository.GetByIdAsync(key).Result;
+                questionList.Add(question);
+                totalWeight += question.Weight;
+            }
+
+            foreach (var pair in testAnswer)
+            {
+                var question = questionList.Where(q => q.Id == pair.Key).FirstOrDefault();
+                if (question.QuestionCategoryId == 1)
+                {
+                    int quesScore = 0;
+                    int totalCorrectAns = question.Answers.Where(a => a.IsCorrect).ToList().Count;
+                    var ansIdList = question.Answers.Where(a => a.IsCorrect).Select(a => a.Id).ToList();
+                    foreach (var ansId in pair.Value.Split(','))
+                    {
+                        if (ansIdList.Contains(Guid.Parse(ansId)))
+                        {
+                            quesScore++;
+                        } else
+                        {
+                            quesScore--;
+                        }
+                    }
+                    quesScore = quesScore < 0 ? 0 : quesScore;
+                    score += (decimal)quesScore / (decimal)totalCorrectAns * (question.Weight / totalWeight) * 100.0m;
+                } else if (question.QuestionCategoryId == 2)
+                {
+                    if (question.Answers.Where(a => a.IsCorrect).First().Id.ToString() == pair.Value)
+                    {
+                        score += question.Weight / totalWeight * 100.0m;
+                    }
+                }
+            }
+
+            return decimal.Round(score, 2, MidpointRounding.AwayFromZero); ;
         }
     }
 }
