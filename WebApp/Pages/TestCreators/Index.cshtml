@@ -8,9 +8,22 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<div class="row">
+    <div class="col-md-4">
+        <form method="get">
+            <div class="form-group form-inline">
+                <div class="form-group mb-2">
+                    <label class="control-label">Search</label>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <input name="searchString" class="form-control" value="@ViewData["Search"]" />
+                    <button class="btn btn-secondary" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -33,29 +46,43 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.TestCreator) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.TestCreatorList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.TestCreatorList.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.TestCreatorList.HasNextPage ? "disabled" : "";
+}
+<a asp-page="./Index"
+   asp-route-pageIndex="@(Model.TestCreatorList.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">Previous</a>
+<a asp-page="./Index"
+   asp-route-pageIndex="@(Model.TestCreatorList.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">Next</a>
