@@ -74,11 +74,13 @@ namespace DAO
         }
 
         public Task<List<String>> GetTestNamesByBatchForTestTaker(string batch)
-        public Test GetById(Guid id)
         {
             return (from t in dbContext.Tests
                     where t.Batch == batch
                     select t.Name).ToListAsync();
+        }
+        public Test GetById(Guid id)
+        {
             return dbContext.Tests.Find(id);
         }
 
@@ -104,10 +106,12 @@ namespace DAO
         }
 
         public Task<Test> GetByTestNameAndBatchForTestTakerAsync(string batch, string name)
-        public Task<List<Test>> GetAllAsync()
         {
             return dbContext.Tests.Where(t => t.Batch == batch && t.Name == name).Include(t => t.TestQuestions)
                 .ThenInclude(tq => tq.Question).ThenInclude(q => q.Answers).FirstOrDefaultAsync();
+        }
+        public Task<List<Test>> GetAllAsync()
+        {
             return dbContext.Tests.Include(t => t.TestCategory).ToListAsync();
         }
 

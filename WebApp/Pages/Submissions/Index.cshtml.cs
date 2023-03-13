@@ -24,7 +24,7 @@ namespace WebApp.Pages.Submissions
 
         public async Task OnGetAsync()
         {
-            Submission = submissionRepository.GetByTestTakerIdAsync(Guid.Parse(HttpContext.Session.GetString("TestTakerId"))).Result;
+            Submission = submissionRepository.GetByTestTakerIdAsync(Guid.Parse("FEABE0FB-4518-4E94-9F70-2D2616D1BF25")).Result;
 
         }
     }

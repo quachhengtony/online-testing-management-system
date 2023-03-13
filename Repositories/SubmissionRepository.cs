@@ -14,6 +14,7 @@ namespace Repositories
         public void Create(Submission t)
         {
             SubmissionDAO.Instance.Create(t);
+            SaveChanges();
         }
 
         public void Delete(Submission t)
@@ -44,6 +45,11 @@ namespace Repositories
         public Task<List<Submission>> GetByTestTakerIdAsync(Guid id)
         {
             return SubmissionDAO.Instance.GetByTestTakerIdAsync(id);
+        }
+
+        public void SaveChanges()
+        {
+            SubmissionDAO.Instance.SaveChanges();
         }
 
         public void Update(Submission t)

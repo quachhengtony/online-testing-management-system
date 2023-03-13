@@ -32,9 +32,12 @@ namespace Repositories
         }
 
 		public Task<List<Test>> GetAllByName(string name)
+        {
+            return TestDAO.Instance.GetAllByName(name);
+        }
+
         public List<Test> GetAllByBatchForTestTaker()
 		{
-            return TestDAO.Instance.GetAllByName(name);
             var tests = TestDAO.Instance.GetAllForTestTakerAsync().Result;
             var batchs = new List<String>();
             foreach (var test in tests.ToList())
@@ -42,10 +45,11 @@ namespace Repositories
                 if (batchs != null && batchs.Contains(test.Batch))
                 {
                     tests.Remove(test);
-                } else
+                }
+                else
                 {
                     batchs.Add(test.Batch);
-		}
+                }
             }
             return tests;
         }
@@ -56,16 +60,21 @@ namespace Repositories
         }
 
         public Task<Test> GetByIdAsync(Guid id)
-        public Task<Test> GetByIdForTestTakerAsync(Guid id)
         {
             return TestDAO.Instance.GetByIdAsync(id);
+        }
+
+        public Task<Test> GetByIdForTestTakerAsync(Guid id)
+        {
             return TestDAO.Instance.GetByIdForTestTakerAsync(id);
         }
 
         public Task<Test> GetByIdAsync(byte id)
-        public Task<List<Test>> GetBySearchForTestTakerAsync(string search)
         {
             throw new NotImplementedException();
+        }
+        public Task<List<Test>> GetBySearchForTestTakerAsync(string search)
+        {
             return TestDAO.Instance.GetBySearchForTestTakerAsync(search);
         }
 
@@ -73,29 +82,39 @@ namespace Repositories
         {
             var test = await TestDAO.Instance.GetByIdAsync(id);
             if (test == null)
-        public Task<Test> GetByTestNameAndBatchForTestTakerAsync(string batch, string name)
             {
                 return false;
-            return TestDAO.Instance.GetByTestNameAndBatchForTestTakerAsync(batch, name);
             }
             if (DateTime.Now < test.StartTime)
-
-        public Task<List<string>> GetTestNamesByBatchForTestTaker(string batch)
             {
                 return false;
-            return TestDAO.Instance.GetTestNamesByBatchForTestTaker(batch);
             }
+            return true;
+        }
+
+        public Task<Test> GetByTestNameAndBatchForTestTakerAsync(string batch, string name)
+        {
+            return TestDAO.Instance.GetByTestNameAndBatchForTestTakerAsync(batch, name);
+        }
+
+        public Task<List<string>> GetTestNamesByBatchForTestTaker(string batch)
+        {
+            return TestDAO.Instance.GetTestNamesByBatchForTestTaker(batch);
+        }
 
         public bool IsKeyCodeCorrectForTestTaker(Guid testId, string keyCode)
         {
             return TestDAO.Instance.IsKeyCodeCorrectForTestTaker(testId, keyCode);
-            return true;
+            
         }
 
         public void SaveChanges()
+        {
+            TestDAO.Instance.SaveChanges();
+        }
+
         public bool IsTestAvailableForTestTaker(Guid testId, DateTime currentTime)
 		{
-            TestDAO.Instance.SaveChanges();
             return TestDAO.Instance.IsTestAvailableForTestTaker(testId, currentTime);
 		}
 

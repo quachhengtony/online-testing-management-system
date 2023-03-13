@@ -57,7 +57,7 @@ namespace WebApp.Pages.TestInfo
             var submission = new Submission()
             {
                 Id = Guid.NewGuid(),
-                TestTakerId = Guid.Parse(HttpContext.Session.GetString("TestTakerId")),
+                TestTakerId = Guid.Parse("FEABE0FB-4518-4E94-9F70-2D2616D1BF25"),
                 TestId = Guid.Parse(HttpContext.Session.GetString("TestId")),
                 SubmittedDate = DateTime.Now,
                 GradedDate = DateTime.Parse(HttpContext.Session.GetString("GradeFinalDate")),
