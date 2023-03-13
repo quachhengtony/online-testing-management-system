@@ -12,5 +12,7 @@ namespace Repositories.Interfaces
         public List<TestCreator> GetByNameOrEmail(string searchString);
 
         public TestCreator Login(string email, string password);
+
+        public List<TestCreator> GetTestCreatorsByName(String name);
     }
 }
