@@ -36,6 +36,26 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @{
+                if (TempData["Status"] != null && TempData["StatusMessage"] != null)
+                {
+                    switch ((TempData["Status"] as string))
+                    {
+                        case "Success":
+                            <div class="alert alert-success" role="alert">
+                                @TempData["StatusMessage"]
+                            </div>
+                        break;
+                        case "Failed":
+                            <div class="alert alert-danger" role="alert">
+                                @TempData["StatusMessage"]
+                            </div>
+                        break;
+                        default: break;
+                    }
+                    
+                }
+            }
             @RenderBody()
         </main>
     </div>
