@@ -124,5 +124,15 @@ namespace DAO
         {
             return dbContext.Tests.Where(t => t.Id == id).Include(t => t.TestCategory).Include(t => t.TestQuestions).ThenInclude(tq => tq.Question).FirstOrDefaultAsync();
         }
+
+        public Task<Test> GetByBatch(string batch)
+        {
+            return dbContext.Tests.Where(t => t.Batch == batch).FirstOrDefaultAsync();
+        }
+
+        public Task<List<Test>> GetAllByTestCreatorAsync(Guid testCreatorId)
+        {
+            return dbContext.Tests.Where(t => t.TestCreatorId == testCreatorId).ToListAsync();
+        }
     }
 }

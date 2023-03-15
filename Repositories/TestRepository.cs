@@ -2,6 +2,7 @@
 using DAO;
 using Repositories.Interfaces;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -105,7 +106,6 @@ namespace Repositories
         public bool IsKeyCodeCorrectForTestTaker(Guid testId, string keyCode)
         {
             return TestDAO.Instance.IsKeyCodeCorrectForTestTaker(testId, keyCode);
-            
         }
 
         public void SaveChanges()
@@ -122,5 +122,30 @@ namespace Repositories
         {
             TestDAO.Instance.Update(t);
         }
-    }
+
+        public Task<Test> GetByBatch(string batch)
+        {
+            return TestDAO.Instance.GetByBatch(batch);
+        }
+
+		public async Task<List<string>> GetAllUniqueBatchesOfTestCreator(Guid testCreatorId)
+		{
+            List<string> list;
+            Hashtable hashtable = new();
+            var tests = await TestDAO.Instance.GetAllByTestCreatorAsync(testCreatorId);
+            if (tests.Count <= 0) 
+            {
+                return null;
+            }
+            foreach (var test in tests)
+            {
+                if (!hashtable.ContainsKey(test.Batch))
+                {
+                    hashtable.Add(test.Batch, true);
+                }
+            }
+            list = hashtable.Keys.Cast<string>().ToList();
+            return list;
+		}
+	}
 }
