@@ -1,5 +1,6 @@
 ﻿using BusinessObjects.DbContexts;
 using BusinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,12 +40,19 @@ namespace DAO
 
         public void Delete(TestTaker t)
         {
-            throw new NotImplementedException();
+            using (var dbContext = new OnlineTestingManagementSystemDbContext())
+            {
+                dbContext.TestTakers.Remove(t);
+                dbContext.SaveChanges();
+            }
         }
 
         public List<TestTaker> GetAll()
         {
-            throw new NotImplementedException();
+            using (var dbContext = new OnlineTestingManagementSystemDbContext())
+            {
+                return dbContext.TestTakers.ToList();
+            }
         }
 
         public TestTaker GetById(string id)
@@ -59,7 +67,11 @@ namespace DAO
 
         public void Update(TestTaker t)
         {
-            throw new NotImplementedException();
+            using (var dbContext = new OnlineTestingManagementSystemDbContext())
+            {
+                dbContext.Entry<TestTaker>(t).State = EntityState.Modified;
+                dbContext.SaveChanges();
+            }
         }
 
         public TestTaker Login(string email, string password)
@@ -77,12 +89,23 @@ namespace DAO
 
         public TestTaker GetById(Guid id)
         {
-            throw new NotImplementedException();
+            using (var dbContext = new OnlineTestingManagementSystemDbContext())
+            {
+                return dbContext.TestTakers.SingleOrDefault(t => t.Id == id);
+            }
         }
 
         public Task<TestTaker> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public List<TestTaker> GetTakersByName(String name)
+        {
+            using (var dbContext = new OnlineTestingManagementSystemDbContext())
+            {
+                return dbContext.TestTakers.Where(c => c.FirstName.Contains(name) || c.LastName.Contains(name)).ToList();
+            }
         }
     }
 }
