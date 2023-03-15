@@ -11,49 +11,64 @@
 	<div class="col-md-6">
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="text" hidden asp-for="TestBatchMode" id="rdCreateMode" value="New" />
 			<div class="form-group">
 				<label asp-for="CreateTestDTO.Name" class="control-label"></label>
 				<input id="ipTestName" asp-for="CreateTestDTO.Name" class="form-control" />
 				<span asp-validation-for="CreateTestDTO.Name" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="CreateTestDTO.KeyCode" class="control-label"></label>
-				<input id="ipTestKeyCode" asp-for="CreateTestDTO.KeyCode" class="form-control" />
-				<span asp-validation-for="CreateTestDTO.KeyCode" class="text-danger"></span>
+				<label class="control-label" for="slTestBatch">Batches</label>
+				<select id="slTestBatch" onchange="hideShowNewBatchForm()" class="form-control">
+					@{
+						<option value="New" selected>New batch</option>
+						foreach (var batch in Model.TestBatches)
+						{
+							<option value="@batch">@batch</option>
+						}
+					}
+				</select>
 			</div>
-			<div class="form-group">
-				<label asp-for="CreateTestDTO.StartTime" class="control-label"></label>
-				<input id="ipTestStartTime" asp-for="CreateTestDTO.StartTime" class="form-control" />
-				<span asp-validation-for="CreateTestDTO.StartTime" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="CreateTestDTO.EndTime" class="control-label"></label>
-				<input id="ipTestEndTime" asp-for="CreateTestDTO.EndTime" class="form-control" />
-				<span asp-validation-for="CreateTestDTO.EndTime" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="CreateTestDTO.GradeReleaseDate" class="control-label"></label>
-				<input id="ipTestGradeReleaseDate" asp-for="CreateTestDTO.GradeReleaseDate" class="form-control" />
-				<span asp-validation-for="CreateTestDTO.GradeReleaseDate" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="CreateTestDTO.GradeFinalizationDate" class="control-label"></label>
-				<input id="ipTestGradeFinalizationDate" asp-for="CreateTestDTO.GradeFinalizationDate" class="form-control" />
-				<span asp-validation-for="CreateTestDTO.GradeFinalizationDate" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="CreateTestDTO.Duration" class="control-label"></label>
-				<input id="ipTestDuration" asp-for="CreateTestDTO.Duration" class="form-control" />
-				<span asp-validation-for="CreateTestDTO.Duration" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="CreateTestDTO.Batch" class="control-label"></label>
-				<input id="ipTestBatch" asp-for="CreateTestDTO.Batch" class="form-control" />
-				<span asp-validation-for="CreateTestDTO.Batch" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="CreateTestDTO.TestCategoryId" class="control-label"></label>
-				<select id="slTestCategory" asp-for="CreateTestDTO.TestCategoryId" class="form-control" asp-items="ViewBag.TestCategory"></select>
+			<div id="formNewTestBatch">
+				<div class="form-group">
+					<label asp-for="CreateTestDTO.KeyCode" class="control-label"></label>
+					<input id="ipTestKeyCode" asp-for="CreateTestDTO.KeyCode" class="form-control" />
+					<span asp-validation-for="CreateTestDTO.KeyCode" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="CreateTestDTO.Duration" class="control-label"></label>
+					<input id="ipTestDuration" asp-for="CreateTestDTO.Duration" class="form-control" />
+					<span asp-validation-for="CreateTestDTO.Duration" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="CreateTestDTO.TestCategoryId" class="control-label"></label>
+					<select id="slTestCategory" asp-for="CreateTestDTO.TestCategoryId" class="form-control" asp-items="ViewBag.TestCategory"></select>
+				</div>
+				<div class="form-group">
+					<label asp-for="CreateTestDTO.Batch" class="control-label"></label>
+					<input id="ipTestBatch" asp-for="CreateTestDTO.Batch" class="form-control" />
+					<span asp-validation-for="CreateTestDTO.Batch" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="CreateTestDTO.StartTime" class="control-label"></label>
+					<input id="ipTestStartTime" asp-for="CreateTestDTO.StartTime" class="form-control" />
+					<span asp-validation-for="CreateTestDTO.StartTime" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="CreateTestDTO.EndTime" class="control-label"></label>
+					<input id="ipTestEndTime" asp-for="CreateTestDTO.EndTime" class="form-control" />
+					<span asp-validation-for="CreateTestDTO.EndTime" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="CreateTestDTO.GradeReleaseDate" class="control-label"></label>
+					<input id="ipTestGradeReleaseDate" asp-for="CreateTestDTO.GradeReleaseDate" class="form-control" />
+					<span asp-validation-for="CreateTestDTO.GradeReleaseDate" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="CreateTestDTO.GradeFinalizationDate" class="control-label"></label>
+					<input id="ipTestGradeFinalizationDate" asp-for="CreateTestDTO.GradeFinalizationDate" class="form-control" />
+					<span asp-validation-for="CreateTestDTO.GradeFinalizationDate" class="text-danger"></span>
+				</div>
 			</div>
 			<div class="form-group">
 				<input type="submit" id="btnSubmit" value="Create" class="btn btn-primary" hidden />
@@ -159,7 +174,16 @@
 					alert("Error: " + error);
 				}
 			})
-		}	
+		}
+		function hideShowNewBatchForm() {
+			if ($("#slTestBatch :selected").val() == "New") {
+				$("#rdCreateMode").val("New");
+				$("#formNewTestBatch").show();
+			} else {
+				$("#rdCreateMode").val($("#slTestBatch").val());
+				$("#formNewTestBatch").hide();
+			}
+		}
 	</script>
 	@{
 		await Html.RenderPartialAsync("_ValidationScriptsPartial");
