@@ -53,11 +53,11 @@ namespace WebApp.Pages.Submissions
             CurrentFilter = searchString;
             if (!string.IsNullOrEmpty(searchString))
             {
-                submissionList = submissionRepository.GetByTestTakerIdAndBatchAsync(Guid.Parse("FEABE0FB-4518-4E94-9F70-2D2616D1BF25"), searchString).Result;
+                submissionList = submissionRepository.GetByTestTakerIdAndBatchAsync(Guid.Parse(HttpContext.Session.GetString("UserId")), searchString).Result;
             }
             else
             {
-                submissionList = submissionRepository.GetByTestTakerIdAsync(Guid.Parse("FEABE0FB-4518-4E94-9F70-2D2616D1BF25")).Result; ;
+                submissionList = submissionRepository.GetByTestTakerIdAsync(Guid.Parse(HttpContext.Session.GetString("UserId"))).Result; ;
             }
             SubmissionList = PaginatedList<Submission>.CreateAsync(submissionList, pageIndex ?? 1, pageSize);
             return Page();
