@@ -73,9 +73,23 @@ namespace Repositories
         {
             throw new NotImplementedException();
         }
-        public Task<List<Test>> GetBySearchForTestTakerAsync(string search)
+        public List<Test> GetBySearchForTestTaker(string search)
         {
-            return TestDAO.Instance.GetBySearchForTestTakerAsync(search);
+            var tests = TestDAO.Instance.GetBySearchForTestTakerAsync(search).Result;
+            var batchs = new List<String>();
+            foreach (var test in tests.ToList())
+            {
+                if (batchs != null && batchs.Contains(test.Batch))
+                {
+                    tests.Remove(test);
+                }
+                else
+                {
+                    batchs.Add(test.Batch);
+                }
+            }
+            
+            return tests;
         }
 
         public async Task<bool> IsDue(Guid id)

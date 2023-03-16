@@ -10,33 +10,48 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+<div class="row">
+	<div class="col-md-4">
+		<form method="get">
+			<div class="form-group form-inline">
+                <div class="form-group mb-2">
+    				<label class="control-label">Search</label>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <input name="searchString" class="form-control" />
+                    <button class="btn btn-secondary" type="submit">Search</button>
+                </div>
+			</div>
+        </form>
+    </div>
+</div>
 <span class="text-danger">@Model.ErrorMessage</span>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Test[0].Batch)
+                @Html.DisplayNameFor(model => model.TestList[0].Batch)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Test[0].StartTime)
+                @Html.DisplayNameFor(model => model.TestList[0].StartTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Test[0].EndTime)
+                @Html.DisplayNameFor(model => model.TestList[0].EndTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Test[0].Duration)
+                @Html.DisplayNameFor(model => model.TestList[0].Duration)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Test[0].TestCategory)
+                @Html.DisplayNameFor(model => model.TestList[0].TestCategory)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Test[0].TestCreator)
+                @Html.DisplayNameFor(model => model.TestList[0].TestCreator)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Test) {
+@foreach (var item in Model.TestList) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Batch)
@@ -57,16 +72,27 @@
                 @Html.DisplayFor(modelItem => item.TestCreator.FirstName)
             </td>
             <td>
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <form method="post" class="d-flex justify-content-center">
-                    <input name="keyCode" type="password" class="form-control" required/>
+                <a asp-page="./Details" asp-route-id="@item.Id" style="width: 25%;">Details</a> |
+                <form method="post" class="d-flex justify-content-center" style="width: 75%;float: right;">
+                    <input name="keyCode" type="password" class="form-control" required style="width: 70%;"/>
                     <input type="hidden" name="id" value="@item.Id" />
-                    <input type="submit" value="Join" class="btn btn-primary" />
+                    <input type="hidden" name="pageIndex" value="@Model.PageIndex" />
+                    <input type="submit" value="Join" class="btn btn-primary" style="width: 30%;"/>
                 </form>
             </td>
         </tr>
 }
     </tbody>
 </table>
-
-
+@{
+    var prevDisabled = !Model.TestList.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.TestList.HasNextPage ? "disabled" : "";
+}
+<a asp-page="./Index"
+   asp-route-pageIndex="@(Model.TestList.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">Previous</a>
+<a asp-page="./Index"
+   asp-route-pageIndex="@(Model.TestList.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">Next</a>

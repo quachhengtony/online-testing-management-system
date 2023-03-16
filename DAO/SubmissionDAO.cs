@@ -72,12 +72,17 @@ namespace DAO
 
         public Task<Submission> GetByIdAsync(Guid id)
         {
-            return dbContext.Submissions.Where(s => s.Id == id).FirstOrDefaultAsync();
+            return dbContext.Submissions.Include(s => s.Test).Where(s => s.Id == id).FirstOrDefaultAsync();
         }
 
         public Task<List<Submission>> GetByTestTakerIdAsync(Guid id)
         {
             return dbContext.Submissions.Where(s => s.TestTakerId == id).Include(t => t.Test).ToListAsync();
+        }
+
+        public Task<List<Submission>> GetByTestTakerIdAndBatchAsync(Guid id, string batch)
+        {
+            return dbContext.Submissions.Include(t => t.Test).Where(s => s.TestTakerId == id && s.Test.Batch.Contains(batch)).ToListAsync();
         }
 
         public void SaveChanges()

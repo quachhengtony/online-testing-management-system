@@ -6,30 +6,44 @@
 }
 
 <h1>Submissions History</h1>
-
+<div class="row">
+	<div class="col-md-4">
+		<form method="get">
+			<div class="form-group form-inline">
+                <div class="form-group mb-2">
+    				<label class="control-label">Search</label>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <input name="searchString" class="form-control" />
+                    <button class="btn btn-secondary" type="submit">Search</button>
+                </div>
+			</div>
+        </form>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Submission[0].Test.Batch)
+                @Html.DisplayNameFor(model => model.SubmissionList[0].Test.Batch)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Submission[0].TimeTaken)
+                @Html.DisplayNameFor(model => model.SubmissionList[0].TimeTaken)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Submission[0].SubmittedDate)
+                @Html.DisplayNameFor(model => model.SubmissionList[0].SubmittedDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Submission[0].GradedDate)
+                @Html.DisplayNameFor(model => model.SubmissionList[0].GradedDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Submission[0].Score)
+                @Html.DisplayNameFor(model => model.SubmissionList[0].Score)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Submission) {
+@foreach (var item in Model.SubmissionList) {
         <tr>            
             <td>
                 @Html.DisplayFor(modelItem => item.Test.Batch)
@@ -53,3 +67,15 @@
 }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.SubmissionList.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.SubmissionList.HasNextPage ? "disabled" : "";
+}
+<a asp-page="./Index"
+   asp-route-pageIndex="@(Model.SubmissionList.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">Previous</a>
+<a asp-page="./Index"
+   asp-route-pageIndex="@(Model.SubmissionList.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">Next</a>

@@ -42,6 +42,11 @@ namespace Repositories
             return SubmissionDAO.Instance.GetByIdAsync(id);
         }
 
+        public Task<List<Submission>> GetByTestTakerIdAndBatchAsync(Guid id, string batch)
+        {
+            return SubmissionDAO.Instance.GetByTestTakerIdAndBatchAsync(id, batch);
+        }
+
         public Task<List<Submission>> GetByTestTakerIdAsync(Guid id)
         {
             return SubmissionDAO.Instance.GetByTestTakerIdAsync(id);

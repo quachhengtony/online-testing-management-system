@@ -1,17 +1,22 @@
 ﻿@page
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+
 @model WebApp.Pages.TestInfo.TestTakingModel
 @{
     ViewData["Title"] = "Index";
 }
 
 
-<h1>Test</h1>
-<p id="demo"></p>
+<h1 style=text-align: center;">Test</h1>
+<div style="position: fixed;right: 100px;top: 100px;font-weight: bolder;font-size: xx-large;">
+    <p id="demo"></p>
+</div>
 
         @{
             var i = 0;
         }
-<form method="post" id="testForm">
+<form method="post" id="testForm" style="margin-left: 20%; margin-right: 20%">
     @foreach (var item in Model.QuestionList) {
         i++;
         <div>
@@ -20,14 +25,14 @@
             {
                 @foreach (var ans in item.Answers)
                 {
-                     <input type="checkbox" id="@ans.Id" name="@item.Id" value="@ans.Id">
+                     <input type="checkbox" id="@ans.Id" name="@item.Id" value="@ans.Id" checked="@Model.CheckedAnswer[i-1].Contains(ans.Id.ToString())"/>
                      <label for="@ans.Id">@ans.Content</label> <br />
                 }
             } else if (item.QuestionCategoryId == 2)
             {
                 @foreach (var ans in item.Answers)
                 {
-                    <input type="radio" name="@item.Id" value="@ans.Id" id="@ans.Id"/>
+                    <input type="radio" name="@item.Id" value="@ans.Id" id="@ans.Id" checked="@Model.CheckedAnswer[i-1].Contains(ans.Id.ToString())"/>
                     <label for="@ans.Id">@ans.Content</label> <br />
                 }
             } else if (item.QuestionCategoryId == 3)
@@ -36,23 +41,48 @@
             }
         </div>
     }
-    <input type="submit" value="Submit" />
+    <input type="hidden" value="@Model.PageIndex" name="PageIndex" />
+    <input type="hidden" id="Duration" name="Duration" />
+
+    <input asp-page-handler="Submit" type="submit" value="Submit" />
+
+    @{
+    var prevDisabled = !Model.QuestionList.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.QuestionList.HasNextPage ? "disabled" : "";
+}
+    <button asp-page-handler="PrevPage" type="submit" class-"btn btn-primary" disabled="@prevDisabled.Equals("disabled")" onmousedown="disableUnloadEvent()">Previous</button>
+    <button asp-page-handler="NextPage" type="submit" class-"btn btn-primary" disabled="@nextDisabled.Equals("disabled")" onmousedown="disableUnloadEvent()">Next</button>
+
 </form>
 
 
-<script type="text/javascript">
-    var distance = 2 * 60;
 
-    var x = setInterval(function() {
+
+<script type="text/javascript">
+    var distance = @Model.Duration;
+    updateTimer();
+    setInterval(updateTimer, 1000);
+
+    function updateTimer() {
         var minutes = Math.floor(distance / 60);
         var seconds = distance % 60;
 
         document.getElementById("demo").innerHTML = minutes + "m :" + seconds + "s ";
         distance--;
-
+        document.getElementById("Duration").value = distance;
         if (distance < 0) {
-        clearInterval(x);
-        document.getElementById("testForm").submit();
+            clearInterval(x);
+            //document.getElementById("testForm").submit();
         }
-    }, 1000);
+    }
+
+    function disableUnloadEvent() {
+        window.onbeforeunload = null;
+    }
+
+    window.onbeforeunload = function() {
+        return "Any changes will be lost";
+        
+    }
+
 </script>

@@ -10,7 +10,7 @@ namespace Repositories.Interfaces
     public interface ITestRepository : IRepository<Test>
     {
         Task<Test> GetByIdForTestTakerAsync(Guid id);
-        Task<List<Test>> GetBySearchForTestTakerAsync(string search);
+        List<Test> GetBySearchForTestTaker(string search);
         bool IsKeyCodeCorrectForTestTaker(Guid testId, string keyCode);
         bool IsTestAvailableForTestTaker(Guid testId, DateTime currentTime);
         Task<List<String>> GetTestNamesByBatchForTestTaker(string batch);
