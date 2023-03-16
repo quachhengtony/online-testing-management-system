@@ -37,7 +37,7 @@ namespace WebApp.Pages.Questions
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-			if (HttpContext.Session.GetString("Role") != "Creator")
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
 			{
 				return Redirect("/Error/AuthorizedError"); ;
 			}
@@ -58,7 +58,11 @@ namespace WebApp.Pages.Questions
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError"); ;
+			}
+			if (!ModelState.IsValid)
             {
                 return Page();
             }

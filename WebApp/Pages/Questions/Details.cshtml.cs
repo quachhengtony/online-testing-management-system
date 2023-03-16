@@ -31,7 +31,7 @@ namespace WebApp.Pages.Questions
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-			if (HttpContext.Session.GetString("Role") != "Creator")
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
 			{
 				return Redirect("/Error/AuthorizedError"); ;
 			}

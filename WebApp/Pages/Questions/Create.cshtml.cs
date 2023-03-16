@@ -37,7 +37,7 @@ namespace WebApp.Pages.Questions
 
         public async Task<IActionResult> OnGet()
         {
-            if (HttpContext.Session.GetString("Role") != "Creator")
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
             {
 				return Redirect("/Error/AuthorizedError"); ;
 			}
@@ -48,7 +48,11 @@ namespace WebApp.Pages.Questions
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public IActionResult OnPost()
         {
-            List<Answer> answerList = new();
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError"); ;
+			}
+			List<Answer> answerList = new();
             try
             {
 				var question = new Question()
@@ -109,7 +113,11 @@ namespace WebApp.Pages.Questions
 
         public IActionResult OnGetAddAnswer(string type, string content, string isCorrect)
         {
-            if (!ModelState.IsValid)
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError"); ;
+			}
+			if (!ModelState.IsValid)
             {
                 return Page();
             }
