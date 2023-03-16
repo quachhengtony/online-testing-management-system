@@ -32,8 +32,14 @@ namespace WebApp.Pages.Submissions
         }
 
 
-        public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
+        public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? pageIndex)
         {
+            if (String.IsNullOrEmpty(HttpContext.Session.GetString("Role"))
+                || !HttpContext.Session.GetString("Role").Equals("Taker"))
+            {
+                return Redirect("/Error/AuthorizedError");
+            }
+
             List<Submission> submissionList;
             int pageSize = configuration.GetValue("PageSize", 10);
             if (searchString != null)
@@ -54,6 +60,7 @@ namespace WebApp.Pages.Submissions
                 submissionList = submissionRepository.GetByTestTakerIdAsync(Guid.Parse("FEABE0FB-4518-4E94-9F70-2D2616D1BF25")).Result; ;
             }
             SubmissionList = PaginatedList<Submission>.CreateAsync(submissionList, pageIndex ?? 1, pageSize);
+            return Page();
         }
     }
 }

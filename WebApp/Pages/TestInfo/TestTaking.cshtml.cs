@@ -36,8 +36,14 @@ namespace WebApp.Pages.TestInfo
         }
 
 
-        public async void OnGet(string batch)
+        public async Task<IActionResult> OnGet(string batch)
         {
+            if (String.IsNullOrEmpty(HttpContext.Session.GetString("Role"))
+                || !HttpContext.Session.GetString("Role").Equals("Taker"))
+            {
+                return Redirect("/Error/AuthorizedError");
+            }
+
             var questionList = new List<Question>();
             //int pageSize = configuration.GetValue("PageSize", 10);
             int pageSize = 2;
@@ -96,7 +102,7 @@ namespace WebApp.Pages.TestInfo
 
             QuestionList = PaginatedList<Question>.CreateAsync(questionList, 1, pageSize);
             PageIndex = 1;
-            
+            return Page();
         }
 
         public IActionResult OnPostPrevPage()
