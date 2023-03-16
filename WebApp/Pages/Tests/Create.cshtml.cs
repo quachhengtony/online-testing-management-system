@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using WebApp.DTO;
 using WebApp.Constants;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Pages.Tests
 {
@@ -40,8 +41,12 @@ namespace WebApp.Pages.Tests
 
         public async Task<IActionResult> OnGetAsync([FromQuery] string searchString)
         {
-            ViewData["TestCategory"] = new SelectList(await testCategoryRepository.GetAllAsync(), "Id", "Category");
-            TestBatches = await testRepository.GetAllUniqueBatchesOfTestCreator(Guid.Parse("AEC1060F-F755-457E-B6B4-9C2EE79C6214"));
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError"); ;
+			}
+			ViewData["TestCategory"] = new SelectList(await testCategoryRepository.GetAllAsync(), "Id", "Category");
+            TestBatches = await testRepository.GetAllUniqueBatchesOfTestCreator(Guid.Parse(HttpContext.Session.GetString("UserId")));
 			if (!string.IsNullOrEmpty(searchString))
             {
                 QuestionList = await questionRepository.GetAllByContent(searchString);
@@ -56,7 +61,11 @@ namespace WebApp.Pages.Tests
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            try
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError"); ;
+			}
+			try
             {
                 Test test, testWithSameBatch;
                 List<TestQuestion> testQuestionList;
@@ -81,7 +90,7 @@ namespace WebApp.Pages.Tests
 						KeyCode = testWithSameBatch.KeyCode,
 						StartTime = testWithSameBatch.StartTime,
 						TestCategoryId = testWithSameBatch.TestCategoryId,
-						TestCreatorId = Guid.Parse("AEC1060F-F755-457E-B6B4-9C2EE79C6214"),
+						TestCreatorId = Guid.Parse(HttpContext.Session.GetString("UserId")),
 					};
 					testQuestionList = new();
 					foreach (var question in questionIdList)
@@ -114,7 +123,7 @@ namespace WebApp.Pages.Tests
 					KeyCode = CreateTestDTO.KeyCode,
 					StartTime = CreateTestDTO.StartTime,
 					TestCategoryId = CreateTestDTO.TestCategoryId,
-					TestCreatorId = Guid.Parse("AEC1060F-F755-457E-B6B4-9C2EE79C6214"),
+					TestCreatorId = Guid.Parse(HttpContext.Session.GetString("UserId")),
 				};
 				testWithSameBatch = await testRepository.GetByBatch(test.Batch);
 				if (testWithSameBatch != null)
@@ -153,7 +162,11 @@ namespace WebApp.Pages.Tests
 
         public IActionResult OnPostAddQuestionsAsync([FromBody] CreateTestQuestionDTO dto)
         {
-            foreach (var id in dto.QuestionIds)
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError"); ;
+			}
+			foreach (var id in dto.QuestionIds)
             {
 				questionIdList.Add(id);
             }

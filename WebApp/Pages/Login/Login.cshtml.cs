@@ -86,14 +86,16 @@ namespace WebApp.Pages.Login
                 else if(testCreatorRepository.Login(Email, Password) != null)
                 {
                     HttpContext.Session.SetString("Role", "Creator");
+                    HttpContext.Session.SetString("UserId", testCreatorRepository.Login(Email, Password).Id.ToString());
 
                     return Redirect("/Error");
                 }
                 else if(testTakerRepository.Login(Email, Password) != null)
                 {
                     HttpContext.Session.SetString("Role", "Taker");
+                    HttpContext.Session.SetString("UserId", testTakerRepository.Login(Email, Password).Id.ToString());
 
-                    return Redirect("/Error");
+                    return Redirect("/TestInfo");
                 }
                 else
                 {

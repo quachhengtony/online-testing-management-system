@@ -32,8 +32,14 @@ namespace WebApp.Pages.Submissions
         }
 
 
-        public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
+        public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? pageIndex)
         {
+            if (String.IsNullOrEmpty(HttpContext.Session.GetString("Role"))
+                || !HttpContext.Session.GetString("Role").Equals("Taker"))
+            {
+                return Redirect("/Error/AuthorizedError");
+            }
+
             List<Submission> submissionList;
             int pageSize = configuration.GetValue("PageSize", 10);
             if (searchString != null)
@@ -47,13 +53,14 @@ namespace WebApp.Pages.Submissions
             CurrentFilter = searchString;
             if (!string.IsNullOrEmpty(searchString))
             {
-                submissionList = submissionRepository.GetByTestTakerIdAndBatchAsync(Guid.Parse("411DEE92-915C-44DE-A892-61A468A27985"), searchString).Result;
+                submissionList = submissionRepository.GetByTestTakerIdAndBatchAsync(Guid.Parse(HttpContext.Session.GetString("UserId")), searchString).Result;
             }
             else
             {
-                submissionList = submissionRepository.GetByTestTakerIdAsync(Guid.Parse("411DEE92-915C-44DE-A892-61A468A27985")).Result; ;
+                submissionList = submissionRepository.GetByTestTakerIdAsync(Guid.Parse(HttpContext.Session.GetString("UserId"))).Result; ;
             }
             SubmissionList = PaginatedList<Submission>.CreateAsync(submissionList, pageIndex ?? 1, pageSize);
+            return Page();
         }
     }
 }

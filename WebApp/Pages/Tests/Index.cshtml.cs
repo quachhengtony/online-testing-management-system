@@ -11,6 +11,7 @@ using Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using WebApp.Models;
 using Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Pages.Tests
 {
@@ -33,8 +34,12 @@ namespace WebApp.Pages.Tests
 			this.configuration = configuration;
 		}
 
-		public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
+		public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? pageIndex)
         {
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError"); ;
+			}
 			List<Test> testList;
 			int pageSize = configuration.GetValue("PageSize", 10);
 			if (searchString != null)
@@ -55,6 +60,7 @@ namespace WebApp.Pages.Tests
 				testList = await testRepository.GetAllAsync();
 			}
 			TestList = PaginatedList<Test>.CreateAsync(testList, pageIndex ?? 1, pageSize);
+			return Page();
         }
     }
 }

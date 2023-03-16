@@ -9,6 +9,7 @@ using BusinessObjects.DbContexts;
 using BusinessObjects.Models;
 using Repositories;
 using Repositories.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Pages.TestInfo
 {
@@ -25,6 +26,11 @@ namespace WebApp.Pages.TestInfo
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
+            if (String.IsNullOrEmpty(HttpContext.Session.GetString("Role"))
+                || !HttpContext.Session.GetString("Role").Equals("Taker"))
+            {
+                return Redirect("/Error/AuthorizedError");
+            }
 
             Test = testRepository.GetByIdForTestTakerAsync(id).Result;
 

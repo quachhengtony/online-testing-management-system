@@ -10,6 +10,7 @@ using BusinessObjects.Models;
 using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using WebApp.Constants;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Pages.Tests
 {
@@ -29,7 +30,11 @@ namespace WebApp.Pages.Tests
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (id == null)
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError"); ;
+			}
+			if (id == null)
             {
                 return NotFound();
             }
@@ -43,7 +48,11 @@ namespace WebApp.Pages.Tests
 
         public async Task<IActionResult> OnPostAsync(string id)
         {
-            if (id == null)
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError"); ;
+			}
+			if (id == null)
             {
                 return NotFound();
             }
