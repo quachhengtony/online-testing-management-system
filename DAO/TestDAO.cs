@@ -120,6 +120,16 @@ namespace DAO
             return dbContext.Tests.Where(t => t.Name.Contains(name)).ToListAsync();
         }
 
+        public Task<List<Test>> GetAllByNameAndCreatorId(string name, Guid creatorId)
+        {
+            return dbContext.Tests.Where(t => t.Name.Contains(name) && creatorId.Equals(creatorId)).ToListAsync();
+        }
+
+        public Task<List<Test>> GetAllByCreatorId(Guid creatorId)
+        {
+            return dbContext.Tests.Where(t => creatorId.Equals(creatorId)).ToListAsync();
+        }
+
         public Task<Test> GetByIdAsync(Guid id)
         {
             return dbContext.Tests.Where(t => t.Id == id).Include(t => t.TestCategory).Include(t => t.TestQuestions).ThenInclude(tq => tq.Question).FirstOrDefaultAsync();

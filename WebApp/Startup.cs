@@ -35,6 +35,7 @@ namespace WebApp
             services.AddSingleton<IQuestionCategoryRepository, QuestionCategoryRepository>();
             services.AddSingleton<ITestRepository, TestRepository>();
             services.AddSingleton<ITestCategoryRepository, TestCategoryRepository>();
+            services.AddSingleton<ISubmissionRepository, SubmissionRepository>();
             services.AddSingleton<ITestQuestionRepository, TestQuestionRepository>();
             services.AddSingleton<ISubmissionRepository, SubmissionRepository>();
             services.AddSingleton<ITestCreatorRepository, TestCreatorRepository>();

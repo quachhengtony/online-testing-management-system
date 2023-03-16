@@ -19,6 +19,8 @@ namespace Repositories.Interfaces
         public Test GetById(Guid id);
         public Task<Test> GetByIdAsync(Guid id);
         public Task<List<Test>> GetAllByName(string name);
+        public Task<List<Test>> GetAllByNameAndCreatorId(string name, Guid creatorId);
+        public Task<List<Test>> GetAllByCreatorId(Guid creatorId);
         public Task<bool> IsDue(Guid id);
         public Task<Test> GetByBatch(string batch);
         public Task<List<string>> GetAllUniqueBatchesOfTestCreator(Guid testCreatorId); 

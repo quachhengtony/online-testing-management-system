@@ -22,11 +22,6 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public List<Submission> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<List<Submission>> GetAllAsync()
         {
             throw new NotImplementedException();
@@ -34,8 +29,29 @@ namespace Repositories
 
         public Submission GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return SubmissionDAO.Instance.GetById(id);
         }
+
+        public List<Submission> GetAll()
+        {
+            return SubmissionDAO.Instance.GetAll();
+        }
+
+        public List<Submission> GetByTestTakerId(Guid testTakerId)
+        {
+            return SubmissionDAO.Instance.GetByTestTakerId(testTakerId);
+        }
+
+        public List<Submission> GetByTestId(Guid testId)
+        {
+            return SubmissionDAO.Instance.GetByTestId(testId);
+        }
+
+        public List<Submission> GetByTestIdAndSubmittedDateRange(Guid testId, DateTime startDate, DateTime endDate)
+        {
+            return SubmissionDAO.Instance.GetByTestIdAndSubmittedDateRange(testId, startDate, endDate);
+        }
+
 
         public Task<Submission> GetByIdAsync(Guid id)
         {
@@ -57,9 +73,14 @@ namespace Repositories
             SubmissionDAO.Instance.SaveChanges();
         }
 
-        public void Update(Submission t)
+        public void Update(Submission submission)
         {
-            SubmissionDAO.Instance.Update(t);
+            SubmissionDAO.Instance.Update(submission);
+        }
+
+        public void Delete(Guid id)
+        {
+            SubmissionDAO.Instance.Delete(GetById(id));
         }
     }
 }
