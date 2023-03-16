@@ -10,6 +10,7 @@ using BusinessObjects.Models;
 using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Pages.TestReports
 {
@@ -32,6 +33,10 @@ namespace WebApp.Pages.TestReports
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
+            if (HttpContext.Session.GetString("Role") != "Creator")
+            {
+                return Redirect("/Error/AuthorizedError"); ;
+            }
             if (id == null)
             {
                 return NotFound();

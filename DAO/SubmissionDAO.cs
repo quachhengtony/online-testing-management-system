@@ -75,7 +75,7 @@ namespace DAO
 
         public Submission GetById(Guid id)
         {
-            return dbContext.Submissions.Where(s => s.Id == id).FirstOrDefault();
+            return dbContext.Submissions.Where(s => s.Id == id).Include(s => s.TestTaker).Include(s => s.Test).FirstOrDefault();
         }
 
         public Task<Submission> GetByIdAsync(byte id)

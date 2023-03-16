@@ -27,37 +27,37 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => Model.submissionList[0].SubmittedDate)
+                @Html.DisplayNameFor(model => Model.SubmissionList[0].SubmittedDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => Model.submissionList[0].GradedDate)
+                @Html.DisplayNameFor(model => Model.SubmissionList[0].GradedDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => Model.submissionList[0].TimeTaken)
+                @Html.DisplayNameFor(model => Model.SubmissionList[0].TimeTaken)
             </th>
             <th>
-                @Html.DisplayNameFor(model => Model.submissionList[0].Score)
+                @Html.DisplayNameFor(model => Model.SubmissionList[0].Score)
             </th>
             <th>
-                @Html.DisplayNameFor(model => Model.submissionList[0].Feedback)
+                @Html.DisplayNameFor(model => Model.SubmissionList[0].Feedback)
             </th>
             <th>
-                @Html.DisplayNameFor(model => Model.submissionList[0].IsGraded)
+                @Html.DisplayNameFor(model => Model.SubmissionList[0].IsGraded)
             </th>
             <th>
-                @Html.DisplayNameFor(model => Model.submissionList[0].Content)
+                @Html.DisplayNameFor(model => Model.SubmissionList[0].Content)
             </th>
             <th>
-                @Html.DisplayNameFor(model => Model.submissionList[0].Test)
+                @Html.DisplayNameFor(model => Model.SubmissionList[0].Test)
             </th>
             <th>
-                @Html.DisplayNameFor(model => Model.submissionList[0].TestTaker)
+                @Html.DisplayNameFor(model => Model.SubmissionList[0].TestTaker)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.submissionList) {
+@foreach (var item in Model.SubmissionList) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.SubmittedDate)
@@ -88,6 +88,7 @@
             </td>
             <td>
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
             </td>
         </tr>
 }

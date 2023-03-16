@@ -10,6 +10,7 @@ using BusinessObjects.Models;
 using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Pages.SubmissionPage
 {
@@ -17,20 +18,22 @@ namespace WebApp.Pages.SubmissionPage
     {
         private readonly ILogger<DetailsModel> logger;
         private readonly ISubmissionRepository submissionRepository;
-        private readonly IQuestionRepository questionRepository;
 
         public List<Question> QuestionList { get; set; } = new();
         public Submission Submission { get; set; }
 
-        public DetailsModel(ILogger<DetailsModel> logger, ISubmissionRepository submissionRepository, IQuestionRepository questionRepository)
+        public DetailsModel(ILogger<DetailsModel> logger, ISubmissionRepository submissionRepository)
         {
             this.logger = logger;
             this.submissionRepository = submissionRepository;
-            this.questionRepository = questionRepository;
         }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
+            if (HttpContext.Session.GetString("Role") != "Creator")
+            {
+                return Redirect("/Error/AuthorizedError"); ;
+            }
             if (id == null)
             {
                 return NotFound();

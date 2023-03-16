@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using WebApp.Models;
 using Repositories;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Pages.SubmissionPage
 {
@@ -26,7 +27,7 @@ namespace WebApp.Pages.SubmissionPage
         public string DateSort { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
-        public List<Submission> submissionList { get; set; }
+        public List<Submission> SubmissionList { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, ISubmissionRepository submissionRepository, ITestRepository testRepository, IConfiguration configuration)
         {
@@ -36,10 +37,14 @@ namespace WebApp.Pages.SubmissionPage
             this.testRepository = testRepository;
         }
 
-        public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
+        public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? pageIndex)
         {
+            if (HttpContext.Session.GetString("Role") != "Creator")
+            {
+                return Redirect("/Error/AuthorizedError"); ;
+            }
             int pageSize = configuration.GetValue("PageSize", 10);
-            Guid creatorId = new Guid("411DEE92-915C-44DE-A892-61A468A27985");
+            Guid creatorId = new Guid(HttpContext.Session.GetString("UserId"));
             if (searchString != null)
             {
                 pageIndex = 1;
@@ -50,15 +55,16 @@ namespace WebApp.Pages.SubmissionPage
             }
             CurrentFilter = searchString;
             List<Test> testList = await testRepository.GetAllByCreatorId(creatorId);
-            submissionList = new List<Submission>();
+            SubmissionList = new List<Submission>();
             if (testList != null && testList.Count != 0)
                 foreach (var test in testList)
-                { submissionList.AddRange(submissionRepository.GetByTestId(test.Id)); }
-            if (!string.IsNullOrEmpty(searchString) && submissionList.Count != 0)
+                { SubmissionList.AddRange(submissionRepository.GetByTestId(test.Id)); }
+            if (!string.IsNullOrEmpty(searchString) && SubmissionList.Count != 0)
             {
-                submissionList = submissionList.FindAll(s => s.TestId.ToString().Contains(searchString) || s.TestTakerId.ToString().Contains(searchString));
+                SubmissionList = SubmissionList.FindAll(s => s.TestId.ToString().Contains(searchString) || s.TestTakerId.ToString().Contains(searchString));
             }
-            submissionList = PaginatedList<Submission>.CreateAsync(submissionList, pageIndex ?? 1, pageSize);
+            SubmissionList = PaginatedList<Submission>.CreateAsync(SubmissionList, pageIndex ?? 1, pageSize);
+            return Page();
         }
     }
 }
