@@ -31,8 +31,14 @@ namespace WebApp.Pages.TestInfo
             this.configuration = configuration;
         }
 
-        public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
+        public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? pageIndex)
         {
+            if (String.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || 
+                !HttpContext.Session.GetString("Role").Equals("Taker"))
+            {
+                return Redirect("/Error/AuthorizedError");
+            }
+
             List<Test> testList;
             int pageSize = configuration.GetValue("PageSize", 10);
             if (searchString != null)
@@ -54,6 +60,7 @@ namespace WebApp.Pages.TestInfo
             }
             TestList = PaginatedList<Test>.CreateAsync(testList, pageIndex ?? 1, pageSize);
             PageIndex = pageIndex == null ? 1 : pageIndex.Value;
+            return Page();
         }
 
         public IActionResult OnPost(String keyCode, Guid id, int pageIndex)

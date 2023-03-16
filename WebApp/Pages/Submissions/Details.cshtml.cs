@@ -30,6 +30,13 @@ namespace WebApp.Pages.Submissions
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
+            if (String.IsNullOrEmpty(HttpContext.Session.GetString("Role"))
+                || !HttpContext.Session.GetString("Role").Equals("Taker"))
+            {
+                return Redirect("/Error/AuthorizedError");
+            }
+
+
             if (id == null)
             {
                 return NotFound();

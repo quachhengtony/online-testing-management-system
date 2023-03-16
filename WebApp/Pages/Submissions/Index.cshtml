@@ -44,7 +44,8 @@
     </thead>
     <tbody>
 @foreach (var item in Model.SubmissionList) {
-        <tr>            
+    var isGraded = item.IsGraded.Value ? "" : "background: #e61919;";
+        <tr style='@isGraded'>            
             <td>
                 @Html.DisplayFor(modelItem => item.Test.Batch)
             </td>
