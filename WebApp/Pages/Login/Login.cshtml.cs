@@ -96,7 +96,7 @@ namespace WebApp.Pages.Login
                     HttpContext.Session.SetString("Role", "Taker");
                     HttpContext.Session.SetString("UserId", testTakerRepository.Login(Email, Password).Id.ToString());
 
-                    return Redirect("/Error");
+                    return Redirect("/TestInfo");
                 }
                 else
                 {
