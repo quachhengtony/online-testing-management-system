@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using WebApp.DTO;
 using WebApp.Constants;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Pages.Questions
 {
@@ -36,7 +37,11 @@ namespace WebApp.Pages.Questions
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (id == null)
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError"); ;
+			}
+			if (id == null)
             {
                 return NotFound();
             }
@@ -53,7 +58,11 @@ namespace WebApp.Pages.Questions
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError"); ;
+			}
+			if (!ModelState.IsValid)
             {
                 return Page();
             }
