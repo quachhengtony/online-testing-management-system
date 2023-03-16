@@ -10,6 +10,7 @@ using Repositories.Interfaces;
 using WebApp.DTO;
 using System.Text.Json;
 using WebApp.Constants;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Pages.Questions
 {
@@ -36,6 +37,10 @@ namespace WebApp.Pages.Questions
 
         public async Task<IActionResult> OnGet()
         {
+            if (HttpContext.Session.GetString("Role") != "Creator")
+            {
+				return Redirect("/Error/AuthorizedError"); ;
+			}
             ViewData["QuestionCategory"] = new SelectList(await questionCategoryRepository.GetAllAsync(), "Id", "Category");
             return Page();
         }
@@ -51,7 +56,7 @@ namespace WebApp.Pages.Questions
 					Id = Guid.NewGuid(),
 					Content = CreateQuestionDTO.Content,
 					QuestionCategoryId = CreateQuestionDTO.QuestionCategoryId,
-					QuestionCreatorId = Guid.Parse("D9EB24B3-750D-40B6-95DE-3D90B2D0C4F0"),
+					QuestionCreatorId = Guid.Parse(HttpContext.Session.GetString("UserId")),
 					Weight = CreateQuestionDTO.Weight,
 				};
                 switch (question.QuestionCategoryId)

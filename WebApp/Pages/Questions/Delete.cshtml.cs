@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebApp.Constants;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Pages.Questions
 {
@@ -32,7 +33,11 @@ namespace WebApp.Pages.Questions
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (id == null)
+			if (HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError"); ;
+			}
+			if (id == null)
             {
                 return NotFound();
             }

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using WebApp.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Pages.Questions
 {
@@ -33,9 +34,13 @@ namespace WebApp.Pages.Questions
             this.configuration = configuration;
         }
 
-        public async Task OnGetAsync(string currentFilter, string searchString, int? pageIndex)
+        public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? pageIndex)
         {
-            List<Question> questionList;
+			if (HttpContext.Session.GetString("Role") != "Creator")
+			{
+				return Redirect("/Error/AuthorizedError");
+			}
+			List<Question> questionList;
             int pageSize = configuration.GetValue("PageSize", 10);
             if (searchString != null)
             {
@@ -55,6 +60,7 @@ namespace WebApp.Pages.Questions
                 questionList = await questionRepository.GetAllAsync();
             }
             QuestionList = PaginatedList<Question>.CreateAsync(questionList, pageIndex ?? 1, pageSize);
+            return Page();
         }
     }
 }
