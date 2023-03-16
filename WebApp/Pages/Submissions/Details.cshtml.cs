@@ -36,16 +36,22 @@ namespace WebApp.Pages.Submissions
             }
 
             Submission = submissionRepository.GetByIdAsync(id.Value).Result;
-            TestContent = JsonSerializer.Deserialize<Dictionary<Guid, String>>(Submission.Content);
-            foreach (var i in TestContent)
-            {
-                QuestionList.Add(questionRepository.GetById(i.Key));
-                CheckedAnswer.Add(i.Value);
-            }
-
             if (Submission == null)
             {
                 return NotFound();
+            }
+
+            if (!Submission.IsGraded.Value)
+            {
+            } else
+            {
+                TestContent = JsonSerializer.Deserialize<Dictionary<Guid, String>>(Submission.Content);
+                foreach (var i in TestContent)
+                {
+                    QuestionList.Add(questionRepository.GetById(i.Key));
+                    CheckedAnswer.Add(i.Value);
+                }
+
             }
             return Page();
         }

@@ -61,14 +61,14 @@
                 @foreach (var ans in item.Answers)
                 {
                      <input type="checkbox" id="@ans.Id" name="@item.Id" value="@ans.Id" checked="@Model.CheckedAnswer[i-1].Contains(ans.Id.ToString())" onclick="return false;">
-                     <label for="@ans.Id">@ans.Content</label> <br />
+                     <label for="@ans.Id" class="@ans.IsCorrect ">@ans.Content</label> <br />
                 }
             } else if (item.QuestionCategoryId == 2)
             {
                 @foreach (var ans in item.Answers)
                 {
                     <input type="radio" name="@item.Id" value="@ans.Id" id="@ans.Id" checked="@Model.CheckedAnswer[i-1].Contains(ans.Id.ToString())" onclick="return false;"/>
-                    <label for="@ans.Id">@ans.Content</label> <br />
+                    <label for="@ans.Id" class="@ans.IsCorrect ">@ans.Content</label> <br />
                 }
             } else if (item.QuestionCategoryId == 3)
             {
