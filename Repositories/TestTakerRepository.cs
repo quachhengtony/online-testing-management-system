@@ -18,12 +18,12 @@ namespace Repositories
 
         public void Delete(TestTaker t)
         {
-            throw new NotImplementedException();
+            TestTakerDAO.Instance.Delete(t);
         }
 
         public List<TestTaker> GetAll()
         {
-            throw new NotImplementedException();
+            return TestTakerDAO.Instance.GetAll();
         }
 
         public Task<List<TestTaker>> GetAllAsync()
@@ -38,7 +38,12 @@ namespace Repositories
 
         public TestTaker GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return TestTakerDAO.Instance.GetById(id);
+        }
+
+        public List<TestTaker> GetTestTakersByName(string name)
+        {
+            return TestTakerDAO.Instance.GetTakersByName(name);
         }
 
         public TestTaker Login(string email, string password)
@@ -53,7 +58,7 @@ namespace Repositories
 
         public void Update(TestTaker t)
         {
-            throw new NotImplementedException();
+            TestTakerDAO.Instance.Update(t);
         }
     }
 }

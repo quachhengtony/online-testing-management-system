@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using WebApp.DTO;
 using System.Text.Json;
+using WebApp.Constants;
 
 namespace WebApp.Pages.Questions
 {
@@ -94,7 +95,9 @@ namespace WebApp.Pages.Questions
 			}
             catch (Exception ex)
             {
-                logger.LogInformation($"\nException: {ex.Message}\n\t{ex.InnerException}");
+                logger.LogError($"\nException: {ex.Message}\n\t{ex.InnerException}");
+                TempData["Status"] = ErrorConstants.Failed;
+                TempData["StatusMessage"] = ErrorConstants.SomethingWentWrong;
                 return Page();
             }
         }
@@ -151,8 +154,10 @@ namespace WebApp.Pages.Questions
             }
 			catch (Exception ex)
 			{
-                logger.LogInformation($"\nException: {ex.Message}\n\t{ex.InnerException}");
-                return Page();
+                logger.LogError($"\nException: {ex.Message}\n\t{ex.InnerException}");
+				TempData["Status"] = ErrorConstants.Failed;
+				TempData["StatusMessage"] = ErrorConstants.SomethingWentWrong;
+				return Page();
             }
         }
     }

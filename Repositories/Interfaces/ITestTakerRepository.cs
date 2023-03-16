@@ -10,5 +10,7 @@ namespace Repositories.Interfaces
     public interface ITestTakerRepository : IRepository<TestTaker>
     {
         public TestTaker Login(string email, string password);
+
+        public List<TestTaker> GetTestTakersByName(String name);
     }
 }

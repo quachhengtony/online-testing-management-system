@@ -51,6 +51,11 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
+        public List<TestCreator> GetTestCreatorsByName(string name)
+        {
+            return TestCreatorDAO.Instance.GetCreatorsByName(name);
+        }
+
         public TestCreator Login(string email, string password)
         {
             return TestCreatorDAO.Instance.Login(email, password);

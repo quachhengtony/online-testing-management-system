@@ -9,6 +9,7 @@ using BusinessObjects.Models;
 using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using WebApp.DTO;
+using WebApp.Constants;
 
 namespace WebApp.Pages.Tests
 {
@@ -25,6 +26,9 @@ namespace WebApp.Pages.Tests
         [BindProperty]
         public CreateTestDTO CreateTestDTO { get; set; }
         public List<Question> QuestionList { get; set; } = new();
+        public List<string> TestBatches { get; set; } = new();
+        [BindProperty]
+        public string TestBatchMode { get; set; } = "New";
 
 		public CreateModel(ILogger<IndexModel> logger, ITestRepository testRepository, ITestCategoryRepository testCategoryRepository, IQuestionRepository questionRepository)
         {
@@ -34,10 +38,11 @@ namespace WebApp.Pages.Tests
             this.questionRepository = questionRepository;
         }
 
-        public async Task OnGetAsync([FromQuery] string searchString)
+        public async Task<IActionResult> OnGetAsync([FromQuery] string searchString)
         {
             ViewData["TestCategory"] = new SelectList(await testCategoryRepository.GetAllAsync(), "Id", "Category");
-            if (!string.IsNullOrEmpty(searchString))
+            TestBatches = await testRepository.GetAllUniqueBatchesOfTestCreator(Guid.Parse("AEC1060F-F755-457E-B6B4-9C2EE79C6214"));
+			if (!string.IsNullOrEmpty(searchString))
             {
                 QuestionList = await questionRepository.GetAllByContent(searchString);
 			}
@@ -45,6 +50,7 @@ namespace WebApp.Pages.Tests
             {
 				QuestionList = await questionRepository.GetAllAsync();
 			}
+            return Page();
         }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
@@ -52,11 +58,51 @@ namespace WebApp.Pages.Tests
         {
             try
             {
-				if (!ModelState.IsValid)
-				{
-                    return Page();
+                Test test, testWithSameBatch;
+                List<TestQuestion> testQuestionList;
+				if (TestBatchMode != "New")
+                {
+					testWithSameBatch = await testRepository.GetByBatch(TestBatchMode);
+					if (testWithSameBatch == null)
+					{
+						TempData["Status"] = ErrorConstants.Failed;
+						TempData["StatusMessage"] = ErrorConstants.SomethingWentWrong;
+						return RedirectToPage("./Create");
+					}
+					test = new Test()
+					{
+						Id = Guid.NewGuid(),
+						Name = CreateTestDTO.Name,
+						Batch = testWithSameBatch.Batch,
+						Duration = testWithSameBatch.Duration,
+						EndTime = testWithSameBatch.EndTime,
+						GradeFinalizationDate = testWithSameBatch.GradeFinalizationDate,
+						GradeReleaseDate = testWithSameBatch.GradeReleaseDate,
+						KeyCode = testWithSameBatch.KeyCode,
+						StartTime = testWithSameBatch.StartTime,
+						TestCategoryId = testWithSameBatch.TestCategoryId,
+						TestCreatorId = Guid.Parse("AEC1060F-F755-457E-B6B4-9C2EE79C6214"),
+					};
+					testQuestionList = new();
+					foreach (var question in questionIdList)
+					{
+						testQuestionList.Add(new TestQuestion()
+						{
+							QuestionId = Guid.Parse(question),
+							TestId = test.Id
+						});
+					}
+					test.TestQuestions = testQuestionList;
+					testRepository.Create(test);
+					testRepository.SaveChanges();
+					questionIdList.Clear();
+					return RedirectToPage("./Index");
 				}
-				var test = new Test()
+                if (!ModelState.IsValid)
+                {
+					return Page();
+				}
+				test = new Test()
 				{
 					Id = Guid.NewGuid(),
 					Name = CreateTestDTO.Name,
@@ -68,26 +114,39 @@ namespace WebApp.Pages.Tests
 					KeyCode = CreateTestDTO.KeyCode,
 					StartTime = CreateTestDTO.StartTime,
 					TestCategoryId = CreateTestDTO.TestCategoryId,
-					TestCreatorId = Guid.Parse("D9EB24B3-750D-40B6-95DE-3D90B2D0C4F0"),
+					TestCreatorId = Guid.Parse("AEC1060F-F755-457E-B6B4-9C2EE79C6214"),
 				};
-				List<TestQuestion> testQuestionList = new();
-                foreach (var question in questionIdList)
+				testWithSameBatch = await testRepository.GetByBatch(test.Batch);
+				if (testWithSameBatch != null)
 				{
-                    testQuestionList.Add(new TestQuestion()
-                    {
-                        QuestionId = Guid.Parse(question),
-                        TestId = test.Id
-                    });
+					var sameKeyCode = testWithSameBatch.KeyCode == test.KeyCode;
+					if (sameKeyCode == false)
+					{
+						TempData["Status"] = ErrorConstants.Failed;
+						TempData["StatusMessage"] = ErrorConstants.SameBatchDifferentKeyCode;
+						return RedirectToPage("./Create");
+					}
 				}
-                test.TestQuestions = testQuestionList;
+				testQuestionList = new();
+				foreach (var question in questionIdList)
+				{
+					testQuestionList.Add(new TestQuestion()
+					{
+						QuestionId = Guid.Parse(question),
+						TestId = test.Id
+					});
+				}
+				test.TestQuestions = testQuestionList;
 				testRepository.Create(test);
-                testRepository.SaveChanges();
+				testRepository.SaveChanges();
 				questionIdList.Clear();
 				return RedirectToPage("./Index");
 			}
             catch (Exception ex)
             {
-                logger.LogInformation($"\nException: {ex.Message}\n\t{ex.InnerException}");
+                TempData["Status"] = ErrorConstants.Failed;
+                TempData["StatusMessage"] = ErrorConstants.SomethingWentWrong;
+                logger.LogError($"\nException: {ex.Message}\n\t{ex.InnerException}");
                 return Page();
 			}
 		}

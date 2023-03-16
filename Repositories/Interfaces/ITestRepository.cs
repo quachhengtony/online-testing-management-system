@@ -20,5 +20,7 @@ namespace Repositories.Interfaces
         public Task<Test> GetByIdAsync(Guid id);
         public Task<List<Test>> GetAllByName(string name);
         public Task<bool> IsDue(Guid id);
+        public Task<Test> GetByBatch(string batch);
+        public Task<List<string>> GetAllUniqueBatchesOfTestCreator(Guid testCreatorId); 
     }
 }
