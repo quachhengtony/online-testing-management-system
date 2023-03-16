@@ -8,35 +8,36 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObjects.DbContexts;
 using BusinessObjects.Models;
 using Repositories.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using WebApp.Models;
+using Microsoft.AspNetCore.Http;
 
-namespace WebApp.Pages.TestCreators
+namespace WebApp.Pages.TestTakers
 {
     public class IndexModel : PageModel
     {
-        private readonly ITestCreatorRepository testCreatorRepository;
+        private readonly ITestTakerRepository testTakerRepository;
         private readonly IConfiguration configuration;
 
         public string NameSort { get; set; }
         public string DateSort { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
-        public PaginatedList<TestCreator> TestCreatorList { get; set; }
+        public PaginatedList<TestTaker> TestTakerList { get; set; }
 
-        public IndexModel(ITestCreatorRepository testCreatorRepository, IConfiguration configuration)
+
+        public IndexModel(ITestTakerRepository testTakerRepository, IConfiguration configuration)
         {
-            this.testCreatorRepository = testCreatorRepository;
+            this.testTakerRepository = testTakerRepository;
             this.configuration = configuration;
         }
 
-        public IList<TestCreator> TestCreator { get;set; }
+        public IList<TestTaker> TestTaker { get;set; }
 
         public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? pageIndex)
         {
             var util = new Utils.Utils();
-            List<TestCreator> testCreators;
+            List<TestTaker> testTakers;
             int pageSize = configuration.GetValue("PageSize", 10);
 
             if (HttpContext.Session.GetString("Role") != "Admin")
@@ -56,24 +57,23 @@ namespace WebApp.Pages.TestCreators
                 CurrentFilter = searchString;
                 if (!string.IsNullOrEmpty(searchString))
                 {
-                    testCreators = testCreatorRepository.GetTestCreatorsByName(searchString);
+                    testTakers = testTakerRepository.GetTestTakersByName(searchString);
                     ViewData["Search"] = searchString;
                 }
                 else
                 {
-                    testCreators = testCreatorRepository.GetAll();
+                    testTakers = testTakerRepository.GetAll();
                 }
 
-                foreach (var creator in testCreators)
+                foreach (var taker in testTakers)
                 {
-                    creator.Password = util.NotShowPassword(creator.Password);
+                    taker.Password = util.NotShowPassword(taker.Password);
                 }
 
-                TestCreatorList = PaginatedList<TestCreator>.CreateAsync(testCreators, pageIndex ?? 1, pageSize);
+                TestTakerList = PaginatedList<TestTaker>.CreateAsync(testTakers, pageIndex ?? 1, pageSize);
 
                 return Page();
             }
-           
         }
     }
 }

@@ -1,0 +1,84 @@
+﻿@page
+@model WebApp.Pages.Submissions.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Submission</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Submission.SubmittedDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Submission.SubmittedDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Submission.GradedDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Submission.GradedDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Submission.TimeTaken)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Submission.TimeTaken)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Submission.Score)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Submission.Score)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Submission.Feedback)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Submission.Feedback)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Submission.Test.Batch)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Submission.Test.Batch)
+        </dd>
+    </dl>
+    <div>
+        @{
+            var i = 0;
+        }
+        @foreach (var item in Model.QuestionList) {
+        i++;
+        <div>
+            <p><strong>@i</strong> @item.Content</p>
+            @if (item.QuestionCategoryId == 1)
+            {
+                @foreach (var ans in item.Answers)
+                {
+                     <input type="checkbox" id="@ans.Id" name="@item.Id" value="@ans.Id" checked="@Model.CheckedAnswer[i-1].Contains(ans.Id.ToString())" onclick="return false;">
+                     <label for="@ans.Id" class="@ans.IsCorrect ">@ans.Content</label> <br />
+                }
+            } else if (item.QuestionCategoryId == 2)
+            {
+                @foreach (var ans in item.Answers)
+                {
+                    <input type="radio" name="@item.Id" value="@ans.Id" id="@ans.Id" checked="@Model.CheckedAnswer[i-1].Contains(ans.Id.ToString())" onclick="return false;"/>
+                    <label for="@ans.Id" class="@ans.IsCorrect ">@ans.Content</label> <br />
+                }
+            } else if (item.QuestionCategoryId == 3)
+            {
+                <textarea placeholder="Enter your answer here..." id="@item.Id" name="@item.Id" readonly>@Model.CheckedAnswer[i-1]
+                </textarea>
+            }
+        </div>
+    }
+    </div>
+</div>
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>

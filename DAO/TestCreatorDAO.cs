@@ -99,5 +99,13 @@ namespace DAO
         {
             throw new NotImplementedException();
         }
+
+        public List<TestCreator> GetCreatorsByName(String name)
+        {
+            using (var dbContext = new OnlineTestingManagementSystemDbContext())
+            {
+                return dbContext.TestCreators.Where(c => c.FirstName.Contains(name) || c.LastName.Contains(name)).ToList();
+            }
+        }
     }
 }

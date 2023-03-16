@@ -1,4 +1,6 @@
-﻿using BusinessObjects.Models;
+
+﻿using BusinessObjects.DbContexts;
+using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,71 +13,44 @@ namespace DAO
     public class SubmissionDAO : IDAO<Submission>
     {
         private static SubmissionDAO instance;
-        private static readonly object instaneLock = new object();
-        private static  OnlineTestingManagementSystemDbContext _context;
-
-        public SubmissionDAO()
-        {
-        }
+        private static readonly object instanceLock = new object();
+        private static OnlineTestingManagementSystemDbContext dbContext;
 
         public static SubmissionDAO Instance
         {
             get
             {
-                lock (instaneLock)
+                lock (instanceLock)
                 {
                     if (instance == null)
                     {
                         instance = new SubmissionDAO();
-                        _context = new OnlineTestingManagementSystemDbContext();
+                        dbContext = new OnlineTestingManagementSystemDbContext();
                     }
                     return instance;
                 }
             }
         }
 
-        public void Create(Submission submission)
+        private SubmissionDAO() { }
+
+        public void Create(Submission t)
         {
-            _context.Submissions.Add(submission);
+            dbContext.Submissions.Add(t);
+            SaveChanges();
+        }
+
+        public void Delete(Submission t)
+        {
+            dbContext.Submissions.Remove(t);
+            SaveChanges();
         }
 
         public List<Submission> GetAll()
         {
-            return _context.Submissions.ToList();
+            return dbContext.Submissions.ToList();
         }
-
-        public Submission GetById(Guid id)
-        {
-            return _context.Submissions.FirstOrDefault(s => s.Id == id);
-        }
-
-        public void Update(Submission submission)
-        {
-            var submissionToUpdate = _context.Submissions.FirstOrDefault(s => s.Id == submission.Id);
-            if (submissionToUpdate != null)
-            {
-                submissionToUpdate.Content = submission.Content;
-                submissionToUpdate.Feedback = submission.Feedback;
-                submissionToUpdate.Score = submission.Score;
-                submissionToUpdate.GradedDate = submission.GradedDate;
-            }
-        }
-
-        public void Delete(Submission submission)
-        {
-            _context.Submissions.Remove(submission);
-        }
-
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
-        }
-
-        public List<Submission> GetByTestTakerId(Guid testTakerId)
-        {
-            return _context.Submissions.Where(s => s.TestTakerId == testTakerId).ToList();
-        }
-
+        
         public List<Submission> GetByTestId(Guid testId)
         {
             return _context.Submissions.Where(s => s.TestId == testId).Include(t => t.TestTaker).Include(t => t.Test).ToList();
@@ -87,15 +62,51 @@ namespace DAO
                 .Where(s => s.TestId == testId && s.SubmittedDate >= startDate && s.SubmittedDate <= endDate)
                 .ToList();
         }
-
+        
         public Task<List<Submission>> GetAllAsync()
+        {
+            return dbContext.Submissions.ToListAsync();
+        }
+
+        public Task<List<Submission>> GetSubmissionByTestTaker(Guid testTakerId)
+        {
+            return dbContext.Submissions.Where(s => s.TestTakerId == testTakerId).ToListAsync();
+        }
+
+        public Submission GetById(Guid id)
+        {
+            return dbContext.Submissions.Where(s => s.Id == id).FirstOrDefault();
+        }
+
+        public Task<Submission> GetByIdAsync(byte id)
         {
             throw new NotImplementedException();
         }
 
         public Task<Submission> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return dbContext.Submissions.Include(s => s.Test).Where(s => s.Id == id).FirstOrDefaultAsync();
+        }
+
+        public Task<List<Submission>> GetByTestTakerIdAsync(Guid id)
+        {
+            return dbContext.Submissions.Where(s => s.TestTakerId == id).Include(t => t.Test).ToListAsync();
+        }
+
+        public Task<List<Submission>> GetByTestTakerIdAndBatchAsync(Guid id, string batch)
+        {
+            return dbContext.Submissions.Include(t => t.Test).Where(s => s.TestTakerId == id && s.Test.Batch.Contains(batch)).ToListAsync();
+        }
+
+        public void SaveChanges()
+        {
+            dbContext.SaveChanges();
+        }
+
+        public void Update(Submission t)
+        {
+            dbContext.Submissions.Update(t);
+            SaveChanges();
         }
     }
 }

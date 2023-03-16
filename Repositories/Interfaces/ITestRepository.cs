@@ -9,11 +9,20 @@ namespace Repositories.Interfaces
 {
     public interface ITestRepository : IRepository<Test>
     {
+        Task<Test> GetByIdForTestTakerAsync(Guid id);
+        List<Test> GetBySearchForTestTaker(string search);
+        bool IsKeyCodeCorrectForTestTaker(Guid testId, string keyCode);
+        bool IsTestAvailableForTestTaker(Guid testId, DateTime currentTime);
+        Task<List<String>> GetTestNamesByBatchForTestTaker(string batch);
+        List<Test> GetAllByBatchForTestTaker();
+        Task<Test> GetByTestNameAndBatchForTestTakerAsync(string batch, string name);
         public Test GetById(Guid id);
         public Task<Test> GetByIdAsync(Guid id);
         public Task<List<Test>> GetAllByName(string name);
         public Task<List<Test>> GetAllByNameAndCreatorId(string name, Guid creatorId);
         public Task<List<Test>> GetAllByCreatorId(Guid creatorId);
         public Task<bool> IsDue(Guid id);
+        public Task<Test> GetByBatch(string batch);
+        public Task<List<string>> GetAllUniqueBatchesOfTestCreator(Guid testCreatorId); 
     }
 }

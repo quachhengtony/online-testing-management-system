@@ -11,6 +11,7 @@ using BusinessObjects.Models;
 using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using WebApp.DTO;
+using WebApp.Constants;
 
 namespace WebApp.Pages.Tests
 {
@@ -77,8 +78,10 @@ namespace WebApp.Pages.Tests
             }
             catch (Exception ex)
             {
-                logger.LogInformation($"\nException: {ex.Message}\n\t{ex.InnerException}");
-                return Page();
+				logger.LogError($"\nException: {ex.Message}\n\t{ex.InnerException}");
+				TempData["Status"] = ErrorConstants.Failed;
+				TempData["StatusMessage"] = ErrorConstants.SomethingWentWrong;
+				return Page();
             }
         }
     }

@@ -18,6 +18,7 @@ namespace BusinessObjects.DbContexts
               .AddJsonFile("appsettings.json", true, true)
               .Build();
             this.Database.SetConnectionString(config["ConnectionStrings:OnlineTestingManagementSystemDb"]);
+            //this.Database.SetConnectionString("Server = (local); Database = OnlineTestingManagementSystemDb; Uid = sa; Password = 123456789;");
         }
 
         public OnlineTestingManagementSystemDbContext(DbContextOptions<OnlineTestingManagementSystemDbContext> options)

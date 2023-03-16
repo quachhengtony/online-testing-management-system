@@ -8,7 +8,6 @@ namespace WebApp.Validators
 	{
 		public string EndDatePropertyName { get; set; }
 		public string StartDatePropertyName { get; set; }
-
 		protected override ValidationResult IsValid(object value, ValidationContext validationContext)
 		{
 			PropertyInfo endDateProperty = validationContext.ObjectType.GetProperty(EndDatePropertyName);

@@ -1,33 +1,35 @@
 ﻿using BusinessObjects.Models;
+using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using DAO;
-using Repositories.Interfaces;
 
-namespace OnlineTestingManagementSystem.Repository
+namespace Repositories
 {
     public class SubmissionRepository : ISubmissionRepository
     {
-        private readonly SubmissionDAO _submissionDAO;
-
-        public SubmissionRepository()
+        public void Create(Submission t)
         {
-            _submissionDAO = SubmissionDAO.Instance;
+            SubmissionDAO.Instance.Create(t);
+            SaveChanges();
         }
 
-        public void Create(Submission submission)
+        public void Delete(Submission t)
         {
-            _submissionDAO.Create(submission);
+            throw new NotImplementedException();
         }
 
-        public void Update(Submission submission)
+        public List<Submission> GetAll()
         {
-            _submissionDAO.Update(submission);
+            throw new NotImplementedException();
         }
 
-        public void Delete(Guid id)
+        public Task<List<Submission>> GetAllAsync()
         {
-            _submissionDAO.Delete(GetById(id));
+            throw new NotImplementedException();
         }
 
         public Submission GetById(Guid id)
@@ -60,5 +62,29 @@ namespace OnlineTestingManagementSystem.Repository
             _submissionDAO.SaveChanges();
         }
 
+        public Task<Submission> GetByIdAsync(Guid id)
+        {
+            return SubmissionDAO.Instance.GetByIdAsync(id);
+        }
+
+        public Task<List<Submission>> GetByTestTakerIdAndBatchAsync(Guid id, string batch)
+        {
+            return SubmissionDAO.Instance.GetByTestTakerIdAndBatchAsync(id, batch);
+        }
+
+        public Task<List<Submission>> GetByTestTakerIdAsync(Guid id)
+        {
+            return SubmissionDAO.Instance.GetByTestTakerIdAsync(id);
+        }
+
+        public void SaveChanges()
+        {
+            SubmissionDAO.Instance.SaveChanges();
+        }
+
+        public void Update(Submission submission)
+        {
+            _submissionDAO.Update(submission);
+        }
     }
 }

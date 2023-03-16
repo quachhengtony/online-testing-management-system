@@ -1,5 +1,5 @@
 ﻿@page
-@model WebApp.Pages.TestCreators.IndexModel
+@model WebApp.Pages.TestTakers.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -28,25 +28,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TestCreator[0].Username)
+                @Html.DisplayNameFor(model => model.TestTaker[0].Username)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TestCreator[0].Email)
+                @Html.DisplayNameFor(model => model.TestTaker[0].Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TestCreator[0].FirstName)
+                @Html.DisplayNameFor(model => model.TestTaker[0].FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TestCreator[0].LastName)
+                @Html.DisplayNameFor(model => model.TestTaker[0].LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TestCreator[0].Password)
+                @Html.DisplayNameFor(model => model.TestTaker[0].Password)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.TestCreatorList)
+        @foreach (var item in Model.TestTakerList)
         {
             <tr>
                 <td>
@@ -75,14 +75,14 @@
 </table>
 
 @{
-    var prevDisabled = !Model.TestCreatorList.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.TestCreatorList.HasNextPage ? "disabled" : "";
+    var prevDisabled = !Model.TestTakerList.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.TestTakerList.HasNextPage ? "disabled" : "";
 }
 <a asp-page="./Index"
-   asp-route-pageIndex="@(Model.TestCreatorList.PageIndex - 1)"
+   asp-route-pageIndex="@(Model.TestTakerList.PageIndex - 1)"
    asp-route-currentFilter="@Model.CurrentFilter"
    class="btn btn-primary @prevDisabled">Previous</a>
 <a asp-page="./Index"
-   asp-route-pageIndex="@(Model.TestCreatorList.PageIndex + 1)"
+   asp-route-pageIndex="@(Model.TestTakerList.PageIndex + 1)"
    asp-route-currentFilter="@Model.CurrentFilter"
    class="btn btn-primary @nextDisabled">Next</a>

@@ -8,6 +8,7 @@ using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebApp.Constants;
 
 namespace WebApp.Pages.Questions
 {
@@ -77,8 +78,10 @@ namespace WebApp.Pages.Questions
             }
             catch (Exception ex)
             {
-                logger.LogInformation($"\nException: {ex.Message}\n\t{ex.InnerException}");
-                return Page();
+				logger.LogError($"\nException: {ex.Message}\n\t{ex.InnerException}");
+				TempData["Status"] = ErrorConstants.Failed;
+				TempData["StatusMessage"] = ErrorConstants.SomethingWentWrong;
+				return Page();
             }
         }
     }

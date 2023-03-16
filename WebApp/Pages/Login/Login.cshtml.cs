@@ -65,6 +65,12 @@ namespace WebApp.Pages.Login
         {
         }
 
+        public IActionResult OnGetLogout()
+        {
+            HttpContext.Session.Clear();
+            return Page();
+        }
+
         public IActionResult OnPost()
         {
             if (!ModelState.IsValid)

@@ -38,14 +38,19 @@ namespace WebApp
             services.AddSingleton<ITestCategoryRepository, TestCategoryRepository>();
             services.AddSingleton<ISubmissionRepository, SubmissionRepository>();
             services.AddSingleton<ITestQuestionRepository, TestQuestionRepository>();
+            services.AddSingleton<ISubmissionRepository, SubmissionRepository>();
+            services.AddSingleton<ITestCreatorRepository, TestCreatorRepository>();
+            services.AddSingleton<ITestTakerRepository, TestTakerRepository>();
+
+
             services.AddMvc().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AddPageRoute("/Login/Login", "");
             });
             services.AddRazorPages();
+
             services.AddSession();
-            services.AddSingleton<ITestCreatorRepository, TestCreatorRepository>();
-            services.AddSingleton<ITestTakerRepository, TestTakerRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
