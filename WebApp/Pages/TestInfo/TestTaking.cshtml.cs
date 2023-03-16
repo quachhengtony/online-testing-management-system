@@ -47,16 +47,20 @@ namespace WebApp.Pages.TestInfo
                 var testNames = testRepository.GetTestNamesByBatchForTestTaker(batch).Result;
                 var name = testNames[new Random().Next(testNames.Count)];
                 var test = testRepository.GetByTestNameAndBatchForTestTakerAsync(batch, name).Result;
+                var testContent = new Dictionary<Guid, String>();
+
                 foreach (var testQuestion in test.TestQuestions)
                 {
                     questionList.Add(testQuestion.Question);
+                    testContent.Add(testQuestion.Question.Id, "");
                 }
-                
+
+
                 HttpContext.Session.SetString("QuestionListId", JsonSerializer.Serialize(questionList.Select(i => i.Id).ToList()));
                 HttpContext.Session.SetString("TestId", test.Id.ToString());
                 HttpContext.Session.SetString("GradeFinalDate", test.GradeFinalizationDate.ToString());
                 HttpContext.Session.SetString("StartTime", DateTime.Now.ToString());
-                HttpContext.Session.SetString("TestContent", JsonSerializer.Serialize(new Dictionary<Guid, String>()));
+                HttpContext.Session.SetString("TestContent", JsonSerializer.Serialize(testContent));
                 Duration = test.Duration * 60;
 
                 var submission = new Submission()
@@ -122,6 +126,7 @@ namespace WebApp.Pages.TestInfo
                 }
 
             }
+
             HttpContext.Session.SetString("TestContent", JsonSerializer.Serialize(TestAnswer));
 
             //render checked answer
@@ -191,20 +196,36 @@ namespace WebApp.Pages.TestInfo
         {
             var QuestionListId = JsonSerializer.Deserialize<List<Guid>>(HttpContext.Session.GetString("QuestionListId"));
             var TestAnswer = JsonSerializer.Deserialize<Dictionary<Guid, String>>(HttpContext.Session.GetString("TestContent"));
-
-            var submission = new Submission()
+            PageIndex = Int32.Parse(Request.Form["PageIndex"]);
+            //int pageSize = configuration.GetValue("PageSize", 10);
+            int pageSize = 2;
+            var questionList = new List<Question>();
+            foreach (var quesId in QuestionListId)
             {
-                Id = Guid.Parse(HttpContext.Session.GetString("CurrentSubmissionId")),
-                TestTakerId = Guid.Parse("FEABE0FB-4518-4E94-9F70-2D2616D1BF25"),
-                TestId = Guid.Parse(HttpContext.Session.GetString("TestId")),
-                SubmittedDate = DateTime.Now,
-                GradedDate = DateTime.Parse(HttpContext.Session.GetString("GradeFinalDate")),
-                TimeTaken = (byte)((DateTime.Now - DateTime.Parse(HttpContext.Session.GetString("StartTime"))).Minutes + 1),
-                Score = GetScore(TestAnswer),
-                Feedback = null,
-                IsGraded = true,
-                Content = JsonSerializer.Serialize(TestAnswer)
-            };
+                questionList.Add(questionRepository.GetByIdAsync(quesId).Result);
+            }
+
+
+            foreach (var ques in PaginatedList<Question>.CreateAsync(questionList, PageIndex, pageSize))
+            {
+                if (TestAnswer.ContainsKey(ques.Id))
+                {
+                    TestAnswer[ques.Id] = String.IsNullOrEmpty(Request.Form[ques.Id.ToString()]) ? "" : Request.Form[ques.Id.ToString()];
+                }
+                else
+                {
+                    TestAnswer.Add(ques.Id, String.IsNullOrEmpty(Request.Form[ques.Id.ToString()]) ? "" : Request.Form[ques.Id.ToString()]);
+                }
+            }
+
+
+
+            var submission = submissionRepository.GetByIdAsync(Guid.Parse(HttpContext.Session.GetString("CurrentSubmissionId"))).Result;
+            submission.SubmittedDate = DateTime.Now;
+            submission.TimeTaken = (byte)((DateTime.Now - DateTime.Parse(HttpContext.Session.GetString("StartTime"))).Minutes + 1);
+            submission.Score = GetScore(TestAnswer);
+            submission.IsGraded = true;
+            submission.Content = JsonSerializer.Serialize(TestAnswer);
             submissionRepository.Update(submission);
 
             HttpContext.Session.Remove("QuestionListId");

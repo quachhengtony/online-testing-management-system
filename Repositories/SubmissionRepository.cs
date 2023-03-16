@@ -59,7 +59,7 @@ namespace Repositories
 
         public void Update(Submission t)
         {
-            throw new NotImplementedException();
+            SubmissionDAO.Instance.Update(t);
         }
     }
 }
