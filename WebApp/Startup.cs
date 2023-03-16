@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OnlineTestingManagementSystem.Repository;
 using Repositories;
 using Repositories.Interfaces;
 using System;

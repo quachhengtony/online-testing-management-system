@@ -14,7 +14,7 @@ namespace DAO
     {
         private static SubmissionDAO instance;
         private static readonly object instanceLock = new object();
-        private static OnlineTestingManagementSystemDbContext dbContext;
+        private static BusinessObjects.DbContexts.OnlineTestingManagementSystemDbContext dbContext;
 
         public static SubmissionDAO Instance
         {
@@ -25,7 +25,7 @@ namespace DAO
                     if (instance == null)
                     {
                         instance = new SubmissionDAO();
-                        dbContext = new OnlineTestingManagementSystemDbContext();
+                        dbContext = new BusinessObjects.DbContexts.OnlineTestingManagementSystemDbContext();
                     }
                     return instance;
                 }
@@ -53,12 +53,12 @@ namespace DAO
         
         public List<Submission> GetByTestId(Guid testId)
         {
-            return _context.Submissions.Where(s => s.TestId == testId).Include(t => t.TestTaker).Include(t => t.Test).ToList();
+            return dbContext.Submissions.Where(s => s.TestId == testId).Include(t => t.TestTaker).Include(t => t.Test).ToList();
         }
 
         public List<Submission> GetByTestIdAndSubmittedDateRange(Guid testId, DateTime startDate, DateTime endDate)
         {
-            return _context.Submissions
+            return dbContext.Submissions
                 .Where(s => s.TestId == testId && s.SubmittedDate >= startDate && s.SubmittedDate <= endDate)
                 .ToList();
         }
@@ -107,6 +107,11 @@ namespace DAO
         {
             dbContext.Submissions.Update(t);
             SaveChanges();
+        }
+
+        public List<Submission> GetByTestTakerId(Guid testTakerId)
+        {
+            return dbContext.Submissions.Where(s => s.TestTakerId == testTakerId).ToList();
         }
     }
 }

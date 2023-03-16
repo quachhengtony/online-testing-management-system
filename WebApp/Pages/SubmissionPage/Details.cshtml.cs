@@ -29,13 +29,13 @@ namespace WebApp.Pages.SubmissionPage
             this.questionRepository = questionRepository;
         }
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            Submission = submissionRepository.GetById(Guid.Parse(id));
+            Submission = submissionRepository.GetById(id);
             if (Submission == null)
             {
                 return NotFound();

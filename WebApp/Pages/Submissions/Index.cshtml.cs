@@ -47,11 +47,11 @@ namespace WebApp.Pages.Submissions
             CurrentFilter = searchString;
             if (!string.IsNullOrEmpty(searchString))
             {
-                submissionList = submissionRepository.GetByTestTakerIdAndBatchAsync(Guid.Parse("FEABE0FB-4518-4E94-9F70-2D2616D1BF25"), searchString).Result;
+                submissionList = submissionRepository.GetByTestTakerIdAndBatchAsync(Guid.Parse("411DEE92-915C-44DE-A892-61A468A27985"), searchString).Result;
             }
             else
             {
-                submissionList = submissionRepository.GetByTestTakerIdAsync(Guid.Parse("FEABE0FB-4518-4E94-9F70-2D2616D1BF25")).Result; ;
+                submissionList = submissionRepository.GetByTestTakerIdAsync(Guid.Parse("411DEE92-915C-44DE-A892-61A468A27985")).Result; ;
             }
             SubmissionList = PaginatedList<Submission>.CreateAsync(submissionList, pageIndex ?? 1, pageSize);
         }
