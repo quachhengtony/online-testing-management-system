@@ -71,7 +71,7 @@ namespace WebApp.Pages.Register
             {
                 if(Role == "creator")
                 {
-                    if(testCreatorRepository.CheckDuplicateEmailOrUserName(Username, Email) != null)
+                    if(testCreatorRepository.CheckDuplicateEmailOrUserName(Username, Email) != null && testTakerRepository.CheckDuplicateEmailOrUserName(Username, Email) != null)
                     {
                         ViewData["Message"] = "Username or Email was existed!";
                         ViewData["FirstName"] = FirstName;
@@ -97,7 +97,7 @@ namespace WebApp.Pages.Register
                 }
                 else if (Role == "taker")
                 {
-                    if (testTakerRepository.CheckDuplicateEmailOrUserName(Username, Email) != null)
+                    if (testTakerRepository.CheckDuplicateEmailOrUserName(Username, Email) != null && testCreatorRepository.CheckDuplicateEmailOrUserName(Username, Email) != null)
                     {
                         ViewData["Message"] = "Username or Email was existed!";
                         ViewData["FirstName"] = FirstName;
