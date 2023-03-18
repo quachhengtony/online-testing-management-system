@@ -13,5 +13,7 @@
         public static string InvalidSubmitTest = "This test is fail because test taker did not submit properly.";
 		public static string NoQuestions = "The test does not contain any questions.";
 		public static string NoAnswers = "The question does not contain any answers.";
+        public static string SameBatchInvalidData = "The test appears to be in the same batch as other test(s). Therefore, some properties of the test must match the other test(s).";
+        public static string InvalidData = "Invalid data.";
     }
 }
