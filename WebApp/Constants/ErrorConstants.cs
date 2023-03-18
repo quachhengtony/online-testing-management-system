@@ -10,5 +10,6 @@
         public static string TestNotStart = "The test is not start.";
         public static string TestEnded = "The test is already end.";
         public static string InvalidRetakeTest = "You're already done this test.";
+        public static string InvalidSubmitTest = "This test is fail because test taker did not submit properly.";
     }
 }

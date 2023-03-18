@@ -11,37 +11,62 @@ using Microsoft.Extensions.Logging;
 using Repositories.Interfaces;
 using Repositories;
 using Microsoft.AspNetCore.Http;
+using System.Text.Json;
+using WebApp.Constants;
 
 namespace WebApp.Pages.SubmissionPage
 {
     public class DetailsModel : PageModel
     {
-        private readonly ILogger<DetailsModel> logger;
-        private readonly ISubmissionRepository submissionRepository;
+        private IQuestionRepository questionRepository;
+        private ISubmissionRepository submissionRepository;
 
-        public List<Question> QuestionList { get; set; } = new();
-        public Submission Submission { get; set; }
-
-        public DetailsModel(ILogger<DetailsModel> logger, ISubmissionRepository submissionRepository)
+        public DetailsModel(IQuestionRepository questionRepository, ISubmissionRepository submissionRepository)
         {
-            this.logger = logger;
+            this.questionRepository = questionRepository;
             this.submissionRepository = submissionRepository;
         }
 
-        public async Task<IActionResult> OnGetAsync(Guid id)
+        public Submission Submission { get; set; }
+        public Dictionary<Guid, String> TestContent { get; set; }
+        public List<Question> QuestionList { get; set; } = new List<Question>();
+        public List<String> CheckedAnswer { get; set; } = new List<String>();
+
+        public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            if (HttpContext.Session.GetString("Role") != "Creator")
+            if (String.IsNullOrEmpty(HttpContext.Session.GetString("Role"))
+                || !HttpContext.Session.GetString("Role").Equals("Creator"))
             {
-                return Redirect("/Error/AuthorizedError"); ;
+                return Redirect("/Error/AuthorizedError");
             }
+
+
             if (id == null)
             {
                 return NotFound();
             }
-            Submission = submissionRepository.GetById(id);
+
+            Submission = submissionRepository.GetByIdAsync(id.Value).Result;
             if (Submission == null)
             {
                 return NotFound();
+            }
+
+            if (!Submission.IsGraded.Value)
+            {
+                TempData["Status"] = ErrorConstants.Failed;
+                TempData["StatusMessage"] = ErrorConstants.InvalidSubmitTest;
+
+            }
+            else
+            {
+                TestContent = JsonSerializer.Deserialize<Dictionary<Guid, String>>(Submission.Content);
+                foreach (var i in TestContent)
+                {
+                    QuestionList.Add(questionRepository.GetById(i.Key));
+                    CheckedAnswer.Add(i.Value);
+                }
+
             }
             return Page();
         }
