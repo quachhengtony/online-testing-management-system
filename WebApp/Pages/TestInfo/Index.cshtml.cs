@@ -117,12 +117,12 @@ namespace WebApp.Pages.TestInfo
                 TempData["StatusMessage"] = ErrorConstants.TestEnded;
                 return false;
             }
-            /*if (submissionRepository.IsBatchTakenByTestTaker(Guid.Parse(HttpContext.Session.GetString("UserId")), test.Batch))
+            if (submissionRepository.IsBatchTakenByTestTaker(Guid.Parse(HttpContext.Session.GetString("UserId")), test.Batch))
             {
                 TempData["Status"] = ErrorConstants.Failed;
                 TempData["StatusMessage"] = ErrorConstants.InvalidRetakeTest;
                 return false;
-            }*/
+            }
 
             return true;
         }
