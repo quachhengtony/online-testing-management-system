@@ -100,7 +100,7 @@ namespace DAO
 
         public Task<List<Submission>> GetAllByBatchForTestCreatorAsync(string batch)
         {
-            return dbContext.Submissions.Include(t => t.Test).Where(s => s.Test.Batch == batch).ToListAsync();
+            return dbContext.Submissions.Include(t => t.Test).Include(t => t.TestTaker).Where(s => s.Test.Batch == batch).ToListAsync();
         }
 
 
