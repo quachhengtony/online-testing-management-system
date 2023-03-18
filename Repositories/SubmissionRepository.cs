@@ -52,6 +52,11 @@ namespace Repositories
             return SubmissionDAO.Instance.GetByTestTakerIdAsync(id);
         }
 
+        public bool IsBatchTakenByTestTaker(Guid testTakerId, string batch)
+        {
+            return SubmissionDAO.Instance.IsBatchTakenByTestTaker(testTakerId, batch);
+        }
+
         public void SaveChanges()
         {
             SubmissionDAO.Instance.SaveChanges();

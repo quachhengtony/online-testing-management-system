@@ -15,12 +15,13 @@
 
         @{
             var i = 0;
+            var pageSize = Model.QuestionList.Count();
         }
 <form method="post" id="testForm" style="margin-left: 20%; margin-right: 20%">
     @foreach (var item in Model.QuestionList) {
         i++;
         <div>
-            <p><strong>@i</strong> @item.Content</p>
+            <p><strong>@(pageSize * (Model.PageIndex - 1) + i)</strong> @item.Content</p>
             @if (item.QuestionCategoryId == 1)
             {
                 @foreach (var ans in item.Answers)

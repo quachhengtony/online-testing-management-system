@@ -11,12 +11,14 @@ using Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using WebApp.Models;
 using Microsoft.AspNetCore.Http;
+using WebApp.Constants;
 
 namespace WebApp.Pages.TestInfo
 {
     public class IndexModel : PageModel
     {
         private ITestRepository testRepository;
+        private ISubmissionRepository submissionRepository;
         private readonly IConfiguration configuration;
 
         public string NameSort { get; set; }
@@ -25,10 +27,11 @@ namespace WebApp.Pages.TestInfo
         public String ErrorMessage { get; set; }
         public int PageIndex { get; set; }
 
-        public IndexModel(ITestRepository testRepository, IConfiguration configuration)
+        public IndexModel(ITestRepository testRepository, ISubmissionRepository submissionRepository, IConfiguration configuration)
         {
             this.testRepository = testRepository;
             this.configuration = configuration;
+            this.submissionRepository = submissionRepository;
         }
 
         public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? pageIndex)
@@ -71,12 +74,12 @@ namespace WebApp.Pages.TestInfo
             TestList = PaginatedList<Test>.CreateAsync(testList, pageIndex, pageSize);
 
 
-            if (test.KeyCode != keyCode)
+            if (!IsValid(keyCode, test))
             {
-                ErrorMessage = "Wrong keycode.";
                 return Page();
             } else
             {
+
                 if (HttpContext.Session.GetString("CurrentSubmissionId") != null)
                 {
                     HttpContext.Session.Remove("QuestionListId");
@@ -87,10 +90,41 @@ namespace WebApp.Pages.TestInfo
                     HttpContext.Session.Remove("TestContent");
 
                 }
+                HttpContext.Session.SetString("TestJoinedId", test.Batch);
                 return RedirectToPage("./TestTaking", new { batch = test.Batch});
 
             }
 
+        }
+
+        private bool IsValid(String keyCode, Test test)
+        {
+            if (test.KeyCode != keyCode)
+            {
+                TempData["Status"] = ErrorConstants.Failed;
+                TempData["StatusMessage"] = ErrorConstants.InvalidKeyCode;
+                return false;
+            }
+            if (DateTime.Compare(test.StartTime, DateTime.Now) > 0)
+            {
+                TempData["Status"] = ErrorConstants.Failed;
+                TempData["StatusMessage"] = ErrorConstants.TestNotStart;
+                return false;
+            }
+            if (DateTime.Compare(test.EndTime, DateTime.Now) < 0)
+            {
+                TempData["Status"] = ErrorConstants.Failed;
+                TempData["StatusMessage"] = ErrorConstants.TestEnded;
+                return false;
+            }
+            /*if (submissionRepository.IsBatchTakenByTestTaker(Guid.Parse(HttpContext.Session.GetString("UserId")), test.Batch))
+            {
+                TempData["Status"] = ErrorConstants.Failed;
+                TempData["StatusMessage"] = ErrorConstants.InvalidRetakeTest;
+                return false;
+            }*/
+
+            return true;
         }
     }
 }
