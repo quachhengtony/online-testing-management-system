@@ -126,12 +126,17 @@ namespace DAO
             return dbContext.Tests.Include(t => t.TestCategory).ToListAsync();
         }
 
-        public Task<List<Test>> GetAllByName(string name)
+		public Task<List<Test>> GetAllByName(string name)
         {
             return dbContext.Tests.Where(t => t.Name.Contains(name)).ToListAsync();
         }
 
-        public Task<List<Test>> GetAllByNameAndCreatorId(string name, Guid creatorId)
+		public Task<List<Test>> GetAllByNameAsync(string name, Guid testCreatorId)
+		{
+			return dbContext.Tests.Where(t => t.Name.Contains(name) && t.TestCreatorId == testCreatorId).ToListAsync();
+		}
+
+		public Task<List<Test>> GetAllByNameAndCreatorId(string name, Guid creatorId)
         {
             return dbContext.Tests.Where(t => t.Name.Contains(name) && creatorId.Equals(creatorId)).ToListAsync();
         }
@@ -153,7 +158,7 @@ namespace DAO
 
         public Task<List<Test>> GetAllByTestCreatorAsync(Guid testCreatorId)
         {
-            return dbContext.Tests.Where(t => t.TestCreatorId == testCreatorId).ToListAsync();
+            return dbContext.Tests.Where(t => t.TestCreatorId == testCreatorId).Include(t => t.TestCategory).ToListAsync();
         }
             
     }

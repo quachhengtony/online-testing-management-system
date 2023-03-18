@@ -53,11 +53,11 @@ namespace WebApp.Pages.Tests
 			CurrentFilter = searchString;
 			if (!string.IsNullOrEmpty(searchString))
 			{
-				testList = await testRepository.GetAllByName(searchString);
+				testList = await testRepository.GetAllByNameAsync(searchString, Guid.Parse(HttpContext.Session.GetString("UserId")));
 			}
 			else
 			{
-				testList = await testRepository.GetAllAsync();
+				testList = await testRepository.GetAllByTestCreatorAsync(Guid.Parse(HttpContext.Session.GetString("UserId")));
 			}
 			TestList = PaginatedList<Test>.CreateAsync(testList, pageIndex ?? 1, pageSize);
 			return Page();
