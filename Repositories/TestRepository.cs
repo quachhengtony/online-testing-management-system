@@ -32,12 +32,22 @@ namespace Repositories
             return TestDAO.Instance.GetAllAsync();
         }
 
+		public Task<List<Test>> GetAllByTestCreatorAsync(Guid testCreatorId)
+		{
+            return TestDAO.Instance.GetAllByTestCreatorAsync(testCreatorId);
+		}
+
 		public Task<List<Test>> GetAllByName(string name)
         {
             return TestDAO.Instance.GetAllByName(name);
         }
 
-        public List<Test> GetAllByBatchForTestTaker()
+		public Task<List<Test>> GetAllByNameAsync(string name, Guid testCreatorId)
+		{
+			return TestDAO.Instance.GetAllByNameAsync(name, testCreatorId);
+		}
+
+		public List<Test> GetAllByBatchForTestTaker()
 		{
             var tests = TestDAO.Instance.GetAllForTestTakerAsync().Result;
             var batchs = new List<String>();

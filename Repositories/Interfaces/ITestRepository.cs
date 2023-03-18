@@ -9,7 +9,8 @@ namespace Repositories.Interfaces
 {
     public interface ITestRepository : IRepository<Test>
     {
-        Task<Test> GetByIdForTestTakerAsync(Guid id);
+        Task<List<Test>> GetAllByTestCreatorAsync(Guid testCreatorId);
+		Task<Test> GetByIdForTestTakerAsync(Guid id);
         List<Test> GetBySearchForTestTaker(string search);
         bool IsKeyCodeCorrectForTestTaker(Guid testId, string keyCode);
         bool IsTestAvailableForTestTaker(Guid testId, DateTime currentTime);
@@ -21,7 +22,8 @@ namespace Repositories.Interfaces
         public Test GetById(Guid id);
         public Task<Test> GetByIdAsync(Guid id);
         public Task<List<Test>> GetAllByName(string name);
-        public Task<List<Test>> GetAllByNameAndCreatorId(string name, Guid creatorId);
+		public Task<List<Test>> GetAllByNameAsync(string name, Guid testCreatorId);
+		public Task<List<Test>> GetAllByNameAndCreatorId(string name, Guid creatorId);
         public Task<List<Test>> GetAllByCreatorId(Guid creatorId);
         public Task<bool> IsDue(Guid id);
         public Task<Test> GetByBatch(string batch);
