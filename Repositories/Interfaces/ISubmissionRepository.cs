@@ -22,5 +22,7 @@ namespace Repositories.Interfaces
         Task<Submission> GetByIdAsync(Guid id);
         Task<List<Submission>> GetByTestTakerIdAndBatchAsync(Guid id, string batch);
         bool IsBatchTakenByTestTaker(Guid testTakerId, string batch);
+        decimal GetAverageScoreByBatch(string batch);
+        Task<List<Submission>> GetAllByBatchForTestCreatorAsync(string batch);
     }
 }

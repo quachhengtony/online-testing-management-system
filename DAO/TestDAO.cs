@@ -58,6 +58,17 @@ namespace DAO
             return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).Where(t => t.Batch.Contains(search)).ToListAsync();
         }
 
+        public Task<List<Test>> GetAllForTestCreatorAsync(Guid creatorId)
+        {
+            return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).Where(t => t.TestCreator.Id == creatorId).ToListAsync();
+        }
+
+
+        public Task<List<Test>> GetBySearchForTestCreatorAsync(string search, Guid creatorId)
+        {
+            return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).Where(t => t.Batch.Contains(search) && t.TestCreator.Id == creatorId).ToListAsync();
+        }
+
         public Test GetByIdForTestTaker(Guid id)
         {
             return dbContext.Tests.Include(t => t.TestCategory).Include(t => t.TestCreator).Where(t => t.Id == id).FirstOrDefault();
@@ -144,5 +155,6 @@ namespace DAO
         {
             return dbContext.Tests.Where(t => t.TestCreatorId == testCreatorId).ToListAsync();
         }
+            
     }
 }

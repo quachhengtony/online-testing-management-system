@@ -98,6 +98,12 @@ namespace DAO
             return dbContext.Submissions.Include(t => t.Test).Where(s => s.TestTakerId == id && s.Test.Batch.Contains(batch)).ToListAsync();
         }
 
+        public Task<List<Submission>> GetAllByBatchForTestCreatorAsync(string batch)
+        {
+            return dbContext.Submissions.Include(t => t.Test).Where(s => s.Test.Batch == batch).ToListAsync();
+        }
+
+
         public bool IsBatchTakenByTestTaker(Guid testTakerId, string batch)
         {
             return dbContext.Submissions.Include(s => s.Test)
@@ -119,5 +125,11 @@ namespace DAO
         {
             return dbContext.Submissions.Where(s => s.TestTakerId == testTakerId).ToList();
         }
+
+        public decimal GetAverageScoreByBatch(string batch)
+        {
+            return dbContext.Submissions.Include(s => s.Test).Where(s => s.Test.Batch == batch).Average(s => s.Score);
+        }
+
     }
 }

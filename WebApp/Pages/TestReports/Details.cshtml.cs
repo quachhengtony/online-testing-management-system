@@ -31,22 +31,22 @@ namespace WebApp.Pages.TestReports
             this.submissionRepository = submissionRepository;
         }
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync(string batch)
         {
             if (HttpContext.Session.GetString("Role") != "Creator")
             {
                 return Redirect("/Error/AuthorizedError"); ;
             }
-            if (id == null)
+            if (batch == null)
             {
                 return NotFound();
             }
-            Test = await testRepository.GetByIdAsync(Guid.Parse(id));
+            Test = await testRepository.GetByBatch(batch);
             if (Test == null)
             {
                 return NotFound();
             }
-            submissionList = submissionRepository.GetByTestId(Guid.Parse(id));
+            submissionList = submissionRepository.GetAllByBatchForTestCreatorAsync(batch).Result;
             return Page();
         }
     }

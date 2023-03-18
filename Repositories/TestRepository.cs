@@ -54,6 +54,23 @@ namespace Repositories
             }
             return tests;
         }
+        public List<Test> GetAllByBatchForTestCreator(Guid testCreatorId)
+        {
+            var tests = TestDAO.Instance.GetAllForTestCreatorAsync(testCreatorId).Result;
+            var batchs = new List<String>();
+            foreach (var test in tests.ToList())
+            {
+                if (batchs != null && batchs.Contains(test.Batch))
+                {
+                    tests.Remove(test);
+                }
+                else
+                {
+                    batchs.Add(test.Batch);
+                }
+            }
+            return tests;
+        }
 
         public Task<List<Test>> GetAllByCreatorId(Guid creatorId)
         {
@@ -101,6 +118,26 @@ namespace Repositories
             }
             
             return tests;
+        }
+
+        public List<Test> GetBySearchForTestCreator(string search, Guid creatorId)
+        {
+            var tests = TestDAO.Instance.GetBySearchForTestCreatorAsync(search, creatorId).Result;
+            var batchs = new List<String>();
+            foreach (var test in tests.ToList())
+            {
+                if (batchs != null && batchs.Contains(test.Batch))
+                {
+                    tests.Remove(test);
+                }
+                else
+                {
+                    batchs.Add(test.Batch);
+                }
+            }
+
+            return tests;
+
         }
 
         public async Task<bool> IsDue(Guid id)
@@ -171,5 +208,5 @@ namespace Repositories
             list = hashtable.Keys.Cast<string>().ToList();
             return list;
 		}
-	}
+    }
 }

@@ -26,7 +26,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TestList[0].Name)
+                @Html.DisplayNameFor(model => model.TestList[0].Batch)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TestList[0].KeyCode)
@@ -38,28 +38,25 @@
                 @Html.DisplayNameFor(model => model.TestList[0].EndTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TestList[0].GradeReleaseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TestList[0].GradeFinalizationDate)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.TestList[0].Duration)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TestList[0].Batch)
+                @Html.DisplayNameFor(model => model.TestList[0].TestCategory)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TestList[0].TestCategory)
+                Average Score
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
+        @{
+            var i = 0;
+        }
     @foreach (var item in Model.TestList) {
-        <tr>
+            <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Batch)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.KeyCode)
@@ -71,22 +68,16 @@
                 @Html.DisplayFor(modelItem => item.EndTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GradeReleaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GradeFinalizationDate)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Batch)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TestCategory.Category)
             </td>
             <td>
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> 
+                @Model.AveScore[i++]
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-batch="@item.Batch">Details</a> 
             </td>
         </tr>
     }

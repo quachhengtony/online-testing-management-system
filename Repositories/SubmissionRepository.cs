@@ -87,5 +87,15 @@ namespace Repositories
         {
             SubmissionDAO.Instance.Delete(GetById(id));
         }
+
+        public decimal GetAverageScoreByBatch(string batch)
+        {
+            return SubmissionDAO.Instance.GetAverageScoreByBatch(batch);
+        }
+
+        public Task<List<Submission>> GetAllByBatchForTestCreatorAsync(string batch)
+        {
+            return SubmissionDAO.Instance.GetAllByBatchForTestCreatorAsync(batch);
+        }
     }
 }
