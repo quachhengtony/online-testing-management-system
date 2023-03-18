@@ -11,5 +11,6 @@
         public static string TestEnded = "The test is already end.";
         public static string InvalidRetakeTest = "You're already done this test.";
         public static string InvalidSubmitTest = "This test is fail because test taker did not submit properly.";
+        public static string NoAnswers = "The question does not contain any answers.";
     }
 }
