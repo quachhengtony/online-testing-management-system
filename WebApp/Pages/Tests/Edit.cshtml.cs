@@ -67,25 +67,37 @@ namespace WebApp.Pages.Tests
 			}
 			if (!ModelState.IsValid)
             {
-                return Page();
+				TempData["Status"] = ErrorConstants.Failed;
+				TempData["StatusMessage"] = ErrorConstants.InvalidData;
+				return Page();
             }
-            try
+            
+			try
             {
-                Test = await testRepository.GetByIdAsync(Test.Id);
-                Test.Batch = UpdateTestDTO.Batch;
-                Test.Duration = UpdateTestDTO.Duration;
-                Test.EndTime = Test.EndTime;
-                Test.GradeFinalizationDate = UpdateTestDTO.GradeFinalizationDate;
-                Test.GradeReleaseDate = UpdateTestDTO.GradeReleaseDate;
-                Test.KeyCode = UpdateTestDTO.KeyCode;
-                Test.Name = UpdateTestDTO.Name;
-                Test.StartTime = UpdateTestDTO.StartTime;
-                Test.TestCategoryId = UpdateTestDTO.TestCategoryId;
-                testRepository.Update(Test);
-                testRepository.SaveChanges();
-                return RedirectToPage("./Index");
-            }
-            catch (Exception ex)
+				Test = await testRepository.GetByIdAsync(Test.Id);
+				List<Test> testsWithSameBatch = await testRepository.GetAllByBatchAsync(Test.Batch);
+                if (testsWithSameBatch == null || testsWithSameBatch.Count < 2)
+                {
+					Test.Name = UpdateTestDTO.Name;
+					Test.Batch = UpdateTestDTO.Batch;
+					Test.Duration = UpdateTestDTO.Duration;
+					Test.EndTime = Test.EndTime;
+					Test.GradeFinalizationDate = UpdateTestDTO.GradeFinalizationDate;
+					Test.GradeReleaseDate = UpdateTestDTO.GradeReleaseDate;
+					Test.KeyCode = UpdateTestDTO.KeyCode;
+					Test.Name = UpdateTestDTO.Name;
+					Test.StartTime = UpdateTestDTO.StartTime;
+					Test.TestCategoryId = UpdateTestDTO.TestCategoryId;
+				} 
+                else
+                {
+					Test.Name = UpdateTestDTO.Name;
+				}
+				testRepository.Update(Test);
+				testRepository.SaveChanges();
+				return RedirectToPage("./Index");
+			}
+			catch (Exception ex)
             {
 				logger.LogError($"\nException: {ex.Message}\n\t{ex.InnerException}");
 				TempData["Status"] = ErrorConstants.Failed;

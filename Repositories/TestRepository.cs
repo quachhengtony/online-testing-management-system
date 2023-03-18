@@ -199,6 +199,11 @@ namespace Repositories
             return TestDAO.Instance.GetByBatch(batch);
         }
 
+		public Task<List<Test>> GetAllByBatchAsync(string batch)
+		{
+			return TestDAO.Instance.GetAllByBatchAsync(batch);
+		}
+
 		public async Task<List<string>> GetAllUniqueBatchesOfTestCreator(Guid testCreatorId)
 		{
             List<string> list;
