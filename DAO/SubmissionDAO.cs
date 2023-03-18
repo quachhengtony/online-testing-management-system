@@ -128,6 +128,10 @@ namespace DAO
 
         public decimal GetAverageScoreByBatch(string batch)
         {
+            if (dbContext.Submissions.Include(s => s.Test).Where(s => s.Test.Batch == batch).Count() == 0)
+            {
+                return 0m;
+            }
             return dbContext.Submissions.Include(s => s.Test).Where(s => s.Test.Batch == batch).Average(s => s.Score);
         }
 
