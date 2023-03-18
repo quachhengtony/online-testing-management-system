@@ -32,12 +32,22 @@ namespace Repositories
             return QuestionDAO.Instance.GetAllAsync();
         }
 
-        public Task<List<Question>> GetAllByContent(string content)
+		public Task<List<Question>> GetAllAsync(Guid questionCreatorId)
+		{
+			return QuestionDAO.Instance.GetAllAsync(questionCreatorId);
+		}
+
+		public Task<List<Question>> GetAllByContent(string content)
         {
             return QuestionDAO.Instance.GetAllByContent(content);
         }
 
-        public Question GetById(Guid id)
+		public Task<List<Question>> GetAllByContentAsync(string content, Guid questionCreatorId)
+		{
+			return QuestionDAO.Instance.GetAllByContentAsync(content, questionCreatorId);
+		}
+
+		public Question GetById(Guid id)
         {
             return QuestionDAO.Instance.GetById(id);
         }

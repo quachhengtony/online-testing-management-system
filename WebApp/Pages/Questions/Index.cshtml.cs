@@ -53,11 +53,11 @@ namespace WebApp.Pages.Questions
             CurrentFilter = searchString;
             if (!string.IsNullOrEmpty(searchString))
             {
-                questionList = await questionRepository.GetAllByContent(searchString);
+                questionList = await questionRepository.GetAllByContentAsync(searchString, Guid.Parse(HttpContext.Session.GetString("UserId")));
             } 
             else
             {
-                questionList = await questionRepository.GetAllAsync();
+                questionList = await questionRepository.GetAllAsync(Guid.Parse(HttpContext.Session.GetString("UserId")));
             }
             QuestionList = PaginatedList<Question>.CreateAsync(questionList, pageIndex ?? 1, pageSize);
             return Page();

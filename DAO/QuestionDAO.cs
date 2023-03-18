@@ -53,7 +53,12 @@ namespace DAO
             return dbContext.Questions.Include(q => q.Answers).Include(q => q.QuestionCategory).ToListAsync();
         }
 
-        public Question GetById(Guid id)
+		public Task<List<Question>> GetAllAsync(Guid questionCreatorId)
+		{
+			return dbContext.Questions.Where(q => q.QuestionCreatorId == questionCreatorId).Include(q => q.Answers).Include(q => q.QuestionCategory).ToListAsync();
+		}
+
+		public Question GetById(Guid id)
         {
             return dbContext.Questions.Where(q => q.Id == id).Include(q => q.Answers).Include(q => q.QuestionCategory).FirstOrDefault();
         }
@@ -63,7 +68,12 @@ namespace DAO
             return dbContext.Questions.Where(q => q.Content.Contains(content)).ToListAsync();
         }
 
-        public Task<Question> GetByIdAsync(Guid id)
+		public Task<List<Question>> GetAllByContentAsync(string content, Guid questionCreatorId)
+		{
+			return dbContext.Questions.Where(q => q.Content.Contains(content) && q.QuestionCreatorId == questionCreatorId).ToListAsync();
+		}
+
+		public Task<Question> GetByIdAsync(Guid id)
         {
             return dbContext.Questions.Where(q => q.Id == id).Include(q => q.Answers).Include(q => q.QuestionCategory).FirstOrDefaultAsync();
         }
