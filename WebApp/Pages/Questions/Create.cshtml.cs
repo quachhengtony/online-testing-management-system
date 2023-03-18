@@ -11,6 +11,7 @@ using WebApp.DTO;
 using System.Text.Json;
 using WebApp.Constants;
 using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace WebApp.Pages.Questions
 {
@@ -52,6 +53,12 @@ namespace WebApp.Pages.Questions
 			{
 				return Redirect("/Error/AuthorizedError"); ;
 			}
+            if (!CreateAnswerDTOList.Any())
+            {
+				TempData["Status"] = ErrorConstants.Failed;
+				TempData["StatusMessage"] = ErrorConstants.NoAnswers;
+                return Redirect("./Create");
+            }
 			List<Answer> answerList = new();
             try
             {

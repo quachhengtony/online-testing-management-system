@@ -53,7 +53,7 @@
 				<br />
 				<input type="radio" id="rdIsCorrect" name="rdIsCorrect" value="true">
 				<label for="rdIsCorrect">True</label><br>
-				<input type="radio" id="rdIsCorrect" name="rdIsCorrect" value="false">
+				<input type="radio" id="rdIsCorrect" name="rdIsCorrect" value="false" checked>
 				<label for="rdIsCorrect">False</label><br>
 			</div>
 		</div>
@@ -88,6 +88,7 @@
 				$("#formMutlipleChoices").show();
 				$("#tblAnswers").show();
 				$("#formTrueOrFalse").hide();
+				$("#btnAddAnswer").show();
 			}
 			if($("#slQuestionCategory :selected").val() == "2") {
 				$("#formMutlipleChoices").hide();
@@ -116,6 +117,7 @@
 							$("#tblAnswers tbody").append(row);
 						});
 						$("#cbIsCorrect").prop("checked", false);
+						$("#tbAnswerContent").val("");
 					},
 					error: (error) => {
 						alert("Error: " + error);
