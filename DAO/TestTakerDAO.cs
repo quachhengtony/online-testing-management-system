@@ -108,5 +108,13 @@ namespace DAO
                 return dbContext.TestTakers.Where(c => c.FirstName.Contains(name) || c.LastName.Contains(name)).ToList();
             }
         }
+
+        public TestTaker CheckDuplicateUserNameOrEmail(string username, string email)
+        {
+            using (var dbContext = new OnlineTestingManagementSystemDbContext())
+            {
+                return dbContext.TestTakers.SingleOrDefault(c => c.Email == email || c.Username == username);
+            }
+        }
     }
 }

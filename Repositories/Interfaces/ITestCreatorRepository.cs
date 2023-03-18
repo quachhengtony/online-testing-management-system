@@ -14,5 +14,7 @@ namespace Repositories.Interfaces
         public TestCreator Login(string email, string password);
 
         public List<TestCreator> GetTestCreatorsByName(String name);
+
+        public TestCreator CheckDuplicateEmailOrUserName(string username, string email);
     }
 }
