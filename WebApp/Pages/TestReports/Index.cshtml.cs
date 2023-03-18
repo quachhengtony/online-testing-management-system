@@ -20,6 +20,7 @@ namespace WebApp.Pages.TestReports
     {
         private readonly ILogger<IndexModel> logger;
         private readonly ITestRepository testRepository;
+        private readonly ISubmissionRepository submissionRepository;
         private readonly IConfiguration configuration;
 
         public string NameSort { get; set; }
@@ -28,10 +29,13 @@ namespace WebApp.Pages.TestReports
         public string CurrentSort { get; set; }
         public PaginatedList<Test> TestList { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger, ITestRepository testRepository, IConfiguration configuration)
+        public List<decimal> AveScore { get; set; } = new List<decimal>();
+
+        public IndexModel(ILogger<IndexModel> logger, ITestRepository testRepository, ISubmissionRepository submissionRepository, IConfiguration configuration)
         {
             this.logger = logger;
             this.testRepository = testRepository;
+            this.submissionRepository = submissionRepository;
             this.configuration = configuration;
         }
 
@@ -55,13 +59,18 @@ namespace WebApp.Pages.TestReports
             CurrentFilter = searchString;
             if (!string.IsNullOrEmpty(searchString))
             {
-                testList = await testRepository.GetAllByNameAndCreatorId(searchString, creatorId);
+                testList = testRepository.GetBySearchForTestCreator(searchString, creatorId);
             }
             else
             {
-                testList = await testRepository.GetAllByCreatorId(creatorId);
+                testList = testRepository.GetAllByBatchForTestCreator(creatorId);
             }
             TestList = PaginatedList<Test>.CreateAsync(testList, pageIndex ?? 1, pageSize);
+            foreach (var t in TestList)
+            {
+                AveScore.Add(Math.Round(submissionRepository.GetAverageScoreByBatch(t.Batch), 2));
+            }
+
             return Page();
         }
     }

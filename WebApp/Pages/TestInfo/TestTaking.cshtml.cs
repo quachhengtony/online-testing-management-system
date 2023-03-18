@@ -46,7 +46,7 @@ namespace WebApp.Pages.TestInfo
             if (String.IsNullOrEmpty(HttpContext.Session.GetString("TestJoinedId")) ||
                 !HttpContext.Session.GetString("TestJoinedId").Equals(batch))
             {
-                return Redirect("/Error/AuthorizedError");
+                return Redirect("/Error/ForbiddenError");
             }
             HttpContext.Session.Remove("TestJoinedId");
             var questionList = new List<Question>();

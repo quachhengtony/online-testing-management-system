@@ -15,7 +15,9 @@ namespace Repositories.Interfaces
         bool IsTestAvailableForTestTaker(Guid testId, DateTime currentTime);
         Task<List<String>> GetTestNamesByBatchForTestTaker(string batch);
         List<Test> GetAllByBatchForTestTaker();
+        List<Test> GetAllByBatchForTestCreator(Guid testCreatorId);
         Task<Test> GetByTestNameAndBatchForTestTakerAsync(string batch, string name);
+        List<Test> GetBySearchForTestCreator(string search, Guid creatorId);
         public Test GetById(Guid id);
         public Task<Test> GetByIdAsync(Guid id);
         public Task<List<Test>> GetAllByName(string name);
@@ -23,6 +25,6 @@ namespace Repositories.Interfaces
         public Task<List<Test>> GetAllByCreatorId(Guid creatorId);
         public Task<bool> IsDue(Guid id);
         public Task<Test> GetByBatch(string batch);
-        public Task<List<string>> GetAllUniqueBatchesOfTestCreator(Guid testCreatorId); 
+        public Task<List<string>> GetAllUniqueBatchesOfTestCreator(Guid testCreatorId);
     }
 }
