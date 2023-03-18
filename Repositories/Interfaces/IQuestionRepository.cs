@@ -12,6 +12,9 @@ namespace Repositories.Interfaces
     {
         public Question GetById(Guid id);
         public Task<Question> GetByIdAsync(Guid id);
+        public Task<List<Question>> GetAllAsync(Guid questionCreatorId);
         public Task<List<Question>> GetAllByContent(string content);
-    }
+		public Task<List<Question>> GetAllByContentAsync(string content, Guid questionCreatorId);
+
+	}
 }
