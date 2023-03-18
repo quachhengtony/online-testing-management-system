@@ -98,6 +98,12 @@ namespace DAO
             return dbContext.Submissions.Include(t => t.Test).Where(s => s.TestTakerId == id && s.Test.Batch.Contains(batch)).ToListAsync();
         }
 
+        public bool IsBatchTakenByTestTaker(Guid testTakerId, string batch)
+        {
+            return dbContext.Submissions.Include(s => s.Test)
+                .Where(s => s.TestTakerId == testTakerId && s.Test.Batch == batch).Count() > 0;
+        }
+
         public void SaveChanges()
         {
             dbContext.SaveChanges();

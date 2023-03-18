@@ -43,7 +43,12 @@ namespace WebApp.Pages.TestInfo
             {
                 return Redirect("/Error/AuthorizedError");
             }
-
+            if (String.IsNullOrEmpty(HttpContext.Session.GetString("TestJoinedId")) ||
+                !HttpContext.Session.GetString("TestJoinedId").Equals(batch))
+            {
+                return Redirect("/Error/AuthorizedError");
+            }
+            HttpContext.Session.Remove("TestJoinedId");
             var questionList = new List<Question>();
             //int pageSize = configuration.GetValue("PageSize", 10);
             int pageSize = 2;

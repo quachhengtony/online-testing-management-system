@@ -9,6 +9,7 @@ using BusinessObjects.Models;
 using Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using WebApp.Constants;
 
 namespace WebApp.Pages.Submissions
 {
@@ -50,7 +51,11 @@ namespace WebApp.Pages.Submissions
 
             if (!Submission.IsGraded.Value)
             {
-            } else
+                TempData["Status"] = ErrorConstants.Failed;
+                TempData["StatusMessage"] = ErrorConstants.InvalidSubmitTest;
+
+            }
+            else
             {
                 TestContent = JsonSerializer.Deserialize<Dictionary<Guid, String>>(Submission.Content);
                 foreach (var i in TestContent)

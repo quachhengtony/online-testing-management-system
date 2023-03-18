@@ -21,5 +21,6 @@ namespace Repositories.Interfaces
         Task<List<Submission>> GetByTestTakerIdAsync(Guid id);
         Task<Submission> GetByIdAsync(Guid id);
         Task<List<Submission>> GetByTestTakerIdAndBatchAsync(Guid id, string batch);
+        bool IsBatchTakenByTestTaker(Guid testTakerId, string batch);
     }
 }
