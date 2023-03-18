@@ -11,6 +11,11 @@ namespace Repositories
 {
     public class TestTakerRepository : ITestTakerRepository
     {
+        public TestTaker CheckDuplicateEmailOrUserName(string username, string email)
+        {
+            return TestTakerDAO.Instance.CheckDuplicateUserNameOrEmail(username, email);
+        }
+
         public void Create(TestTaker t)
         {
             TestTakerDAO.Instance.Create(t);

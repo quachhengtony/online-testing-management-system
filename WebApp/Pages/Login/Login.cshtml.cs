@@ -81,21 +81,24 @@ namespace WebApp.Pages.Login
             {
                 if(LoginByAdminAccount(Email, Password))
                 {
-                    return Redirect("/Privacy");
+                    TempData["title"] = "Welcome Admin";
+                    return Redirect("/Welcome/Welcome");
                 }
                 else if(testCreatorRepository.Login(Email, Password) != null)
                 {
                     HttpContext.Session.SetString("Role", "Creator");
                     HttpContext.Session.SetString("UserId", testCreatorRepository.Login(Email, Password).Id.ToString());
 
-                    return Redirect("/Error");
+                    TempData["title"] = "Welcome test creator";
+                    return Redirect("/Welcome/Welcome");
                 }
                 else if(testTakerRepository.Login(Email, Password) != null)
                 {
                     HttpContext.Session.SetString("Role", "Taker");
                     HttpContext.Session.SetString("UserId", testTakerRepository.Login(Email, Password).Id.ToString());
 
-                    return Redirect("/TestInfo");
+                    TempData["title"] = "Welcome test taker";
+                    return Redirect("/Welcome/Welcome");
                 }
                 else
                 {

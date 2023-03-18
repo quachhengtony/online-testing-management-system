@@ -71,32 +71,55 @@ namespace WebApp.Pages.Register
             {
                 if(Role == "creator")
                 {
-                    Console.WriteLine("Role: " + Role);
-                    TestCreator testCreator = new TestCreator {
-                        Id = utils.createGuid(),
-                        Username = Username,
-                        Email = Email,
-                        FirstName = FirstName,
-                        LastName = LastName,
-                        Password = Password
-                    };
-                    testCreatorRepository.Create(testCreator);
-                    return Redirect("/Login/Login");
+                    if(testCreatorRepository.CheckDuplicateEmailOrUserName(Username, Email) != null)
+                    {
+                        ViewData["Message"] = "Username or Email was existed!";
+                        ViewData["FirstName"] = FirstName;
+                        ViewData["LastName"] = LastName;
+
+                        return Page();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Role: " + Role);
+                        TestCreator testCreator = new TestCreator
+                        {
+                            Id = utils.createGuid(),
+                            Username = Username,
+                            Email = Email,
+                            FirstName = FirstName,
+                            LastName = LastName,
+                            Password = Password
+                        };
+                        testCreatorRepository.Create(testCreator);
+                        return Redirect("/Login/Login");
+                    }
                 }
                 else if (Role == "taker")
                 {
-                    Console.WriteLine("Role: " + Role);
-                    TestTaker testTaker = new TestTaker
+                    if (testTakerRepository.CheckDuplicateEmailOrUserName(Username, Email) != null)
                     {
-                        Id = utils.createGuid(),
-                        Username = Username,
-                        Email = Email,
-                        FirstName = FirstName,
-                        LastName = LastName,
-                        Password = Password
-                    };
-                    testTakerRepository.Create(testTaker);
-                    return Redirect("/Login/Login");
+                        ViewData["Message"] = "Username or Email was existed!";
+                        ViewData["FirstName"] = FirstName;
+                        ViewData["LastName"] = LastName;
+
+                        return Page();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Role: " + Role);
+                        TestTaker testTaker = new TestTaker
+                        {
+                            Id = utils.createGuid(),
+                            Username = Username,
+                            Email = Email,
+                            FirstName = FirstName,
+                            LastName = LastName,
+                            Password = Password
+                        };
+                        testTakerRepository.Create(testTaker);
+                        return Redirect("/Login/Login");
+                    }
                 }
                 else
                 {

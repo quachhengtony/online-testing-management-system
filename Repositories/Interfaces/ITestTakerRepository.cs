@@ -12,5 +12,7 @@ namespace Repositories.Interfaces
         public TestTaker Login(string email, string password);
 
         public List<TestTaker> GetTestTakersByName(String name);
+
+        public TestTaker CheckDuplicateEmailOrUserName(string username, string email);
     }
 }
