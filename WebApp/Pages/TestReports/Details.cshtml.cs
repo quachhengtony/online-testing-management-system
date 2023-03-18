@@ -12,31 +12,32 @@ using Repositories.Interfaces;
 using Repositories;
 using Microsoft.AspNetCore.Http;
 
-namespace WebApp.Pages.Tests
+namespace WebApp.Pages.TestReports
 {
     public class DetailsModel : PageModel
     {
 		private readonly ILogger<IndexModel> logger;
 		private readonly ITestRepository testRepository;
-        private readonly IQuestionRepository questionRepository;
+        private readonly ISubmissionRepository submissionRepository;
+        public List<Submission> submissionList { get; set; }
 
         public List<Question> QuestionList { get; set; } = new();
         public Test Test { get; set; }
 
-        public DetailsModel(ILogger<IndexModel> logger, ITestRepository testRepository, IQuestionRepository questionRepository)
+        public DetailsModel(ILogger<IndexModel> logger, ITestRepository testRepository, ISubmissionRepository submissionRepository)
         {
             this.logger = logger;
             this.testRepository = testRepository;
-            this.questionRepository = questionRepository;
+            this.submissionRepository = submissionRepository;
         }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-			if (string.IsNullOrEmpty(HttpContext.Session.GetString("Role")) || HttpContext.Session.GetString("Role") != "Creator")
-			{
-				return Redirect("/Error/AuthorizedError"); ;
-			}
-			if (id == null)
+            if (HttpContext.Session.GetString("Role") != "Creator")
+            {
+                return Redirect("/Error/AuthorizedError"); ;
+            }
+            if (id == null)
             {
                 return NotFound();
             }
@@ -45,6 +46,7 @@ namespace WebApp.Pages.Tests
             {
                 return NotFound();
             }
+            submissionList = submissionRepository.GetByTestId(Guid.Parse(id));
             return Page();
         }
     }
